@@ -1,18 +1,42 @@
-.App {
+div.login.box header {
+  background-position: center; /*Sets the background for the header to be in the center of the div*/
+  text-align: center; /*Sets the text to be in the middle of the center of the div*/
+  font-family: Helvetica, serif;/*Sets the font for the header to be Helvetica*/
+  font-size: 25px; /*Sets the font size for the header to be 25px*/
+}
+
+
+/*Aligns the login texts and sets a 20px margin in between them*/
+form.login {
+  text-align: center;
+  margin: 20px;
+
+}
+/*Sets a margin for the login button*/
+form.login label.button input{
+  margin: 10px;
+}
+
+/*This is for the image behind the login text*/
+div.login.box{
+  background-image: url("/public/images/BoxBackGround.png");/*Taken from Uwinnipeg.ca*/
+  background-repeat: no-repeat;
+  background-size: 450px 200px;
+  width: 450px;
+  height: 200px;
+  border:4px solid black;
+  border-radius: 10px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 
-.App-header {
-  background-color: #222;
-  height: 100px;
-  padding: 20px;
-  color: white;
-}
+/*This is for the logo in the top left corner*/
+div.logo{
+  background-repeat: no-repeat;
+  background-image: url("/public/images/Logo.png"); /*Taken from Uwinnipeg.ca*/
+  width: 256px;
+  height: 197px;
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
 }
