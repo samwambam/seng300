@@ -28,6 +28,7 @@ app.use(session({
 const db = mysql.createConnection({
   host     : keys.DB_HOST,
   user     : keys.DB_USER,
+  port     : keys.DB_PORT,
   password : keys.DB_PASSWORD,
   database : keys.DB_DATABASE
 });
@@ -43,7 +44,7 @@ app.post('/auth', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   if (username && password) {
-    db.query('SELECT * FROM users WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
+    db.query('SELECT * FROM student WHERE student_id = ? AND password = ?',[username,password], (error, results, fields) => {
       if (results.length>0) {
         req.session.loggedin = true;
         req.session.username = username;
