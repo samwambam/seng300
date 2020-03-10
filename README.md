@@ -3,6 +3,7 @@
 ## Prerequsites
 1) from the client directory run `npm install`
 2) from the server directory run  `npm install`
+3) from the root directory run `npm install react-router-dom`
 
 ## Running
 1) from the root directory run  `npm run dev`
