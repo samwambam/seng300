@@ -19,7 +19,7 @@ form.login label.button input{
 
 /*This is for the image behind the login text*/
 div.login.box{
-  background-image: url("/public/images/BoxBackGround.png");/*Taken from Uwinnipeg.ca*/
+  background-image: url("/images/BoxBackGround.png");/*Taken from Uwinnipeg.ca*/
   background-repeat: no-repeat;
   background-size: 450px 200px;
   width: 450px;
@@ -35,7 +35,7 @@ div.login.box{
 /*This is for the logo in the top left corner*/
 div.logo{
   background-repeat: no-repeat;
-  background-image: url("/public/images/Logo.png"); /*Taken from Uwinnipeg.ca*/
+  background-image: url("/images/Logo.png"); /*Taken from Uwinnipeg.ca*/
   width: 256px;
   height: 197px;
 

@@ -1,0 +1,112 @@
+div.navigation {
+    margin-top: 20px;
+    font-size: 30px;
+    width: 240px;
+    height: 205px;
+    border: 2px solid black;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+}
+
+div.portal {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+div.content {
+    width: 100%;
+    text-align: center;
+}
+
+body{
+    border-radius: 20px;
+}
+
+/*
+div.scholarship{
+    height: 70px;
+    width: 240px;
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+div.applications{
+    height: 70px;
+    width: 240px;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+div.profile{
+    height: 70px;
+    width: 240px;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+div.notifications{
+    height: 70px;
+    width: 240px;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+div.signout{
+    height: 70px;
+    width: 240px;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+*/
+.scholarship:hover{
+    background-size: 240px 70px;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+.signout:hover{
+    background-size: 240px 70px;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+
+.notifications:hover{
+    background-size: 240px 70px;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+
+.applications:hover{
+    background-size: 240px 70px;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+
+.profile:hover{
+    background-size: 240px 70px;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+
+a:link, a:visited{
+    color:black;
+    text-decoration: none;
+}
+
+
+
+ul {
+    list-style-type: none
+}
+
+div.logo{
+    background-image: url("images/Logo.png");
+    background-repeat: no-repeat;
+    height: 197px;
+    width: 256px;
+}

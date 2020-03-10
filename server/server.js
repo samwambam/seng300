@@ -23,7 +23,6 @@ app.use(session({
 }));
 
 
-
 //CREATE CONNECTION
 const db = mysql.createConnection({
   host     : keys.DB_HOST,
@@ -50,7 +49,8 @@ app.post('/auth', (req, res) => {
         req.session.username = username;
         res.redirect('/portal');
       } else {
-        res.send('Invalid Credentials');
+        res.redirect('/');
+        // res.send('Invalid Credentials');
       }
       res.end();
     });
@@ -67,7 +67,6 @@ app.get('/home', (req, res) => {
     res.send('Please Login to View this page');
   }
 })
-
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
