@@ -33,10 +33,11 @@ div.login.box{
 }
 
 /*This is for the logo in the top left corner*/
-div.logo{
+div.logo.login{
   background-repeat: no-repeat;
   background-image: url("/images/Logo.png"); /*Taken from Uwinnipeg.ca*/
   width: 256px;
   height: 197px;
-
+  margin-left: 10px;
+  margin-top: 10px;
 }

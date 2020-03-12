@@ -1,8 +1,8 @@
-div.navigation {
+div.navigation.student {
     margin-top: 20px;
     font-size: 30px;
     width: 240px;
-    height: 205px;
+    height: 170px;
     border: 2px solid black;
     border-radius: 20px;
     text-align: center;
@@ -21,11 +21,27 @@ div.portal {
 div.content {
     width: 100%;
     text-align: center;
+    border: 2px solid black;
+    margin-left: 10px;
+    margin-top: 20px;
+    border-radius: 20px;
 }
 
 body{
     border-radius: 20px;
 }
+
+header{
+    display: flex;
+    flex-direction: row;
+}
+
+div.Title{
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
+}
+
 
 /*
 div.scholarship{
@@ -104,9 +120,10 @@ ul {
     list-style-type: none
 }
 
-div.logo{
+div.logo.portal{
     background-image: url("images/Logo.png");
     background-repeat: no-repeat;
-    height: 197px;
-    width: 256px;
+    height: 170px;
+    width: 280px;
+    background-size: 100%;
 }

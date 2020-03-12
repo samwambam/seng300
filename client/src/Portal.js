@@ -6,6 +6,7 @@ import Scholarships from './Scholarships';
 import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
+import App from './App';
 
 
 
@@ -16,7 +17,8 @@ class Portal extends Component {
       
       <div style={{margin: 20 + 'pt'}}>
         <header>
-            <div className = "logo"></div>
+            <div className = "logo portal"></div>
+            <div className = "Title">Scholarships</div>
             <div className = "search">
                 <form className ="search">
                     <input type="text" placeholder="Search..."></input>
@@ -28,7 +30,7 @@ class Portal extends Component {
 
       <div className='portal'>  
 
-          <div className = "navigation">
+          <div className = "navigation student">
 
           
             <div className = "scholarship"> 
@@ -36,18 +38,18 @@ class Portal extends Component {
             </div>
 
             <div className = "applications">
-              <Link to="/portal/applications">My Application</Link>
+              <Link to="/portal/applications"   onClick = {App.refreshPage}>My Application</Link>
             </div>  
 
             <div className = "profile"> 
-              <Link to="portal/profile">My profile</Link>
+              <Link to="/portal/profile">My profile</Link>
             </div>
 
             <div className = "notifications">
-              <Link to="portal/notifications"> Notifications</Link>
+              <Link to="/portal/notifications"> Notifications</Link>
             </div>
             
-            <div className = "scholarship">
+            <div className = "signout">
               <Link to='/'> Sign Out </Link>
             </div>
 
@@ -57,11 +59,10 @@ class Portal extends Component {
             <Router>
 
               <Switch>
-
-                <Route path='/portal/applications' exact component = {Applications}/>
+                <Route path='/portal/applications' component = {Applications} />
                 <Route path='/portal/profile' component = {Profile}/>
                 <Route path='/portal/notifications' component = {Notifications}/>
-                <Route path='/portal/' exact component = {Scholarships}/>
+                <Route path='/portal/' component = {Scholarships}/>
         
               </Switch>    
 

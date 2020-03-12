@@ -8,7 +8,7 @@ class Login extends Component {
   render() {
     return (
         <div className="Login">
-            <div className = "logo"></div>
+            <div className = "logo login"></div>
 
             <div className = "login box"> {/*<!-- Div section for the login box -->*/}
               <header>Welcome to UWinnipeg Scholarships</header> {/*<!-- Header for the webpage-->*/}
