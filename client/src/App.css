@@ -1,7 +1,6 @@
 div.login.box header {
   background-position: center; /*Sets the background for the header to be in the center of the div*/
   text-align: center; /*Sets the text to be in the middle of the center of the div*/
-  font-family: Helvetica, serif;/*Sets the font for the header to be Helvetica*/
   font-size: 25px; /*Sets the font size for the header to be 25px*/
 }
 
@@ -40,4 +39,8 @@ div.logo.login{
   height: 197px;
   margin-left: 10px;
   margin-top: 10px;
+}
+
+body{
+  font-family: 'Times New Roman', Times, serif;
 }

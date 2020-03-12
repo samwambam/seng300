@@ -9,6 +9,7 @@ class Scholarships extends Component {
 	render() {
     	return (
 			<div>
+				<div className = "Title">Scholarships</div>
 				<ul>
 				  <li>
 						Scholarship 1

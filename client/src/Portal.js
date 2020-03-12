@@ -16,18 +16,20 @@ class Portal extends Component {
     return (
       
       <div style={{margin: 20 + 'pt'}}>
-        <header>
-            <div className = "logo portal"></div>
-            <div className = "Title">Scholarships</div>
-            <div className = "search">
-                <form className ="search">
-                    <input type="text" placeholder="Search..."></input>
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-        </header>
+        
+          <div className = "logo portal"></div>
+          <div className = "search">
+              <form className ="search">
+                  <input type="text" placeholder="Search..."></input>
+                  <button type="submit">Search</button>
+              </form>
+          </div>
+          <div className = "signout">
+              <Link to='/'> Sign Out </Link>
+          </div>
       
-
+      
+      <Router>
       <div className='portal'>  
 
           <div className = "navigation student">
@@ -38,7 +40,7 @@ class Portal extends Component {
             </div>
 
             <div className = "applications">
-              <Link to="/portal/applications"   onClick = {App.refreshPage}>My Application</Link>
+              <Link to="/portal/applications">My Application</Link>
             </div>  
 
             <div className = "profile"> 
@@ -48,15 +50,11 @@ class Portal extends Component {
             <div className = "notifications">
               <Link to="/portal/notifications"> Notifications</Link>
             </div>
-            
-            <div className = "signout">
-              <Link to='/'> Sign Out </Link>
-            </div>
 
           </div>
           
           <div className="content">
-            <Router>
+           
 
               <Switch>
                 <Route path='/portal/applications' component = {Applications} />
@@ -66,12 +64,12 @@ class Portal extends Component {
         
               </Switch>    
 
-            </Router>
+            
 
           </div>
-
+          
       </div>
-
+      </Router>
         
       </div>
 

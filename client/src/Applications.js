@@ -9,6 +9,7 @@ class Applications extends Component {
 	render() {
     	return (
 			<div>
+				<div className = "Title">My Applications</div>
 				<ul> {/*unordered list*/}
 				  <li>
 						Scholarship 1

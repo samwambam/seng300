@@ -9,6 +9,7 @@ class Notifications extends Component {
 	render() {
     	return (
 			<div>
+				<div className = "Title">Notifications</div>
 				<ul>
 				  <li>
 						Scholarship 1

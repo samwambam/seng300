@@ -9,7 +9,8 @@ class Profile extends Component {
 	render() {
     	return (
 			<div>
-				<ul> {/*unordered list*/} 
+				<div className = "Title">My Profile</div>
+				<ul>
 				  <li>
 						Scholarship 1
 					</li>
