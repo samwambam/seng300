@@ -19,14 +19,20 @@ class Portal extends Component {
         
           <div className = "logo portal"></div>
           <div className = "search">
-              <form className ="search">
+              <form className ="search" method = "POST">
                   <input type="text" placeholder="Search..."></input>
                   <button type="submit">Search</button>
               </form>
           </div>
           <div className = "signout">
-              <Link to='/'> Sign Out </Link>
+            <Link to='/'> Sign Out 
+            </Link>
           </div>
+          <Link to='/'> 
+            <div  className = "door" > </div>
+          </Link>
+         
+          
       
       
       <Router>
@@ -35,19 +41,19 @@ class Portal extends Component {
           <div className = "navigation student">
 
           
-            <div className = "scholarship"> 
+            <div className = "menuItem"> 
                 <Link to = "portal">Scholarships</Link>
             </div>
 
-            <div className = "applications">
+            <div className = "menuItem">
               <Link to="/portal/applications">My Application</Link>
             </div>  
 
-            <div className = "profile"> 
+            <div className = "menuItem"> 
               <Link to="/portal/profile">My profile</Link>
             </div>
 
-            <div className = "notifications">
+            <div className = "menuItem">
               <Link to="/portal/notifications"> Notifications</Link>
             </div>
 
@@ -76,5 +82,4 @@ class Portal extends Component {
       );
   }
 }
-
 export default Portal;

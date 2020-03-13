@@ -1,0 +1,12 @@
+
+div.scholarship div.container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: -40px;
+    margin-left: 20px;
+}
+
+.faculty,.deadline{
+    position: absolute;
+    right: 60px;
+}
