@@ -39,7 +39,7 @@ div.Title{
 
 
 .menuItem:hover{
-    background-size: 240px 70px;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("images/BoxBackGround.png");
 }

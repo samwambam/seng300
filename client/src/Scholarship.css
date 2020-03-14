@@ -1,8 +1,17 @@
+div.scholarship {
+    border: 2px solid black;
+}
+
+.scholarship:hover{
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
 
 div.scholarship div.container {
     display: flex;
     flex-direction: row;
-    margin-bottom: -40px;
+    
     margin-left: 20px;
 }
 

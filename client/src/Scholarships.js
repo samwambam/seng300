@@ -7,32 +7,39 @@ import Scholarship from './Scholarship';
 
 class Scholarships extends Component {
 
+	createList = () => {
+		let list = []
+
+		// Loop to create all the <li>-s
+		// Once the backend API is functional this will change as follows:
+		// for (let index = 0; index < arrayOfScholarships.length; index++) {
+		for (let index = 0; index < 5; index++) {
+			list.push(
+				<li>
+					<Link to={"/portal/scholarship/" + index}>
+						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="yesterday" />
+					</Link>
+					
+					{/* link-to goes here */}
+				</li>
+			)
+		}
+		console.log(list);
+		
+		return list
+
+	}
 
 	render() {
     	return (
-			<div>
-				<div className = "Title">Scholarships</div>
-				<ul>
-					<li>
-						
-						<Scholarship name="Scholarship 1" gpa="2.4" faculty="Science" deadline="tomorrow" />
-					{/* link to goes here */}
-			
-					</li>
-
-					<li>
-						
-						Scholarship 2
-
-					</li>
-					<li>
-
-						Scholarship 3
-
-					</li>
-
-				</ul>
-			</div>
+			<Router>
+				<div>
+					<h1 className = "Title">Scholarships</h1>
+					<ul>
+						{this.createList()}
+					</ul>
+				</div>
+			</Router>
 		);
 	}
 }

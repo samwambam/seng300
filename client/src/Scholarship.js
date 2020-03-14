@@ -10,12 +10,12 @@ class Scholarship extends Component {
     	return (
 			<div className="scholarship">
 				<div className="container">
-					<h1 className = "name"> {this.props.name} </h1>
-					<h1 className = "faculty"> {this.props.faculty} </h1>
+					<h3 className = "name"> {this.props.name} </h3>
+					<h3 className = "faculty"> {this.props.faculty} </h3>
 				</div>
 				<div className="container">
-					<h1 className = "gpa"> GPA: {this.props.gpa} </h1>
-					<h1 className = "deadline"> {this.props.deadline} </h1>
+					<h3 className = "gpa"> GPA: {this.props.gpa} </h3>
+					<h3 className = "deadline"> {this.props.deadline} </h3>
 				</div>
 			</div>
 		);

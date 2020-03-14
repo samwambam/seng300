@@ -6,7 +6,7 @@ import Scholarships from './Scholarships';
 import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
-import App from './App';
+//import App from './App';
 
 
 
@@ -25,8 +25,7 @@ class Portal extends Component {
               </form>
           </div>
           <div className = "signout">
-            <Link to='/'> Sign Out 
-            </Link>
+            <Link to='/'> Sign Out </Link>
           </div>
           <Link to='/'> 
             <div  className = "door" > </div>
@@ -67,7 +66,7 @@ class Portal extends Component {
                 <Route path='/portal/profile' component = {Profile}/>
                 <Route path='/portal/notifications' component = {Notifications}/>
                 <Route path='/portal/' component = {Scholarships}/>
-        
+                <Route path='/portal/scholarship/:id' component={Notifications} />
               </Switch>    
 
             
