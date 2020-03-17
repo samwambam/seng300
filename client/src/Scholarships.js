@@ -17,7 +17,7 @@ class Scholarships extends Component {
 			list.push(
 				<li>
 					<Link to={"/portal/scholarship/" + index}>
-						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="yesterday" />
+						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="deadline: yesterday" />
 					</Link>
 					
 					{/* link-to goes here */}
