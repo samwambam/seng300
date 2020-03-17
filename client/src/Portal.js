@@ -18,28 +18,28 @@ class Portal extends Component {
       <div style={{margin: 20 + 'pt'}}>
         
           <div className = "logo portal"></div>
-          <div className = "search">
-              <form className ="search" method = "POST">
+
+          <div className = "search"> {/*search box and button*/}
+              <form className ="search" method = "POST"> 
                   <input type="text" placeholder="Search..."></input>
                   <button type="submit">Search</button>
               </form>
           </div>
+
           <div className = "signout">
             <Link to='/'> Sign Out </Link>
           </div>
+
           <Link to='/'> 
             <div  className = "door" > </div>
           </Link>
          
-          
-      
       
       <Router>
       <div className='portal'>  
 
-          <div className = "navigation student">
+          <div className = "navigation student"> {/*menu options for student*/}
 
-          
             <div className = "menuItem"> 
                 <Link to = "portal">Scholarships</Link>
             </div>
@@ -49,7 +49,7 @@ class Portal extends Component {
             </div>  
 
             <div className = "menuItem"> 
-              <Link to="/portal/profile">My profile</Link>
+              <Link to="/portal/profile">My Profile</Link>
             </div>
 
             <div className = "menuItem">
@@ -68,8 +68,6 @@ class Portal extends Component {
                 <Route path='/portal/' component = {Scholarships}/>
                 <Route path='/portal/scholarship/:id' component={Notifications} />
               </Switch>    
-
-            
 
           </div>
           

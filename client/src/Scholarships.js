@@ -17,7 +17,7 @@ class Scholarships extends Component {
 			list.push(
 				<li>
 					<Link to={"/portal/scholarship/" + index}>
-						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="deadline: yesterday" />
+						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="deadline: yesterday" /> {/* calls Scholarship.js to display scholarship box and information*/}
 					</Link>
 					
 					{/* link-to goes here */}
@@ -36,7 +36,7 @@ class Scholarships extends Component {
 				<div>
 					<h1 className = "Title">Scholarships</h1>
 					<ul>
-						{this.createList()}
+						{this.createList() /* calls the function to create the list of scholarships */}
 					</ul>
 				</div>
 			</Router>
