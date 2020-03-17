@@ -36,7 +36,7 @@ class Portal extends Component {
          
       
       <Router>
-      <div className='portal'>  
+      <div className='portal'> 
 
           <div className = "navigation student"> {/*menu options for student*/}
 
@@ -58,9 +58,8 @@ class Portal extends Component {
 
           </div>
           
-          <div className="content">
+          <div className="content"> {/*this section changes depending on which link we are on*/}
            
-
               <Switch>
                 <Route path='/portal/applications' component = {Applications} />
                 <Route path='/portal/profile' component = {Profile}/>

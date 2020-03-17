@@ -12,6 +12,7 @@ class App extends Component {
       {/*bad area below D:*/}
     return (
       <Router> 
+        
         <Switch>
           <Route path='/login' exact component = {Login} /> 
           <Route path='/portal' component = {Portal} /> 
