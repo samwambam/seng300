@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-import Login from './Login';
 
 
 class Applications extends Component {
@@ -9,6 +7,7 @@ class Applications extends Component {
 	render() {
     	return (
 			<div>
+				<div className = "Title">My Applications</div>
 				<ul> {/*unordered list*/}
 				  <li>
 						Scholarship 1

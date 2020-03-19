@@ -5,21 +5,23 @@ import Portal from './Portal';
 import Login from "./Login";
 
 class App extends Component {
+    render() {
 
-  render() {
-    {/*bad area below D:*/}
-    return (
-      <Router> 
-        <Switch>
-          <Route path='/login' exact component = {Login} /> 
-          <Route path='/portal' exact component = {Portal} /> 
+    /*bad area below D:*/
+        return (
+            <Router> 
+                <Switch>
+                <Route path='/login' exact component = {Login} /> 
+                <Route path='/portal' component = {Portal} /> 
 
-          <Route path='/' component={Login} /> 
-        </Switch>
+                <Route path='/' component={Login} /> 
+                </Switch>
 
-      </Router>
-    );
-  }
+            </Router>
+        );
+    }
+
+  
 }
 
 export default App;
