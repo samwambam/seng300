@@ -35,7 +35,7 @@ const db = mysql.createConnection({
 //CONNECT
 db.connect( (err) => {
   if(err) throw err;
-  console.log('MySQL Connected...');
+  console.log('Connection established with MySQL database');
 });
 
 //CHECK LOGIN CREDENTIALS
@@ -68,7 +68,33 @@ app.get('/home', (req, res) => {
   }
 })
 
+// get all scholarships
+app.get('/api/scholarships', (req,res) => {
+  let sql = 'SELECT * from scholarship';
+  let query = db.query(sql, (err,results) => {
+      if (err) throw err;
+      res.json({
+          'status' : 200,
+          'error': null,
+          'response' : results
+      });
+  });
+});
+
+// get single scholarship
+app.get('/api/scholarships/:id', (req,res) => {
+  let sql = `SELECT * from scholarship WHERE scholarship_id=${req.params.id}`;
+  let query = db.query(sql, (err,results) => {
+      if (err) throw err;
+      res.json({
+          'status' : 200,
+          'error': null,
+          'response' : results
+      });
+  });
+});
+
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`API server started on port ${PORT}`);
 })
 
