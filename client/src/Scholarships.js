@@ -10,64 +10,69 @@ class Scholarships extends Component {
 		super(props);
 		this.state = {
 			modalOpen: false,
-			selectedName: "You shouldn't be here",
-			selectedGpa:  "You shouldn't be here",
-			selectedFaculty:  "You shouldn't be here",
-			selectedDeadline: "You shouldn't be here",
+			selectedScholarhsip: {},
+			scholarships: []
 		}
+	}
+	// TODO add a dummy selectedScholarship to initialize with
+
+	componentDidMount() {
+		this.scholarshipList();
+	}
+
+	scholarshipList() {
+		fetch('/api/scholarships')
+			.then((res) => res.json())
+			.then((response) => {
+				this.setState({scholarships: response.response})
+			})
 	}
 
 	createList = () => {
 		let list = []
 
 		// Loop to create all the <li>-s
-		// Once the backend API is functional this will change as follows:
-		// for (let index = 0; index < arrayOfScholarships.length; index++) 
-		// <li>
-		// 	<Link to={"/portal/scholarship/" + index}>
-		// 		<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="yesterday" />
-		// 	</Link>
-			
-		// 	{/* link-to goes here */}
-		// </li>
-		for (let index = 0; index < 5; index++) {
+		this.state.scholarships.forEach(item => {
 			list.push(
 				<li onClick={() => this.setState({
 					modalOpen: true,
-					selectedName: "Scholarship " + index,
-					selectedGpa: "3." + index,
-					selectedFaculty: "Any",
-					selectedDeadline:"yesterday"
+					selectedScholarhsip: item
 				})}>
-						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="yesterday" />
+						<Scholarship name={item.scholarship_name} gpa={"GPA goes here"} faculty={item.offering_faculty} deadline="Deadline goes here" />
 					
-					{/* link-to goes here */}
 				</li>
 			)
-		}
-		console.log(list);
+		});
 		
 		return list
-
+		
 	}
-
+	
 	render() {
+		// console.log(this.state);
+
     	return (
 			<div>
+				
 				<h1 className = "Title">Scholarships</h1>
+
+				{/* This is a popup "div" for more info on each scholarship */}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
-					<h2>{this.state.selectedName}</h2>
-					<p>Faculty: {this.state.selectedFaculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedGpa}, Apply By: {this.state.selectedDeadline}</p>
+					<h2>{this.state.selectedScholarhsip.scholarship_name}</h2>
+					<p>Faculty: {this.state.selectedScholarhsip.offering_faculty}</p>
+					<p>Minimum Required GPA: {"?"}, Apply By: {"?"}</p>
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
 						<button>Apply</button>
 					</div>
 				</Modal>
+
+				{/* This is where all of the scholarships are displayed */}
 				<ul>
 					{this.createList()}
 				</ul>
+
 			</div>
 		);
 	}
