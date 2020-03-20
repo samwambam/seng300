@@ -68,30 +68,37 @@ app.get('/home', (req, res) => {
   }
 })
 
+// function to query database and send response
+function sendQuery(sql, res) {
+  let query = db.query(sql, (err,results) => {
+    if (err) throw err;
+    res.json({
+        'status' : 200,
+        'error': null,
+        'response' : results
+    });
+  });
+}
+
 // get all scholarships
 app.get('/api/scholarships', (req,res) => {
   let sql = 'SELECT * from scholarship';
-  let query = db.query(sql, (err,results) => {
-      if (err) throw err;
-      res.json({
-          'status' : 200,
-          'error': null,
-          'response' : results
-      });
-  });
+  sendQuery(sql, res);
 });
 
 // get single scholarship
 app.get('/api/scholarships/:id', (req,res) => {
   let sql = `SELECT * from scholarship WHERE scholarship_id=${req.params.id}`;
-  let query = db.query(sql, (err,results) => {
-      if (err) throw err;
-      res.json({
-          'status' : 200,
-          'error': null,
-          'response' : results
-      });
-  });
+  sendQuery(sql, res);
+});
+
+//get all scholarships applied to by a certain person
+app.get('/api/scholarships/applied/:user_id', (req,res) => {
+  let sql = 'SELECT scholarship.* ' +
+            'FROM scholarship ' + 
+            'INNER JOIN apply ON (scholarship.scholarship_id = apply.scholarship_id) ' +
+            `WHERE student_id = ${req.params.user_id};`
+  sendQuery(sql, res);
 });
 
 app.listen(PORT, () => {
