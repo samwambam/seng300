@@ -71,12 +71,18 @@ app.get('/home', (req, res) => {
 // function to query database and send response
 function sendQuery(sql, res) {
   let query = db.query(sql, (err,results) => {
-    if (err) throw err;
-    res.json({
-        'status' : 200,
-        'error': null,
-        'response' : results
-    });
+    if (err) {
+      res.json({
+        'status' : 300,
+        'error': err 
+      });
+    } else {
+      res.json({
+          'status' : 200,
+          'error': null,
+          'response' : results
+      });
+    }
   });
 }
 
@@ -100,6 +106,15 @@ app.get('/api/scholarships/applied/:user_id', (req,res) => {
             `WHERE student_id = ${req.params.user_id};`
   sendQuery(sql, res);
 });
+
+//apply to a scholarship
+app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
+  let sql = 'INSERT INTO scholarships.apply (student_id, scholarship_id)' + 
+            `VALUES (${req.params.student_id}, ${req.params.scholarship_id})`;
+  sendQuery(sql, res);
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`API server started on port ${PORT}`);
