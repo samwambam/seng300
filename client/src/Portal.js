@@ -82,5 +82,6 @@ class Portal extends Component {
 
         );
     }
+
 }
 export default Portal;
