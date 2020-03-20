@@ -11,9 +11,9 @@ import Notifications from './Notifications';
 class Portal extends Component {
 
   render() {
+
     return (
 
-      <div style={{ margin: 20 + 'pt' }}>
         <div style={{ margin: 20 + 'pt' }}>
 
           <div className="logo portal"></div>
@@ -25,6 +25,7 @@ class Portal extends Component {
             </form>
           </div>
 
+          
           <Link to='/'>
             <div className="signout"> Sign Out </div>
             <div className="door" > </div>
@@ -47,7 +48,6 @@ class Portal extends Component {
                     My Application
                             </div>
                 </Link>
-
 
                 <Link to="/portal/profile">
                   <div className="menuItem">
@@ -79,7 +79,7 @@ class Portal extends Component {
           </Router>
 
         </div>
-      </div>
+      
       );
   }
 }

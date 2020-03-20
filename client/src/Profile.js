@@ -8,15 +8,6 @@ class Profile extends Component {
     	return (
 			<div>
 				<div className = "Title">My Profile</div>
-				
-				<div className="profilepic"> </div>
-
-				<div className="description"> 
-					<h2>Name: </h2>
-					<h2>Status: </h2>
-					<h2>GPA: </h2> 
-				</div>
-				
 				<ul>
 				  <li>
 						Scholarship 1
@@ -157,8 +148,6 @@ class Profile extends Component {
 					<li>
 						Scholarship 3
 					</li>
-
-					
 
 				</ul>
 			</div>
