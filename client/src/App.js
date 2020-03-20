@@ -6,21 +6,18 @@ import Login from "./Login";
 
 class App extends Component {
     render() {
-      function refreshPage(){
-        window.location.reload(true);
-      }
-      {/*bad area below D:*/}
-    return (
-      <Router> 
-        
-        <Switch>
-          <Route path='/login' exact component = {Login} /> 
-          <Route path='/portal' component = {Portal} /> 
+      /*bad area below D:*/
+      return (
+        <Router> 
 
-          <Route path='/' component={Login} /> 
-        </Switch>
+            <Switch>
+            <Route path='/login' exact component = {Login} /> 
+            <Route path='/portal' component = {Portal} /> 
 
-      </Router>
+            <Route path='/' component={Login} /> 
+                </Switch>
+                
+            </Router>
     );
   }
 

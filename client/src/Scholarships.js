@@ -3,28 +3,48 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import Login from './Login';
 import Scholarship from './Scholarship';
+import Modal from "react-modal";
 
 
 class Scholarships extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			modalOpen: false,
+			selectedScholarhsip: {},
+			scholarships: []
+		}
+	}
+	// TODO add a dummy selectedScholarship to initialize with
+
+	componentDidMount() {
+		this.scholarshipList();
+	}
+
+	scholarshipList() {
+		fetch('/api/scholarships')
+			.then((res) => res.json())
+			.then((response) => {
+				this.setState({scholarships: response.response})
+			})
+	}
 
 	createList = () => {
 		let list = []
 
 		// Loop to create all the <li>-s
-		// Once the backend API is functional this will change as follows:
-		// for (let index = 0; index < arrayOfScholarships.length; index++) {
-		for (let index = 0; index < 5; index++) {
+		
+			this.state.scholarships.forEach(item => {
 			list.push(
-				<li>
-					<Link to={"/portal/scholarship/" + index}>
-						<Scholarship name={"Scholarship " + index} gpa={"3." + index} faculty="Any" deadline="deadline: yesterday" /> {/* calls Scholarship.js to display scholarship box and information*/}
-					</Link>
-					
-					{/* link-to goes here */}
+				
+					<li onClick={() => this.setState({
+					modalOpen: true,
+					selectedScholarhsip: item
+				})}>
+						<Scholarship name={item.scholarship_name} gpa={item.min_gpa} faculty={item.offering_faculty} deadline={item.deadline} />	
 				</li>
 			)
-		}
-		console.log(list);
+			});
 		
 		return list
 
@@ -32,14 +52,32 @@ class Scholarships extends Component {
 
 	render() {
     	return (
-			<Router>
-				<div>
-					<h1 className = "Title">Scholarships</h1>
-					<ul>
-						{this.createList() /* calls the function to create the list of scholarships */}
-					</ul>
-				</div>
-			</Router>
+			// console.log(this.state);
+
+
+
+<div>
+
+<h1 className = "Title">Scholarships</h1>
+
+{/* This is a popup "div" for more info on each scholarship */}
+<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
+	<h2>{this.state.selectedScholarhsip.scholarship_name}</h2>
+	<p>Faculty: {this.state.selectedScholarhsip.offering_faculty}</p>
+	<p>Minimum Required GPA: {"?"}, Apply By: {"?"}</p>
+	<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
+	<div>
+		<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
+		<button>Apply</button>
+	</div>
+</Modal>
+
+{/* This is where all of the scholarships are displayed */}
+<ul>
+	{this.createList()}
+</ul>
+
+</div>
 		);
 	}
 }

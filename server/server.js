@@ -35,7 +35,7 @@ const db = mysql.createConnection({
 //CONNECT
 db.connect( (err) => {
   if(err) throw err;
-  console.log('MySQL Connected...');
+  console.log('Connection established with MySQL database');
 });
 
 //CHECK LOGIN CREDENTIALS
@@ -68,7 +68,53 @@ app.get('/home', (req, res) => {
   }
 })
 
+// function to query database and send response
+function sendQuery(sql, res) {
+  let query = db.query(sql, (err,results) => {
+    if (err) {
+      res.json({
+        'status' : 300,
+        'error': err 
+      });
+    } else {
+      res.json({
+          'status' : 200,
+          'error': null,
+          'response' : results
+      });
+    }
+  });
+}
+
+// get all scholarships
+app.get('/api/scholarships', (req,res) => {
+  let sql = 'SELECT * from scholarship';
+  sendQuery(sql, res);
+});
+
+// get single scholarship
+app.get('/api/scholarships/:id', (req,res) => {
+  let sql = `SELECT * from scholarship WHERE scholarship_id=${req.params.id}`;
+  sendQuery(sql, res);
+});
+
+//get all scholarships applied to by a certain person
+app.get('/api/scholarships/applied/:user_id', (req,res) => {
+  let sql = 'SELECT scholarship.* ' +
+            'FROM scholarship ' + 
+            'INNER JOIN apply ON (scholarship.scholarship_id = apply.scholarship_id) ' +
+            `WHERE student_id = ${req.params.user_id};`
+  sendQuery(sql, res);
+});
+
+//apply to a scholarship
+app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
+  let sql = 'INSERT INTO scholarships.apply (student_id, scholarship_id)' + 
+            `VALUES (${req.params.student_id}, ${req.params.scholarship_id})`;
+  sendQuery(sql, res);
+});
+
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`API server started on port ${PORT}`);
 })
 
