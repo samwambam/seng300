@@ -38,14 +38,11 @@ class Scholarships extends Component {
 					modalOpen: true,
 					selectedScholarhsip: item
 				})}>
-						<Scholarship name={item.scholarship_name} gpa={"GPA goes here"} faculty={item.offering_faculty} deadline="Deadline goes here" />
-					
+						<Scholarship name={item.scholarship_name} gpa={item.min_gpa} faculty={item.offering_faculty} deadline={item.deadline} />	
 				</li>
 			)
 		});
-		
 		return list
-		
 	}
 	
 	render() {
