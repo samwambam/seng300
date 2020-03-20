@@ -32,24 +32,29 @@ class Scholarships extends Component {
 		let list = []
 
 		// Loop to create all the <li>-s
-			this.state.scholarships.forEach(item => {
+
+		this.state.scholarships.forEach(item => {
 			list.push(
-					<li onClick={() => this.setState({
+				<li onClick={() => this.setState({
+
 					modalOpen: true,
 					selectedScholarhsip: item
 				})}>
 						<Scholarship name={item.scholarship_name} gpa={item.min_gpa} faculty={item.offering_faculty} deadline={item.deadline} />	
 				</li>
 			)
-			});
+    
+		});
+
 		return list
 	}
-
+	
 	render() {
 		// console.log(this.state);
 
     	return (
 			<div>
+				
 
 				<h1 className = "Title">Scholarships</h1>
 
@@ -70,7 +75,8 @@ class Scholarships extends Component {
 					{this.createList()}
 				</ul>
 
-</div>
+			</div>
+
 		);
 	}
 }

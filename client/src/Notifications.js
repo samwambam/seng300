@@ -15,7 +15,6 @@ class Notifications extends Component {
 					<li>
 						Scholarship 2
 					</li>
-				
 				</ul>
 			</div>
 		);
