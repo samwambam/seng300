@@ -17,7 +17,9 @@ class Scholarship extends Component {
 
 				<div className="container">
 					<h3 className = "gpa"> GPA: {this.props.gpa} </h3>
-					<h3 className = "deadline"> {this.props.deadline} </h3>
+					{
+						this.props.awarded ? <h3 className = "deadline"> Awarded </h3> : <h3 className = "deadline"> {this.props.deadline} </h3>
+					}
 				</div>
 
 			</div>
