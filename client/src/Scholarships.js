@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 import Scholarship from './Scholarship';
 import Modal from "react-modal";
+import styled from "styled-components";
 
+
+const HoverText = styled.li`
+	color: #000;
+	:hover {
+		color: #ed1212;
+		cursor: pointer;
+	}
+`
 
 class Scholarships extends Component {
 
@@ -57,7 +66,7 @@ class Scholarships extends Component {
 		// Loop to create all the <li>-s
 
 		this.state.scholarships.forEach(item => {
-			list.push(
+			list.push(	
 				<li onClick={() => {
 					if (!item.awarded) {
 						this.setState({
@@ -65,15 +74,16 @@ class Scholarships extends Component {
 							selectedScholarhsip: item
 						})
 					}
-				}}>
-						<Scholarship
-							name={item.scholarship_name}
-							gpa={item.min_gpa}
-							faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
-							deadline={this.getDisplayDate(item.deadline)}
-							awarded={item.awarded}
-						/>	
+				} }>
+					<Scholarship
+						name={item.scholarship_name}
+						gpa={item.min_gpa}
+						faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
+						deadline={this.getDisplayDate(item.deadline)}
+						awarded={item.awarded}
+					/>	
 				</li>
+			
 			)
     
 		});
