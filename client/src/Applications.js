@@ -8,7 +8,7 @@ class Applications extends Component {
     	return (
 			<div>
 				<div className = "Title">My Applications</div>
-				<ul> {/*unordered list*/}
+				{/* <ul> 
 				  <li>
 						Scholarship 1
 					</li>
@@ -19,7 +19,8 @@ class Applications extends Component {
 						Scholarship 3
 					</li>
 
-				</ul>
+				</ul> */}
+				Work in progress...
 			</div>
 		);
 	}

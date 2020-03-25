@@ -18,12 +18,12 @@ class Portal extends Component {
                 
                 <div className = "logo portal"></div>
 
-                <div className = "search">
+                {/* <div className = "search">
                     <form className ="search" method = "POST">
                         <input type="text" placeholder="Search..."></input>
                         <button type="submit">Search</button>
                     </form>
-                </div>
+                </div> */}
 
 
                 <Link to='/'> 
@@ -82,5 +82,6 @@ class Portal extends Component {
 
         );
     }
+
 }
 export default Portal;

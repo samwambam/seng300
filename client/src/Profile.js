@@ -5,151 +5,18 @@ import './App.css';
 class Profile extends Component {
 
 	render() {
-    	return (
+		return (
 			<div>
-				<div className = "Title">My Profile</div>
-				<ul>
-				  <li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
+				<div className="Title">My Profile</div>
 
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
+				<div className="profilepic"> </div>
 
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
+				<div className="description">
+					<h2> Name: ?</h2>
+					<h2> Status: ?</h2>
+					<h2> GPA: ?</h2>
+				</div>
 
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-					<li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-					<li>
-						Scholarship 3
-					</li>
-
-				</ul>
 			</div>
 		);
 	}
