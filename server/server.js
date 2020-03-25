@@ -43,7 +43,7 @@ app.post('/auth', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   if (username && password) {
-    db.query('SELECT * FROM student WHERE student_id = ? AND password = ?',[username,password], (error, results, fields) => {
+    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
       if (results.length>0) {
         req.session.loggedin = true;
         req.session.username = username;
@@ -116,7 +116,7 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
 
 //get information about student
 app.get('/api/students/:student_id', (req,res) => {
-  let sql = `SELECT * from student WHERE stduent_id = {student_id}`
+  let sql = `SELECT * from student WHERE student_id = ${student_id}`
   sendQuery(sql, res);
 });
 
