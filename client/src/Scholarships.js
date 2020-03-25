@@ -2,45 +2,40 @@ import React, { Component } from 'react';
 import './App.css';
 import Scholarship from './Scholarship';
 import Modal from "react-modal";
-import styled from "styled-components";
 
-
-const HoverText = styled.li`
-	color: #000;
-	:hover {
-		color: #ed1212;
-		cursor: pointer;
-	}
-`
 
 class Scholarships extends Component {
 
 	constructor(props) {
 		super(props);
+
 		this.state = {
+			scholarships: [],
+			// popup stuff:
 			modalOpen: false,
 			selectedScholarhsip: {},
-			scholarships: [
-				{
-					"scholarship_id": 0,
-					"scholarship_name":null,
-					"awarded":0,
-					"offering_faculty":'',
-					"offering_status":null,
-					"deadline":null,
-					"min_gpa":0
-				}
-			]
+			// seacth stuff:
+			scholarshipsToDisplay:  [],
+			selectedFaculty: "any",
+			selectedProgram: "any",
+			showAll: true,
 		}
 	}
-	// TODO add a dummy selectedScholarship to initialize with
 
 	componentDidMount() {
 		this.scholarshipList();
 	}
 
+	scholarshipList() {
+		fetch('/api/scholarships')
+			.then((res) => res.json())
+			.then((response) => {
+				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
+			})
+	}
+
 	capitalize = (stringInput) => {
-		let str = stringInput
+		let str = stringInput.toString()
 		console.log(str);
 		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
@@ -48,16 +43,31 @@ class Scholarships extends Component {
 
 	getDisplayDate = (dateString) => {
 		let date = new Date(dateString)
-		//return date.getUTCMonth() + ' ' + date.getUTCDate() + ' ' + date.getUTCFullYear() + ', ' + date.getUTCDay()
 		return date.toUTCString().slice(0,11)
 	}
 
-	scholarshipList() {
-		fetch('/api/scholarships')
-			.then((res) => res.json())
-			.then((response) => {
-				this.setState({scholarships: response.response})
-			})
+	searchList = (event) => {
+		let awards = this.state.scholarships;
+		let awardsToDisplay = awards.filter((award) => {
+			return award.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
+		});
+
+		this.setState({scholarshipsToDisplay: awardsToDisplay});
+	}
+	
+	filterByFaculty = (event) => {
+		let awards = this.state.scholarships;
+		let value = event.target.value;
+		this.setState({selectedFaculty: value});
+		let awardsToDisplay = awards.filter((award) => {
+			if (value === "any") {
+				return 1
+			} else {
+				return award.offering_faculty.toString().toLowerCase() === value;
+			}
+		});
+	
+		this.setState({scholarshipsToDisplay: awardsToDisplay});
 	}
 
 	createList = () => {
@@ -65,7 +75,7 @@ class Scholarships extends Component {
 
 		// Loop to create all the <li>-s
 
-		this.state.scholarships.forEach(item => {
+		this.state.scholarshipsToDisplay.forEach(item => {
 			list.push(	
 				<li onClick={() => {
 					if (!item.awarded) {
@@ -92,13 +102,55 @@ class Scholarships extends Component {
 	}
 	
 	render() {
-		// console.log(this.state);
-
     	return (
 			<div>
-				
 
 				<h1 className = "Title">Scholarships</h1>
+
+				<form>
+					<input type="text" placeholder="Search..." onChange={this.searchList} />
+					<div className="radioButtonsFaculty">
+						{"Filter by Faculty: "}
+						<label>
+							<input 
+								type="radio"
+								name="facultyFilter"
+								value="any"
+								checked={this.state.selectedFaculty === "any"}
+								onChange={this.filterByFaculty}
+							/>
+							{"Any "}
+						</label>
+						<label>
+							<input 
+								type="radio"
+								name="facultyFilter"
+								value="science"
+								checked={this.state.selectedFaculty === "science"}
+								onChange={this.filterByFaculty}
+							/>
+							{"Science "}
+						</label>
+						<label>
+							<input 
+								type="radio"
+								name="facultyFilter"
+								value="engineering"
+								checked={this.state.selectedFaculty === "engineering"}
+								onChange={this.filterByFaculty}
+							/>
+							{"Engineering "}
+						</label>
+					</div>
+
+					{/*
+						add radio buttons later: 2 sets, one for program other for faculty;
+						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
+						TODO: make filter and search synchronized!!! Can't have one messing the other's work up!
+						note to self: probably have an apply button or something to apply all filter criteria
+						note to self 2: have the scholarship panels and pages display the program it's offered to (eg: undergrad, masters, etc.)
+					*/}
+				</form>
 
 				{/* This is a popup "div" for more info on each scholarship */}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
