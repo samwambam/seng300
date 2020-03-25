@@ -114,7 +114,11 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
-
+//get information about student
+app.get('/api/students/:student_id', (req,res) => {
+  let sql = `SELECT * from student WHERE stduent_id = {student_id}`
+  sendQuery(sql, res);
+});
 
 app.listen(PORT, () => {
   console.log(`API server started on port ${PORT}`);
