@@ -15,6 +15,14 @@ app.use(express.static(path.join(__dirname,'../client/build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
+// CREATE SESSION 
+app.use(session({
+	secret: 'seng300',
+	resave: true,
+	saveUninitialized: true
+}));
+
+
 //CREATE CONNECTION
 const db = mysql.createConnection({
   host     : keys.DB_HOST,
@@ -37,6 +45,8 @@ app.post('/auth', (req, res) => {
   if (username && password) {
     db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
       if (results.length>0) {
+        req.session.loggedin = true;
+        req.session.username = username;
         res.redirect('/portal');
       } else {
         res.redirect('/');
