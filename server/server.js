@@ -24,39 +24,11 @@ const db = mysql.createConnection({
   database : keys.DB_DATABASE
 });
 
-//CONNECT
+// connect to database
 db.connect( (err) => {
   if(err) throw err;
   console.log('Connection established with MySQL database');
 });
-
-//CHECK LOGIN CREDENTIALS
-app.post('/auth', (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username && password) {
-    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
-      if (results.length>0) {
-        res.redirect('/portal');
-      } else {
-        res.redirect('/');
-        // res.send('Invalid Credentials');
-      }
-      res.end();
-    });
-  } else {
-    res.send('Please enter Username and Password');
-    res.end();
-  }
-});
-
-app.get('/home', (req, res) => {
-  if (req.session.loggedin) {
-    res.send('Welcome back' + req.session.username);
-  } else {
-    res.send('Please Login to View this page');
-  }
-})
 
 // function to query database and send response
 function sendQuery(sql, res) {
@@ -75,6 +47,35 @@ function sendQuery(sql, res) {
     }
   });
 }
+
+// check login credentials
+app.post('/auth', (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+  if (username && password) {
+    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
+      if (results.length>0) {
+        res.redirect('/portal');
+      } else {
+        res.redirect('/');
+        res.end();
+        // res.send('Invalid Credentials');
+      }
+    });
+  } else {
+    res.redirect('/');
+    res.end();
+  }
+});
+
+app.get('/home', (req, res) => {
+  if (req.session.loggedin) {
+    res.send('Welcome back' + req.session.username);
+  } else {
+    res.send('Please Login to View this page');
+  }
+})
+
 
 // get all scholarships
 app.get('/api/scholarships', (req,res) => {
