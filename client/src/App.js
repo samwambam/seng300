@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
 import './App.css';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import Portal from './Portal';
+import Login from "./Login";
 
 class App extends Component {
+    render() {
 
-  render() {
-    return (
-      <div className="App">
-      <div className = "logo"></div>
-      <div className = "login box"> {/*<!-- Div section for the login box -->*/}
-        <header>Welcome to UWinnipeg Scholarships</header> {/*<!-- Header for the webpage-->*/}
-        <form className = "login box" method = "POST" action="auth"> {/*Form for the login box, calls method to send information to backend*/}
-          <div>{/*Section for the ID text field*/}
-          <input type = "text" placeholder = "ID" name = "username" className = "id"></input>
-          </div>
-          <div>{/*Section for the password text field*/}
-          <input type = "Password" placeholder = "Password" name = "password" className = "pword"></input>
-          </div>
-          <div>{/*Section for the submit button*/}
-          <input type = "submit" value = "Login"></input>
-          </div>
-        </form>
-      </div>
-  </div>
-    );
-  }
+    /*bad area below D:*/
+        return (
+            <Router> 
+                <Switch>
+                <Route path='/login' exact component = {Login} /> 
+                <Route path='/portal' component = {Portal} /> 
+
+                <Route path='/' component={Login} /> 
+                </Switch>
+
+            </Router>
+        );
+    }
+
+
+  
 }
 
 export default App;

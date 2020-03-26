@@ -1,0 +1,96 @@
+div.navigation.student {
+    margin-top: 20px;
+    font-size: 30px;
+    width: 240px;
+    border: 2px solid black;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+}
+
+div.portal {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+div.content {
+    width: 100%;
+    text-align: center;
+    border: 2px solid black;
+    margin-left: 10px;
+    margin-top: -70px;
+    border-radius: 20px;
+}
+
+body{
+    border-radius: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+div.Title{
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
+}
+
+
+.menuItem:hover{
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+}
+
+
+a:link, a:visited{
+    color:black;
+    text-decoration: none;
+}
+
+
+
+ul {
+    list-style-type: none
+}
+
+div.logo.portal{
+    background-image: url("images/Logo.png");
+    background-repeat: no-repeat;
+    height: 150px;
+    width: 180px;
+    margin-left: 15px;
+    margin-bottom: -20px;
+    background-size: 100%;
+}
+
+div.signout{
+    position: absolute;
+    right: 80px;
+    top: 45px;
+    font-size: xx-large;
+}
+
+div.search{
+    position: absolute;
+    right: 40px;
+    top: 20px;
+}
+
+li{
+    margin-left:-40px;
+}
+
+div.door{
+    background-image: url("images/door.png");
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    width: 30px;
+    height: 30px;
+    background-size: 100%;
+
+    
+}
