@@ -30,6 +30,36 @@ db.connect( (err) => {
   console.log('Connection established with MySQL database');
 });
 
+// check login credentials
+app.post('/auth/', (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+  if (username && password) {
+    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
+      if (results.length > 0 ) {
+        let user_type = results[0].user_type;
+        res.send({
+          "code" : 200,
+          "success" : "login sucessful",
+          "user_type" : user_type
+        });
+      } else {
+        res.send({
+          "code" : 204,
+          "success" : "invalid credentials"
+        });
+      }
+    });
+  } else {
+    res.send({
+      "code" : 204,
+      "success" : "blank crendentials"
+    });
+  }
+});
+
+// API ENDPOINTS
+
 // function to query database and send response
 function sendQuery(sql, res) {
   let query = db.query(sql, (err,results) => {
@@ -47,34 +77,6 @@ function sendQuery(sql, res) {
     }
   });
 }
-
-// check login credentials
-app.post('/auth', (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username && password) {
-    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
-      if (results.length>0) {
-        res.redirect('/portal');
-      } else {
-        res.redirect('/');
-        res.end();
-        // res.send('Invalid Credentials');
-      }
-    });
-  } else {
-    res.redirect('/');
-    res.end();
-  }
-});
-
-app.get('/home', (req, res) => {
-  if (req.session.loggedin) {
-    res.send('Welcome back' + req.session.username);
-  } else {
-    res.send('Please Login to View this page');
-  }
-})
 
 
 // get all scholarships
@@ -105,7 +107,7 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
-//get information about student
+//get information about student by id
 app.get('/api/students/:student_id', (req,res) => {
   let sql = `SELECT * from student WHERE student_id = ${student_id}`
   sendQuery(sql, res);
