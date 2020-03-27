@@ -18,14 +18,6 @@ class Portal extends Component {
                 
                 <div className = "logo portal"></div>
 
-                {/* <div className = "search">
-                    <form className ="search" method = "POST">
-                        <input type="text" placeholder="Search..."></input>
-                        <button type="submit">Search</button>
-                    </form>
-                </div> */}
-
-
                 <Link to='/'> 
                     <div className = "signout"> Sign Out </div>
                     <div className = "door" > </div>
@@ -45,7 +37,7 @@ class Portal extends Component {
 
                         <Link to="/portal/applications">
                             <div className = "menuItem">
-                                My Application
+                                My Applications
                             </div>  
                         </Link>
 

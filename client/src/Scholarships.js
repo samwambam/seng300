@@ -15,6 +15,7 @@ class Scholarships extends Component {
 			modalOpen: false,
 			selectedScholarhsip: {},
 			// seacth stuff:
+			searchQuery: '',
 			scholarshipsToDisplay:  [],
 			selectedFaculty: "any",
 			selectedProgram: "any",
@@ -35,9 +36,7 @@ class Scholarships extends Component {
 	}
 
 	capitalize = (stringInput) => {
-		let str = stringInput.toString()
-		console.log(str);
-		
+		let str = stringInput.toString()		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
 	}
 
@@ -46,28 +45,34 @@ class Scholarships extends Component {
 		return date.toUTCString().slice(0,11)
 	}
 
-	searchList = (event) => {
-		let awards = this.state.scholarships;
-		let awardsToDisplay = awards.filter((award) => {
-			return award.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
-		});
-
-		this.setState({scholarshipsToDisplay: awardsToDisplay});
-	}
 	
-	filterByFaculty = (event) => {
-		let awards = this.state.scholarships;
+	applyFilter = (event) => {
 		let value = event.target.value;
-		this.setState({selectedFaculty: value});
+		
+		let searchQuery = this.state.searchQuery;
+		let facultyPicked = this.state.selectedFaculty;
+		// let programPicked = this.selectedProgram;
+		
+		if (event.target.type === "radio") {
+			this.setState({selectedFaculty: value});
+			facultyPicked = value;
+		} else if (event.target.type === "text"){
+			this.setState({searchQuery: value});
+			searchQuery = value;
+		} else {
+			console.log("Something's wrong");
+		}
+		
+		
+		let awards = this.state.scholarships;
 		let awardsToDisplay = awards.filter((award) => {
-			if (value === "any") {
-				return 1
-			} else {
-				return award.offering_faculty.toString().toLowerCase() === value;
-			}
+			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1;
+			let matchesFilter = facultyPicked === 'any' ? 1 : award.offering_faculty.toString().toLowerCase() === facultyPicked;
+			return matchesSearch && matchesFilter;
 		});
-	
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
+		console.log(awardsToDisplay);
+		
 	}
 
 	createList = () => {
@@ -108,7 +113,9 @@ class Scholarships extends Component {
 				<h1 className = "Title">Scholarships</h1>
 
 				<form>
-					<input type="text" placeholder="Search..." onChange={this.searchList} />
+					
+					<input type="text" placeholder="Search..." onChange={this.applyFilter} />
+
 					<div className="radioButtonsFaculty">
 						{"Filter by Faculty: "}
 						<label>
@@ -117,7 +124,7 @@ class Scholarships extends Component {
 								name="facultyFilter"
 								value="any"
 								checked={this.state.selectedFaculty === "any"}
-								onChange={this.filterByFaculty}
+								onChange={this.applyFilter}
 							/>
 							{"Any "}
 						</label>
@@ -127,7 +134,7 @@ class Scholarships extends Component {
 								name="facultyFilter"
 								value="science"
 								checked={this.state.selectedFaculty === "science"}
-								onChange={this.filterByFaculty}
+								onChange={this.applyFilter}
 							/>
 							{"Science "}
 						</label>
@@ -137,20 +144,20 @@ class Scholarships extends Component {
 								name="facultyFilter"
 								value="engineering"
 								checked={this.state.selectedFaculty === "engineering"}
-								onChange={this.filterByFaculty}
+								onChange={this.applyFilter}
 							/>
 							{"Engineering "}
 						</label>
 					</div>
 
 					{/*
-						add radio buttons later: 2 sets, one for program other for faculty;
+						NEW NOTE TO SELF: INSTEAD ADD A DROPDOWN MENU
+							add radio buttons later: 2 sets, one for program other for faculty;
 						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
-						TODO: make filter and search synchronized!!! Can't have one messing the other's work up!
-						note to self: probably have an apply button or something to apply all filter criteria
 						note to self 2: have the scholarship panels and pages display the program it's offered to (eg: undergrad, masters, etc.)
 					*/}
 				</form>
+
 
 				{/* This is a popup "div" for more info on each scholarship */}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
