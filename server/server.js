@@ -7,10 +7,10 @@ var session = require('express-session');
 const PORT = process.env.PORT || 5000;
 
 let user = {
-  username: '',
-  password: '',
+  username: 'x',
+  password: 'x',
+  type: 'x',
   id: 0,
-  type: '',
 }
 
 const app = express();
@@ -21,6 +21,14 @@ app.use(express.static(path.join(__dirname,'../client/build')));
 // Body Parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
+
+// CREATE SESSION 
+app.use(session({
+	secret: 'seng300',
+	resave: true,
+	saveUninitialized: true
+}));
+
 
 //CREATE CONNECTION
 const db = mysql.createConnection({
@@ -53,8 +61,7 @@ app.post('/auth', (req, res) => {
         // res.send('Invalid Credentials');
       }
       res.end();
-    });    
-    // get the user id and type here?
+    });   
   } else {
     res.send('Please enter Username and Password');
     res.end();
@@ -70,28 +77,40 @@ app.get('/home', (req, res) => {
 })
 
 
-// function getUsertypeId(username, password, callback) {
-//   db.query('SELECT ');
-// }
-
-// function userIDSetter(err, id) {
-//   if (err) {
-//     console.log("ERROR: ", err);
-//   } else {
-//     user.id = id;
-//   }
-// }
+// set the user.id to the id of the user logging in 
+function userIdSetter(err, id) {
+  if (err) {
+    console.log("ERROR: ", err);
+  } else {
+    user.id = id;    
+  }
+}
 
 
+// set the user.type to the role of the user logging in 
 function userTypeSetter(err, type) {
   if (err) {
     console.log("ERROR: ", err);
   } else {
-    user.type = type;
-    console.log("SET", user);
-    
+    user.type = type;    
   }
 }
+
+// EXPERIMENTAL send last recorded username and user type
+app.get('/info', (req, res) => {
+  if (user.username === 'x') {
+    res.json({
+      'status' : 300,
+      'error' : 'Not logged in!'
+    });
+  } else {
+    res.json({
+      'status' : 200,
+      'error' : null,
+      'response' : user,
+    });
+  }
+})
 
 
 // function to query database and send response
