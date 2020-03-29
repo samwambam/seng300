@@ -22,14 +22,6 @@ app.use(express.static(path.join(__dirname,'../client/build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
-// CREATE SESSION 
-app.use(session({
-	secret: 'seng300',
-	resave: true,
-	saveUninitialized: true
-}));
-
-
 //CREATE CONNECTION
 const db = mysql.createConnection({
   host     : keys.DB_HOST,
