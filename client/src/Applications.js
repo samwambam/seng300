@@ -5,6 +5,12 @@ import './App.css';
 class Applications extends Component {
 
 	render() {
+
+		let id = this.props.id;
+
+		console.log(id);
+		
+		
     	return (
 			<div>
 				<div className = "Title">My Applications</div>

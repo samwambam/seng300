@@ -111,11 +111,10 @@ class Portal extends Component {
                             {console.log(this.state)}
                             <Route
                                 path='/portal/applications'
-                                component = {Applications}
+                                render={(props) => <Applications {...props} id={this.state.id} />}
                             />
                             <Route
                                 path='/portal/profile'
-                                // component={Profile}
                                 render={(props) => <Profile {...props} info={this.state.details} />}
                             />
                             <Route
@@ -125,10 +124,6 @@ class Portal extends Component {
                             <Route
                                 path='/portal/'
                                 component = {Scholarships}
-                            />
-                            <Route
-                                path='/portal/scholarship/:id'
-                                component={Notifications}
                             />
                         </Switch>    
 
