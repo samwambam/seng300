@@ -48,8 +48,8 @@ class Scholarships extends Component {
 
 	searchList = (event) => {
 		let awards = this.state.scholarships;
-		let awardsToDisplay = awards.filter((award) => {
-			return award.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
+		let awardsToDisplay = awards.filter((awards) => {
+			return awards.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
 		});
 
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
@@ -59,11 +59,11 @@ class Scholarships extends Component {
 		let awards = this.state.scholarships;
 		let value = event.target.value;
 		this.setState({selectedFaculty: value});
-		let awardsToDisplay = awards.filter((award) => {
+		let awardsToDisplay = awards.filter((awards) => {
 			if (value === "any") {
 				return 1
 			} else {
-				return award.offering_faculty.toString().toLowerCase() === value;
+				return awards.offering_faculty.toString().toLowerCase() === value;
 			}
 		});
 	
@@ -142,7 +142,6 @@ class Scholarships extends Component {
 							{"Engineering "}
 						</label>
 					</div>
-
 					{/*
 						add radio buttons later: 2 sets, one for program other for faculty;
 						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
@@ -156,7 +155,8 @@ class Scholarships extends Component {
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
 					<h2>{this.state.selectedScholarhsip.scholarship_name}</h2>
 					<p>Faculty: {this.state.selectedScholarhsip.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarhsip.min_gpa}, Apply By: {new Date(this.state.selectedScholarhsip.deadline).toUTCString()}</p>
+					<p>Minimum Required GPA: {this.state.selectedScholarhsip.min_gpa}</p> 
+					<p>Apply By: {new Date(this.state.selectedScholarhsip.deadline).toUTCString()}</p>
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
