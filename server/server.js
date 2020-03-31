@@ -115,6 +115,8 @@ function userTypeSetter(err, type) {
   }
 }
 
+
+
 // EXPERIMENTAL send last recorded username and user type
 app.get('/info', (req, res) => {
   if (user.username === 'x') {
@@ -187,6 +189,13 @@ app.get('/api/users/:usertype/:username', (req, res) => {
 //get information about student
 app.get('/api/students/:student_id', (req,res) => {
   let sql = `SELECT * from student WHERE student_id = ${req.params.student_id}`
+  sendQuery(sql, res);
+});
+
+// nominate student for a scholarship
+app.get('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => {
+  let sql = 'INSERT into scholarships.nominate (faculty_id, student_id, scholarship_id)' +
+            `VALUES (${req.params.faculty_id},${req.params.student_id},${req.params.scholarship_id})`;
   sendQuery(sql, res);
 });
 

@@ -24,9 +24,7 @@ class Login extends Component {
                     <div>{/*Section for the submit button*/}
                     <input type = "submit" value = "Login"></input>
                     </div>
-
                 </form>
-
                 </div>
 
             </div>
