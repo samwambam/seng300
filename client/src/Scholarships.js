@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Scholarships.css';
 import Scholarship from './Scholarship';
 import Modal from "react-modal";
+import Select from "react-select";
+import { facultyOptions, programOptions } from "./docs/Data";
 
 
 class Scholarships extends Component {
@@ -17,8 +19,8 @@ class Scholarships extends Component {
 			// seacth stuff:
 			searchQuery: '',
 			scholarshipsToDisplay:  [],
-			selectedFaculty: "any",
-			selectedProgram: "any",
+			selectedFaculties: ["any"],
+			selectedPrograms: ["any"],
 			showAll: true,
 		}
 	}
@@ -45,31 +47,44 @@ class Scholarships extends Component {
 		return date.toUTCString().slice(0,11)
 	}
 
-	
-	applyFilter = (event) => {
-		let value = event.target.value;
-		
+	/*
+	This is the function that handles all the LOCAL search queries and filters
+	It works in real time, i.e. there is no need to submit the filter request,
+	just picking the faculty/program and/or typing in the searchbar automatically
+	updates the list.	
+	*/
+
+	applyFilter = (type, criteria) => {
+
 		let searchQuery = this.state.searchQuery;
-		let facultyPicked = this.state.selectedFaculty;
-		// let programPicked = this.selectedProgram;
-		
-		if (event.target.type === "radio") {
-			this.setState({selectedFaculty: value});
-			facultyPicked = value;
-		} else if (event.target.type === "text"){
-			this.setState({searchQuery: value});
-			searchQuery = value;
-		} else {
-			console.log("Something's wrong");
+		let facultiesPicked = this.state.selectedFaculties;
+		let programsPicked = this.state.selectedPrograms;
+
+		switch (type) {
+			case 'faculties':
+				facultiesPicked = criteria ? criteria.map(((item) => item.value)) : ['any'];
+				this.setState({ selectedFaculties: facultiesPicked });
+				break;
+			case 'programs':
+				programsPicked = criteria ? criteria.map(((item) => item.value)) : ['any'];
+				this.setState({ selectedPrograms: programsPicked });
+				break;
+			case 'search':
+				searchQuery = criteria;
+				this.setState({ searchQuery: criteria })
+				break;
+			default:
+				break;
 		}
-		
 		
 		let awards = this.state.scholarships;
 		let awardsToDisplay = awards.filter((award) => {
 			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1;
-			let matchesFilter = facultyPicked === 'any' ? 1 : award.offering_faculty.toString().toLowerCase() === facultyPicked;
-			return matchesSearch && matchesFilter;
+			let matchesFaculty = facultiesPicked[0] === "any" ? true : facultiesPicked.includes(award.offering_faculty.toString().toLowerCase());
+			let matchesProgram = programsPicked[0] === 'any' ? true : programsPicked.includes(award.offering_status.toString().toLowerCase());
+			return matchesSearch && matchesFaculty && matchesProgram;
 		});
+
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
 		console.log(awardsToDisplay);
 		
@@ -107,56 +122,55 @@ class Scholarships extends Component {
 	}
 	
 	render() {
+
+		const colourStyles = {
+
+			option: (styles, { isFocused }) => {
+			  return {
+				...styles,
+				backgroundColor: isFocused ? '#f28785' : null,
+				};
+			},
+
+		};
+
     	return (
 			<div>
 
 				<h1 className = "Title">Scholarships</h1>
+				
+				<div className="filter">
 
-				<form>
-					
-					<input type="text" placeholder="Search..." onChange={this.applyFilter} />
+					<input type="text" placeholder="Search..." onChange={(event) => this.applyFilter('search', event.target.value)} />
 
-					<div className="radioButtonsFaculty">
-						{"Filter by Faculty: "}
-						<label>
-							<input 
-								type="radio"
-								name="facultyFilter"
-								value="any"
-								checked={this.state.selectedFaculty === "any"}
-								onChange={this.applyFilter}
-							/>
-							{"Any "}
-						</label>
-						<label>
-							<input 
-								type="radio"
-								name="facultyFilter"
-								value="science"
-								checked={this.state.selectedFaculty === "science"}
-								onChange={this.applyFilter}
-							/>
-							{"Science "}
-						</label>
-						<label>
-							<input 
-								type="radio"
-								name="facultyFilter"
-								value="engineering"
-								checked={this.state.selectedFaculty === "engineering"}
-								onChange={this.applyFilter}
-							/>
-							{"Engineering "}
-						</label>
+					<div className="select">
+						<Select
+							isMulti
+							isSearchable={true}
+							options={facultyOptions}
+							placeholder="Filter By Faculty..."
+							onChange={(value) => this.applyFilter('faculties', value)}
+							styles={colourStyles}
+						/>
 					</div>
 
+					<div className="select">
+						<Select
+							isMulti
+							isSearchable={true}
+							options={programOptions}
+							placeholder="Filter By Program..."
+							onChange={(value) => this.applyFilter('programs', value)}
+							styles={colourStyles}
+						/>
+					</div>
+				</div>
+
+
 					{/*
-						NEW NOTE TO SELF: INSTEAD ADD A DROPDOWN MENU
-							add radio buttons later: 2 sets, one for program other for faculty;
 						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
 						note to self 2: have the scholarship panels and pages display the program it's offered to (eg: undergrad, masters, etc.)
 					*/}
-				</form>
 
 
 				{/* This is a popup "div" for more info on each scholarship */}

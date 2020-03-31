@@ -59,8 +59,6 @@ class Portal extends Component {
     }
 
     render() {
-
-        console.log("In render!", this.state);
         
         return (
         
@@ -108,7 +106,7 @@ class Portal extends Component {
                     <div className="content">
 
                         <Switch>
-                            {console.log(this.state)}
+                            {/* {console.log(this.state)} */}
                             <Route
                                 path='/portal/applications'
                                 render={(props) => <Applications {...props} id={this.state.id} />}
