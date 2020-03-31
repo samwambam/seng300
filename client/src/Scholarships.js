@@ -45,24 +45,30 @@ class Scholarships extends Component {
 		return date.toUTCString().slice(0,11)
 	}
 
-	searchList = (event) => {
-		let award = this.state.scholarships;
-		let awardsToDisplay = award.filter((award) => {
-			return award.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
-		});
-
-		this.setState({scholarshipsToDisplay: awardsToDisplay});
-	}
 	
 	applyFilter = (event) => {
 		let value = event.target.value;
-		this.setState({selectedFaculty: value});
-		let awardsToDisplay = award.filter((award) => {
-			if (value === "any") {
-				return 1
-			} else {
-				return award.offering_faculty.toString().toLowerCase() === value;
-			}
+		
+		let searchQuery = this.state.searchQuery;
+		let facultyPicked = this.state.selectedFaculty;
+		// let programPicked = this.selectedProgram;
+		
+		if (event.target.type === "radio") {
+			this.setState({selectedFaculty: value});
+			facultyPicked = value;
+		} else if (event.target.type === "text"){
+			this.setState({searchQuery: value});
+			searchQuery = value;
+		} else {
+			console.log("Something's wrong");
+		}
+		
+		
+		let awards = this.state.scholarships;
+		let awardsToDisplay = awards.filter((award) => {
+			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1;
+			let matchesFilter = facultyPicked === 'any' ? 1 : award.offering_faculty.toString().toLowerCase() === facultyPicked;
+			return matchesSearch && matchesFilter;
 		});
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
 		console.log(awardsToDisplay);
@@ -143,6 +149,7 @@ class Scholarships extends Component {
 							{"Engineering "}
 						</label>
 					</div>
+
 					{/*
 						NEW NOTE TO SELF: INSTEAD ADD A DROPDOWN MENU
 							add radio buttons later: 2 sets, one for program other for faculty;
@@ -156,8 +163,7 @@ class Scholarships extends Component {
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
 					<h2>{this.state.selectedScholarhsip.scholarship_name}</h2>
 					<p>Faculty: {this.state.selectedScholarhsip.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarhsip.min_gpa}</p> 
-					<p>Apply By: {new Date(this.state.selectedScholarhsip.deadline).toUTCString()}</p>
+					<p>Minimum Required GPA: {this.state.selectedScholarhsip.min_gpa}, Apply By: {new Date(this.state.selectedScholarhsip.deadline).toUTCString()}</p>
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
