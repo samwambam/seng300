@@ -6,6 +6,13 @@ const keys = require('./config');
 var session = require('express-session');
 const PORT = process.env.PORT || 5000;
 
+let user = {
+  username: 'x',
+  password: 'x',
+  type: 'x',
+  id: 0,
+}
+
 const app = express();
 
 //STATIC FOLDER
@@ -14,6 +21,14 @@ app.use(express.static(path.join(__dirname,'../client/build')));
 // Body Parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
+
+// CREATE SESSION 
+app.use(session({
+	secret: 'seng300',
+	resave: true,
+	saveUninitialized: true
+}));
+
 
 //CREATE CONNECTION
 const db = mysql.createConnection({
@@ -32,18 +47,21 @@ db.connect( (err) => {
 
 //CHECK LOGIN CREDENTIALS
 app.post('/auth', (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username && password) {
-    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[username,password], (error, results, fields) => {
+  user.username = req.body.username;
+  user.password = req.body.password;
+  if (user.username && user.password) {
+    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[user.username,user.password], (error, results, fields) => {
       if (results.length>0) {
+        req.session.loggedin = true;
+        req.session.username = user.username;
+        userTypeSetter(null, results[0].user_type);
         res.redirect('/portal');
       } else {
         res.redirect('/');
         // res.send('Invalid Credentials');
       }
       res.end();
-    });
+    });   
   } else {
     res.send('Please enter Username and Password');
     res.end();
@@ -57,6 +75,43 @@ app.get('/home', (req, res) => {
     res.send('Please Login to View this page');
   }
 })
+
+
+// set the user.id to the id of the user logging in 
+function userIdSetter(err, id) {
+  if (err) {
+    console.log("ERROR: ", err);
+  } else {
+    user.id = id;    
+  }
+}
+
+
+// set the user.type to the role of the user logging in 
+function userTypeSetter(err, type) {
+  if (err) {
+    console.log("ERROR: ", err);
+  } else {
+    user.type = type;    
+  }
+}
+
+// EXPERIMENTAL send last recorded username and user type
+app.get('/info', (req, res) => {
+  if (user.username === 'x') {
+    res.json({
+      'status' : 300,
+      'error' : 'Not logged in!'
+    });
+  } else {
+    res.json({
+      'status' : 200,
+      'error' : null,
+      'response' : user,
+    });
+  }
+})
+
 
 // function to query database and send response
 function sendQuery(sql, res) {
@@ -104,9 +159,15 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
+//get user id by username
+app.get('/api/users/:usertype/:username', (req, res) => {
+  let sql = `SELECT student_id FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
+  sendQuery(sql, res);
+});
+
 //get information about student
 app.get('/api/students/:student_id', (req,res) => {
-  let sql = `SELECT * from student WHERE student_id = ${student_id}`
+  let sql = `SELECT * from student WHERE student_id = ${req.params.student_id}`
   sendQuery(sql, res);
 });
 
