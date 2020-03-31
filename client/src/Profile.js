@@ -3,7 +3,12 @@ import './App.css';
 
 
 class Profile extends Component {
-
+	
+	capitalize = (stringInput) => {
+		let str = stringInput.toString()		
+		return str.charAt(0).toUpperCase() + '' + str.slice(1)
+	}
+	
 	render() {
 
 		let info = this.props.info;
@@ -15,14 +20,19 @@ class Profile extends Component {
 				<div className="profilepic"> </div>
 
 				<div className="description">
-					<h2> Name: {info.fname} {info.lname} </h2>
-					<h2> Status: {info.status} </h2>
+					<h2> Name: {this.capitalize(info.fname)} {this.capitalize(info.lname)} </h2>
+					<h2> Status: {this.capitalize(info.status)} </h2>
 					<h2> GPA: {info.gpa} </h2>
 				</div>
 
 			</div>
 		);
 	}
+	
+	
+
 }
+
+
 
 export default Profile;
