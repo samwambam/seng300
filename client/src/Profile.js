@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 
+
 class Profile extends Component {
 	
 	capitalize = (stringInput) => {
@@ -10,7 +11,7 @@ class Profile extends Component {
 	}
 	
 	render() {
-
+		
 		let info = this.props.info;
 
 		return (
@@ -21,6 +22,7 @@ class Profile extends Component {
 
 				<div className="description">
 					<h2> Name: {this.capitalize(info.fname)} {this.capitalize(info.lname)} </h2>
+					<h2> ID: {info.student_id}</h2>
 					<h2> Status: {this.capitalize(info.status)} </h2>
 					<h2> GPA: {info.gpa} </h2>
 				</div>
