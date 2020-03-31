@@ -1,0 +1,23 @@
+
+.filter {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.filter input[type=text] {
+    /* float: right; */
+    padding: 6px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    margin: 16px;
+    font-size: 17px;
+    width: 32%;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+.filter .select {
+    margin: 16px;
+    width: 32%;
+}
