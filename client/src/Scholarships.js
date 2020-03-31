@@ -46,9 +46,9 @@ class Scholarships extends Component {
 	}
 
 	searchList = (event) => {
-		let awards = this.state.scholarships;
-		let awardsToDisplay = awards.filter((awards) => {
-			return awards.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
+		let award = this.state.scholarships;
+		let awardsToDisplay = award.filter((award) => {
+			return award.scholarship_name.toString().toLowerCase().search(event.target.value.toString().toLowerCase()) !== -1;
 		});
 
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
@@ -57,11 +57,11 @@ class Scholarships extends Component {
 	applyFilter = (event) => {
 		let value = event.target.value;
 		this.setState({selectedFaculty: value});
-		let awardsToDisplay = awards.filter((awards) => {
+		let awardsToDisplay = award.filter((award) => {
 			if (value === "any") {
 				return 1
 			} else {
-				return awards.offering_faculty.toString().toLowerCase() === value;
+				return award.offering_faculty.toString().toLowerCase() === value;
 			}
 		});
 		this.setState({scholarshipsToDisplay: awardsToDisplay});
