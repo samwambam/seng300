@@ -36,7 +36,8 @@ const db = mysql.createConnection({
   user     : keys.DB_USER,
   port     : keys.DB_PORT,
   password : keys.DB_PASSWORD,
-  database : keys.DB_DATABASE
+  database : keys.DB_DATABASE,
+  multipleStatements: true
 });
 
 // connect to database
@@ -105,7 +106,6 @@ function userIdSetter(err, id) {
   }
 }
 
-
 // set the user.type to the role of the user logging in 
 function userTypeSetter(err, type) {
   if (err) {
@@ -114,8 +114,6 @@ function userTypeSetter(err, type) {
     user.type = type;    
   }
 }
-
-
 
 // EXPERIMENTAL send last recorded username and user type
 app.get('/info', (req, res) => {
@@ -132,7 +130,6 @@ app.get('/info', (req, res) => {
     });
   }
 })
-
 
 // function to query database and send response
 function sendQuery(sql, res) {
@@ -176,10 +173,7 @@ app.get('/api/scholarships/applied/:user_id', (req,res) => {
 //apply to a scholarship
 app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   let sql = 'INSERT INTO scholarships.apply (student_id, scholarship_id)' + 
-            `VALUES (${req.params.student_id}, ${req.params.scholarship_id}); ` +
-            'UPDATE scholarships.scholarship ' +
-            'SET awarded=1 ' +
-            `WHERE (scholarship_id=${req.params.scholarship_id});`;
+            `VALUES (${req.params.student_id}, ${req.params.scholarship_id})`;
   sendQuery(sql, res);
 });
 
@@ -204,8 +198,12 @@ app.post('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => 
 
 // award scholarship to student
 app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
-  let sql = 'INSERT into scholarships.award (student_id, scholarship_id) ' +
-            `VALUES (${req.params.student_id},${req.params.scholarship_id}); `
+  let sql = 
+            'INSERT into scholarships.award (student_id, scholarship_id) ' +
+            `VALUES (${req.params.student_id},${req.params.scholarship_id}); ` +        
+            'UPDATE scholarships.scholarship ' +
+            'SET awarded=1 ' +
+            `WHERE (scholarship_id=${req.params.scholarship_id});`;
   sendQuery(sql, res);
 });
 
