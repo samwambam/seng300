@@ -176,7 +176,10 @@ app.get('/api/scholarships/applied/:user_id', (req,res) => {
 //apply to a scholarship
 app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   let sql = 'INSERT INTO scholarships.apply (student_id, scholarship_id)' + 
-            `VALUES (${req.params.student_id}, ${req.params.scholarship_id})`;
+            `VALUES (${req.params.student_id}, ${req.params.scholarship_id}); ` +
+            'UPDATE scholarships.scholarship ' +
+            'SET awarded=1 ' +
+            `WHERE (scholarship_id=${req.params.scholarship_id});`;
   sendQuery(sql, res);
 });
 
@@ -193,12 +196,29 @@ app.get('/api/students/:student_id', (req,res) => {
 });
 
 // nominate student for a scholarship
-app.get('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => {
+app.post('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => {
   let sql = 'INSERT into scholarships.nominate (faculty_id, student_id, scholarship_id)' +
             `VALUES (${req.params.faculty_id},${req.params.student_id},${req.params.scholarship_id})`;
   sendQuery(sql, res);
 });
 
+// award scholarship to student
+app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
+  let sql = 'INSERT into scholarships.award (student_id, scholarship_id) ' +
+            `VALUES (${req.params.student_id},${req.params.scholarship_id}); `
+  sendQuery(sql, res);
+});
+
+/*
+
+add scholarship to database.
+edit scholarship?
+get all applicants for a scholarship
+award scholarship to student
+nominate student for scholarship
+accept awarded scholarship.
+
+*/
 app.listen(PORT, () => {
   console.log(`API server started on port ${PORT}`);
 })
