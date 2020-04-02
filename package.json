@@ -19,6 +19,7 @@
     "express-session": "^1.17.0",
     "mysql": "^2.15.0",
     "react-modal": "^3.11.2",
+    "react-select": "^3.1.0",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
