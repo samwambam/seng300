@@ -213,12 +213,17 @@ app.put('/api/accept/:student_id/:scholarship_id', (req, res) => {
   sendQuery(sql, res);        
 });
 
-/*
+//get student_id for all applicants for a scholarship
+app.get('/api/applicants/:scholarship_id', (req,res) => {
+  let sql = `SELECT DISTINCT student_id FROM scholarships.apply WHERE scholarship_id=${req.params.scholarship_id}`;
+  sendQuery(sql, res);        
+});
 
-add scholarship to database.
-edit scholarship?
+/*
+TODO: 
+add scholarship to database? HOW maybe json?
+edit scholarship? edit what part?
 get all applicants for a scholarship
-accept awarded scholarship.
 
 */
 app.listen(PORT, () => {
