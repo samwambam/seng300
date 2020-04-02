@@ -132,21 +132,6 @@ class Portal extends Component {
             </Router>
                 
             </div>
-
-                <Switch>
-                  <Route path='/portal/applications' component={Applications} />
-                  <Route path='/portal/profile' component={Profile} />
-                  <Route path='/portal/notifications' component={Notifications} />
-                  <Route path='/portal/' component={Scholarships} />
-                  <Route path='/portal/scholarship/:id' component={Notifications} />
-                </Switch>
-
-              </div>
-
-            </div>
-          </Router>
-
-        </div>
       
       );
   }
