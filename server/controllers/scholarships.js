@@ -1,0 +1,5 @@
+class Scholarship {
+    static getAll() {
+        
+    }
+}

@@ -14,14 +14,18 @@ class App extends Component {
             <Route path='/login' exact component = {Login} /> 
             <Route path='/portal' component = {Portal} /> 
 
-            <Route path='/' component={Login} /> 
-            </Switch>
-                
-        </Router>
-    );
-  }
+    /*bad area below D:*/
+        return (
+            <Router> 
+                <Switch>
+                <Route path='/login' exact component = {Login} /> 
+                <Route path='/portal' component = {Portal} /> 
+                <Route path='/' component={Login} /> 
+                </Switch>
+            </Router>
+        );
+    }
 
-  
 }
 
 export default App;

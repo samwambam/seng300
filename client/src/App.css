@@ -44,9 +44,10 @@ div.logo.login{
 div.profilepic{
   background-repeat: no-repeat;
   background-image: url("images/image.png"); /*https://commons.wikimedia.org/wiki/File:Antu_system-switch-user.svg*/
+  /*second image: https://admin.mashable.com/wp-content/uploads/2013/05/eHarmony-LEGACY-Profile-Page-hi-res.jpg*/
   width:150px;
   height: 150px;
-  margin-left: 44%;
+  margin-left: 45%;
   background-size: 100%;
 }
 

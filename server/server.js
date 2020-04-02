@@ -6,6 +6,13 @@ const keys = require('./config');
 var session = require('express-session');
 const PORT = process.env.PORT || 5000;
 
+let user = {
+  username: 'x',
+  password: 'x',
+  type: 'x',
+  id: 0,
+}
+
 const app = express();
 
 //STATIC FOLDER
@@ -29,33 +36,54 @@ const db = mysql.createConnection({
   user     : keys.DB_USER,
   port     : keys.DB_PORT,
   password : keys.DB_PASSWORD,
-  database : keys.DB_DATABASE
+  database : keys.DB_DATABASE,
+  multipleStatements: true
 });
 
-//CONNECT
+// connect to database
 db.connect( (err) => {
   if(err) throw err;
   console.log('Connection established with MySQL database');
 });
 
-//CHECK LOGIN CREDENTIALS
+// function to query database and send response
+function sendQuery(sql, res) {
+  let query = db.query(sql, (err,results) => {
+    if (err) {
+      res.json({
+        'status' : 300,
+        'error': err 
+      });
+    } else {
+      res.json({
+          'status' : 200,
+          'error': null,
+          'response' : results
+      });
+    }
+  });
+}
+
+// check login credentials
 app.post('/auth', (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username && password) {
-    db.query('SELECT * FROM student WHERE student_id = ? AND password = ?',[username,password], (error, results, fields) => {
+  user.username = req.body.username;
+  user.password = req.body.password;
+  if (user.username && user.password) {
+    db.query('SELECT * FROM user WHERE username = ? AND password = ?',[user.username,user.password], (error, results, fields) => {
       if (results.length>0) {
         req.session.loggedin = true;
-        req.session.username = username;
+        req.session.username = user.username;
+        userTypeSetter(null, results[0].user_type);
         res.redirect('/portal');
       } else {
         res.redirect('/');
+        res.end();
         // res.send('Invalid Credentials');
       }
       res.end();
-    });
+    });   
   } else {
-    res.send('Please enter Username and Password');
+    res.redirect('/');
     res.end();
   }
 });
@@ -65,6 +93,41 @@ app.get('/home', (req, res) => {
     res.send('Welcome back' + req.session.username);
   } else {
     res.send('Please Login to View this page');
+  }
+})
+
+
+// set the user.id to the id of the user logging in 
+function userIdSetter(err, id) {
+  if (err) {
+    console.log("ERROR: ", err);
+  } else {
+    user.id = id;    
+  }
+}
+
+// set the user.type to the role of the user logging in 
+function userTypeSetter(err, type) {
+  if (err) {
+    console.log("ERROR: ", err);
+  } else {
+    user.type = type;    
+  }
+}
+
+// EXPERIMENTAL send last recorded username and user type
+app.get('/info', (req, res) => {
+  if (user.username === 'x') {
+    res.json({
+      'status' : 300,
+      'error' : 'Not logged in!'
+    });
+  } else {
+    res.json({
+      'status' : 200,
+      'error' : null,
+      'response' : user,
+    });
   }
 })
 
@@ -114,8 +177,55 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
+//get user id by username
+app.get('/api/users/:usertype/:username', (req, res) => {
+  let sql = `SELECT student_id FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
+  sendQuery(sql, res);
+});
 
+//get information about student
+app.get('/api/students/:student_id', (req,res) => {
+  let sql = `SELECT * from student WHERE student_id = ${req.params.student_id}`
+  sendQuery(sql, res);
+});
 
+// nominate student for a scholarship
+app.post('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => {
+  let sql = 'INSERT into scholarships.nominate (faculty_id, student_id, scholarship_id)' +
+            `VALUES (${req.params.faculty_id},${req.params.student_id},${req.params.scholarship_id})`;
+  sendQuery(sql, res);
+});
+
+// award scholarship to student
+app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
+  let sql = 'INSERT into scholarships.award (student_id, scholarship_id) ' +
+            `VALUES (${req.params.student_id},${req.params.scholarship_id}); ` +        
+            'UPDATE scholarships.scholarship ' +
+            'SET awarded=1 ' +
+            `WHERE (scholarship_id=${req.params.scholarship_id});`;
+  sendQuery(sql, res);
+});
+
+// accept awarded scholarship
+app.put('/api/accept/:student_id/:scholarship_id', (req, res) => {
+  let sql = `UPDATE scholarships.award SET accepted=1 ` + 
+            `WHERE (student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id});`;
+  sendQuery(sql, res);        
+});
+
+//get student_id for all applicants for a scholarship
+app.get('/api/applicants/:scholarship_id', (req,res) => {
+  let sql = `SELECT DISTINCT student_id FROM scholarships.apply WHERE scholarship_id=${req.params.scholarship_id}`;
+  sendQuery(sql, res);        
+});
+
+/*
+TODO: 
+add scholarship to database? HOW maybe json?
+edit scholarship? edit what part?
+get all applicants for a scholarship
+
+*/
 app.listen(PORT, () => {
   console.log(`API server started on port ${PORT}`);
 })

@@ -8,15 +8,15 @@ class Notifications extends Component {
     	return (
 			<div>
 				<div className = "Title">Notifications</div>
-				<ul>
+				{/* <ul>
 				  <li>
 						Scholarship 1
 					</li>
 					<li>
 						Scholarship 2
 					</li>
-				
-				</ul>
+				</ul> */}
+				Work in progress...
 			</div>
 		);
 	}

@@ -10,30 +10,70 @@ import Notifications from './Notifications';
 
 class Portal extends Component {
 
-  render() {
+    constructor(props) {
+        super(props);
 
-    return (
-
-        <div style={{ margin: 20 + 'pt' }}>
-
-          <div className="logo portal"></div>
-
-          <div className="search">
-            <form className="search" method="POST">
-              <input type="text" placeholder="Search..."></input>
-              <button type="submit">Search</button>
-            </form>
-          </div>
-
-          
-          <Link to='/'>
-            <div className="signout"> Sign Out </div>
-            <div className="door" > </div>
-          </Link>
+        this.state = {
+            id: 0,
+            username: 'x',
+            type: 'x',
+            details: {},
+        }
+        
 
 
-          <Router>
-            <div className='portal'>
+    }
+
+    componentDidMount(){
+        this.getUserInfo();
+
+    }
+
+    getUserInfo() {
+        fetch('/info')
+            .then((res) => res.json())
+            .then((res) => {
+                res = res.response
+                this.setState({ username: res.username, type: res.type })
+            })
+            .then(() => {
+                fetch(`/api/users/${this.state.type}/${this.state.username}`)
+                    .then((res) => res.json())
+                    .then((res) => {
+                        res = res.response[0]
+                        this.setState({id: res.student_id})
+                        return res.student_id;
+                    })
+                    .then((id) => {                        
+                        if (this.state.type === 'student') {
+                            fetch(`api/students/${this.state.id}`)
+                                .then((res) => res.json())
+                                .then((res) => {
+                                    res = res.response[0]
+                                    this.setState({ details : res})
+                                })
+                        }
+                    })
+
+            })
+    }
+
+    render() {
+        
+        return (
+        
+            <div style={{margin: 20 + 'pt'}}>
+                
+                <div className = "logo portal"></div>
+
+                <Link to='/'> 
+                    <div className = "signout"> Sign Out </div>
+                    <div className = "door" > </div>
+                </Link>
+                
+            
+            <Router>
+                <div className='portal'>  
 
               <div className="navigation student">
 
@@ -43,11 +83,11 @@ class Portal extends Component {
                             </div>
                 </Link>
 
-                <Link to="/portal/applications">
-                  <div className="menuItem">
-                    My Application
-                            </div>
-                </Link>
+                        <Link to="/portal/applications">
+                            <div className = "menuItem">
+                                My Applications
+                            </div>  
+                        </Link>
 
                 <Link to="/portal/profile">
                   <div className="menuItem">
@@ -59,11 +99,39 @@ class Portal extends Component {
                   <div className="menuItem">
                     Notifications
                             </div>
-                </Link>
 
-              </div>
+                        </Link>
 
-              <div className="content">
+                    </div>
+                    
+                    <div className="content">
+
+                        <Switch>
+                            {/* {console.log(this.state)} */}
+                            <Route
+                                path='/portal/applications'
+                                render={(props) => <Applications {...props} id={this.state.id} />}
+                            />
+                            <Route
+                                path='/portal/profile'
+                                render={(props) => <Profile {...props} info={this.state.details} />}
+                            />
+                            <Route
+                                path='/portal/notifications'
+                                component = {Notifications}
+                            />
+                            <Route
+                                path='/portal/'
+                                component = {Scholarships}
+                            />
+                        </Switch>    
+
+                    </div>
+                    
+                </div>
+            </Router>
+                
+            </div>
 
                 <Switch>
                   <Route path='/portal/applications' component={Applications} />
