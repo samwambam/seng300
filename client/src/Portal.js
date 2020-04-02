@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Portal.css';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Scholarships from './Scholarships';
 import Applications from './Applications';
 import Profile from './Profile';
@@ -75,13 +75,13 @@ class Portal extends Component {
             <Router>
                 <div className='portal'>  
 
-                    <div className = "navigation student">
+              <div className="navigation student">
 
-                        <Link to = "portal">
-                            <div className = "menuItem"> 
-                                Scholarships
+                <Link to="portal">
+                  <div className="menuItem">
+                    Scholarships
                             </div>
-                        </Link>
+                </Link>
 
                         <Link to="/portal/applications">
                             <div className = "menuItem">
@@ -89,16 +89,17 @@ class Portal extends Component {
                             </div>  
                         </Link>
 
-                        <Link to="/portal/profile">
-                            <div className = "menuItem"> 
-                                My profile
+                <Link to="/portal/profile">
+                  <div className="menuItem">
+                    My profile
                             </div>
-                        </Link>
+                </Link>
 
-                        <Link to="/portal/notifications">
-                            <div className = "menuItem">
-                                Notifications
+                <Link to="/portal/notifications">
+                  <div className="menuItem">
+                    Notifications
                             </div>
+
                         </Link>
 
                     </div>
@@ -132,8 +133,22 @@ class Portal extends Component {
                 
             </div>
 
-        );
-    }
+                <Switch>
+                  <Route path='/portal/applications' component={Applications} />
+                  <Route path='/portal/profile' component={Profile} />
+                  <Route path='/portal/notifications' component={Notifications} />
+                  <Route path='/portal/' component={Scholarships} />
+                  <Route path='/portal/scholarship/:id' component={Notifications} />
+                </Switch>
 
+              </div>
+
+            </div>
+          </Router>
+
+        </div>
+      
+      );
+  }
 }
 export default Portal;

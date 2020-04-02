@@ -115,12 +115,10 @@ class Scholarships extends Component {
 				</li>
 			
 			)
-    
-		});
-
+			});
 		return list
 	}
-	
+
 	render() {
 
 		const colourStyles = {
@@ -190,8 +188,7 @@ class Scholarships extends Component {
 					{this.createList()}
 				</ul>
 
-			</div>
-
+</div>
 		);
 	}
 }
