@@ -24,33 +24,33 @@ class Portal extends Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount(){    /*get the user information from server after components are rendered*/
         this.getUserInfo();
 
     }
 
     getUserInfo() {
-        fetch('/info')
-            .then((res) => res.json())
+        fetch('/info')  /*returns the last recorded username and user type*/
+            .then((res) => res.json()) /*changes the user information to json format*/
             .then((res) => {
-                res = res.response
+                res = res.response  /*sets res to be the user information we are intersted in: username, password, type, id*/
                 this.setState({ username: res.username, type: res.type })
             })
             .then(() => {
-                fetch(`/api/users/${this.state.type}/${this.state.username}`)
-                    .then((res) => res.json())
-                    .then((res) => {
-                        res = res.response[0]
+                fetch(`/api/users/${this.state.type}/${this.state.username}`) /*returns the user id by username*/
+                    .then((res) => res.json()) /*changes this information to json format */
+                    .then((res) => {    
+                        res = res.response[0]   /*sets res to be the first element of the array of the response key*/
                         this.setState({id: res.student_id})
                         return res.student_id;
                     })
                     .then((id) => {                        
                         if (this.state.type === 'student') {
-                            fetch(`api/students/${this.state.id}`)
-                                .then((res) => res.json())
+                            fetch(`api/students/${this.state.id}`)  /*returns information about the student*/
+                                .then((res) => res.json()) /*changes the information to json format*/
                                 .then((res) => {
-                                    res = res.response[0]
-                                    this.setState({ details : res})
+                                    res = res.response[0]   /*sets res to be the first element of the array of the response key: all the information of the student we are interseted in*/
+                                    this.setState({ details : res}) 
                                 })
                         }
                     })
@@ -89,9 +89,9 @@ class Portal extends Component {
                             </div>  
                         </Link>
 
-                <Link to="/portal/profile">
-                  <div className="menuItem">
-                    My profile
+                        <Link to="/portal/profile">
+                            <div className = "menuItem"> 
+                                My Profile
                             </div>
                 </Link>
 

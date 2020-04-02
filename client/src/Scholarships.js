@@ -5,15 +5,11 @@ import Modal from "react-modal";
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
 
-
 class Scholarships extends Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			scholarships: [],
-			// popup stuff:
 			modalOpen: false,
 			selectedScholarship: {},
 			// seacth stuff:
@@ -24,16 +20,17 @@ class Scholarships extends Component {
 			showAll: true,
 		}
 	}
+	// TODO add a dummy selectedScholarship to initialize with
 
-	componentDidMount() {
+	componentDidMount() {	/*get the list of scholarships from server after components are rendered*/
 		this.scholarshipList();
 	}
 
 	scholarshipList() {
-		fetch('/api/scholarships')
-			.then((res) => res.json())
-			.then((response) => {
-				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
+		fetch('/api/scholarships')	/*returns the scholarships in database*/
+			.then((res) => res.json())	/*changes the scholarships information to json format*/
+			.then((response) => {	
+				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response}) /*puts all the scholarship information in the two arrays*/
 			})
 	}
 
@@ -61,15 +58,15 @@ class Scholarships extends Component {
 		let programsPicked = this.state.selectedPrograms;
 
 		switch (type) {
-			case 'faculties':
-				facultiesPicked = criteria ? criteria.map(((item) => item.value)) : ['any'];
+			case 'faculties': 
+				facultiesPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; /*returns the array of values(name) of the faculty options that were picked*/
 				this.setState({ selectedFaculties: facultiesPicked });
 				break;
-			case 'programs':
-				programsPicked = criteria ? criteria.map(((item) => item.value)) : ['any'];
+			case 'programs': 
+				programsPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; /*returns the array of values(name) of the program options that were picked*/
 				this.setState({ selectedPrograms: programsPicked });
 				break;
-			case 'search':
+			case 'search': 
 				searchQuery = criteria;
 				this.setState({ searchQuery: criteria })
 				break;
@@ -78,9 +75,9 @@ class Scholarships extends Component {
 		}
 		
 		let awards = this.state.scholarships;
-		let awardsToDisplay = awards.filter((award) => {
-			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1;
-			let matchesFaculty = facultiesPicked[0] === "any" ? true : facultiesPicked.includes(award.offering_faculty.toString().toLowerCase());
+		let awardsToDisplay = awards.filter((award) => { /*returns an array of scholarships that were searched for, or picked by faculty or program*/
+			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1; /*check if all letters up to a certain position match*/
+			let matchesFaculty = facultiesPicked[0] === "any" ? true : facultiesPicked.includes(award.offering_faculty.toString().toLowerCase()); 
 			let matchesProgram = programsPicked[0] === 'any' ? true : programsPicked.includes(award.offering_status.toString().toLowerCase());
 			return matchesSearch && matchesFaculty && matchesProgram;
 		});
@@ -113,7 +110,6 @@ class Scholarships extends Component {
 						awarded={item.awarded}
 					/>	
 				</li>
-			
 			)
 			});
 		return list
@@ -122,15 +118,15 @@ class Scholarships extends Component {
 	render() {
 
 		const colourStyles = {
-
 			option: (styles, { isFocused }) => {
-			  return {
-				...styles,
-				backgroundColor: isFocused ? '#f28785' : null,
-				};
-			},
-
-		};
+				return {
+				  ...styles,
+				  backgroundColor: isFocused ? '#f28785' : null,
+				  };
+			  },
+  
+		  };
+		// console.log(this.state);
 
     	return (
 			<div>
@@ -147,7 +143,7 @@ class Scholarships extends Component {
 							isSearchable={true}
 							options={facultyOptions}
 							placeholder="Filter By Faculty..."
-							onChange={(value) => this.applyFilter('faculties', value)}
+							onChange={(value) => this.applyFilter('faculties', value) /*gives applyFilter the faculty option that was clicked on*/} 
 							styles={colourStyles}
 						/>
 					</div>
@@ -158,7 +154,7 @@ class Scholarships extends Component {
 							isSearchable={true}
 							options={programOptions}
 							placeholder="Filter By Program..."
-							onChange={(value) => this.applyFilter('programs', value)}
+							onChange={(value) => this.applyFilter('programs', value) /*gives applyFilter the program option that was clicked on*/} 
 							styles={colourStyles}
 						/>
 					</div>
@@ -179,16 +175,16 @@ class Scholarships extends Component {
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
-						<button>Apply</button>
+						<button>Apply</button> {/*This should allow us to upload documents and other stuff?*/}
 					</div>
 				</Modal>
-				
+
 				{/* This is where all of the scholarships are displayed */}
 				<ul>
 					{this.createList()}
 				</ul>
 
-</div>
+			</div>
 		);
 	}
 }
