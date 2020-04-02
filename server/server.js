@@ -198,8 +198,7 @@ app.post('/api/nominate/:faculty_id/:student_id/:scholarship_id', (req, res) => 
 
 // award scholarship to student
 app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
-  let sql = 
-            'INSERT into scholarships.award (student_id, scholarship_id) ' +
+  let sql = 'INSERT into scholarships.award (student_id, scholarship_id) ' +
             `VALUES (${req.params.student_id},${req.params.scholarship_id}); ` +        
             'UPDATE scholarships.scholarship ' +
             'SET awarded=1 ' +
@@ -207,13 +206,18 @@ app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
+// accept awarded scholarship
+app.put('/api/accept/:student_id/:scholarship_id', (req, res) => {
+  let sql = `UPDATE scholarships.award SET accepted=1 ` + 
+            `WHERE (student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id});`;
+  sendQuery(sql, res);        
+});
+
 /*
 
 add scholarship to database.
 edit scholarship?
 get all applicants for a scholarship
-award scholarship to student
-nominate student for scholarship
 accept awarded scholarship.
 
 */
