@@ -82,6 +82,7 @@ class Portal extends Component {
 
     componentWillUnmount() {
         localStorage.removeItem("userInfo");
+        // TODO handle logout from the server side!!!
     }
 
 
