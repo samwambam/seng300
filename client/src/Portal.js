@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Portal.css';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Scholarships from './Scholarships';
 import Applications from './Applications';
 import Profile from './Profile';
@@ -103,63 +103,63 @@ class Portal extends Component {
                     </Link>
                     
                 
-                <Router>
-                    <div className='portal'>  
+                    <Router>
+                        <div className='portal'>  
 
-                        <div className = "navigation student">
+                            <div className = "navigation student">
 
-                            <Link to = "portal">
-                                <div className = "menuItem"> 
-                                    Scholarships
-                                </div>
-                            </Link>
+                                <Link to = "portal">
+                                    <div className = "menuItem"> 
+                                        Scholarships
+                                    </div>
+                                </Link>
 
-                            <Link to="/portal/applications">
-                                <div className = "menuItem">
-                                    My Applications
-                                </div>  
-                            </Link>
+                                <Link to="/portal/applications">
+                                    <div className = "menuItem">
+                                        My Applications
+                                    </div>  
+                                </Link>
 
-                            <Link to="/portal/profile">
-                                <div className = "menuItem"> 
-                                    My profile
-                                </div>
-                            </Link>
+                                <Link to="/portal/profile">
+                                    <div className = "menuItem"> 
+                                        My profile
+                                    </div>
+                                </Link>
 
-                            <Link to="/portal/notifications">
-                                <div className = "menuItem">
-                                    Notifications
-                                </div>
-                            </Link>
+                                <Link to="/portal/notifications">
+                                    <div className = "menuItem">
+                                        Notifications
+                                    </div>
+                                </Link>
 
+                            </div>
+                            
+                            <div className="content">
+
+                                <Switch>
+                                    {/* {console.log(this.state)} */}
+                                    <Route
+                                        path='/portal/applications'
+                                        render={(props) => <Applications {...props} id={this.state.id} />}
+                                    />
+                                    <Route
+                                        path='/portal/profile'
+                                        render={(props) => <Profile {...props} info={this.state.details} />}
+                                    />
+                                    <Route
+                                        path='/portal/notifications'
+                                        component = {Notifications}
+                                    />
+                                    <Route
+                                        path='/portal/'
+                                        component = {Scholarships}
+                                    />
+                                </Switch>    
+
+                            </div>
+                            
                         </div>
-                        
-                        <div className="content">
-
-                            <Switch>
-                                {/* {console.log(this.state)} */}
-                                <Route
-                                    path='/portal/applications'
-                                    render={(props) => <Applications {...props} id={this.state.id} />}
-                                />
-                                <Route
-                                    path='/portal/profile'
-                                    render={(props) => <Profile {...props} info={this.state.details} />}
-                                />
-                                <Route
-                                    path='/portal/notifications'
-                                    component = {Notifications}
-                                />
-                                <Route
-                                    path='/portal/'
-                                    component = {Scholarships}
-                                />
-                            </Switch>    
-
-                        </div>
-                        
-                    </div>
-                </Router>
+                    </Router>
                     
                 </div>
 

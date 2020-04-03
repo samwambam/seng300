@@ -15,7 +15,7 @@ class Scholarships extends Component {
 			scholarships: [],
 			// popup stuff:
 			modalOpen: false,
-			selectedScholarhsip: {},
+			selectedScholarship: {},
 			// seacth stuff:
 			searchQuery: '',
 			scholarshipsToDisplay:  [],
@@ -101,7 +101,7 @@ class Scholarships extends Component {
 					if (!item.awarded) {
 						this.setState({
 							modalOpen: true,
-							selectedScholarhsip: item
+							selectedScholarship: item
 						})
 					}
 				} }>
@@ -115,12 +115,10 @@ class Scholarships extends Component {
 				</li>
 			
 			)
-    
-		});
-
+			});
 		return list
 	}
-	
+
 	render() {
 
 		const colourStyles = {
@@ -175,9 +173,9 @@ class Scholarships extends Component {
 
 				{/* This is a popup "div" for more info on each scholarship */}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
-					<h2>{this.state.selectedScholarhsip.scholarship_name}</h2>
-					<p>Faculty: {this.state.selectedScholarhsip.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarhsip.min_gpa}, Apply By: {new Date(this.state.selectedScholarhsip.deadline).toUTCString()}</p>
+					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
+					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
+					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
@@ -190,8 +188,7 @@ class Scholarships extends Component {
 					{this.createList()}
 				</ul>
 
-			</div>
-
+</div>
 		);
 	}
 }
