@@ -20,8 +20,6 @@ class Portal extends Component {
             details: {},
         }
         
-
-
     }
 
     componentDidMount(){
