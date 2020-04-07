@@ -179,7 +179,19 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
 
 //get user id by username
 app.get('/api/users/:usertype/:username', (req, res) => {
-  let sql = `SELECT student_id FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
+  let idString;
+  switch (req.params.usertype) {
+    case 'student':
+       idString= 'student_id';
+      break;
+    case 'faculty':
+      idString = 'faculty_id';
+      break;
+    case 'administrator':
+      idString = 'ID';
+      break;
+  }
+  let sql = `SELECT ${idString} FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
   sendQuery(sql, res);
 });
 
