@@ -77,7 +77,7 @@ class Applications extends Component {
 		
     	return (
 			<div>
-				<div className = "Title">My Applications</div>
+				<h1 className = "Title"> My Applications </h1>
 				<ul>
 				{this.createList()}
 				</ul>
