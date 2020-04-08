@@ -106,7 +106,16 @@ class Portal extends Component {
 
 
     handleAppliedUpdate() {
-        console.log('work in progress...')
+        // console.log('work in progress...')
+        fetch('/api/scholarships/applied/' + this.state.id)
+            .then((res) => res.json())
+            .then((res) => {
+                this.response.appliedFor = res.response;
+
+                this.setState({ ...this.response, fetching: false })
+                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+            })
+
     }
 
 

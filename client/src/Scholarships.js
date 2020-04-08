@@ -47,6 +47,7 @@ class Scholarships extends Component {
 
 		// after applied for, update the state in portal by fetching the list of scholatships applied for again
 		console.log(this.state.selectedScholarship)
+		this.props.updateApplied();
 	}
 
 	scholarshipList() {
