@@ -21,12 +21,32 @@ class Scholarships extends Component {
 			scholarshipsToDisplay:  [],
 			selectedFaculties: ["any"],
 			selectedPrograms: ["any"],
-			showAll: true,
+			personalize: false,
 		}
+
+		this.apply = this.apply.bind(this);
 	}
 
 	componentDidMount() {
 		this.scholarshipList();
+	}
+
+	apply() {
+		// check:
+		// 1. Can apply (correct program, faculty, GPA, etc)
+		// 2. Has spots (has applied for less than 3 awards)
+		// 3. Has not applied for this scholarship yet
+		// 4. Scholarship has not been awarded yet
+		
+
+		// apply = () => {
+		// 	fetch('/api/scholarships/apply/123456/111111', {
+		// 		method: 'post'
+		// 	})
+		// }
+
+		// after applied for, update the state in portal by fetching the list of scholatships applied for again
+		console.log(this.state.selectedScholarship)
 	}
 
 	scholarshipList() {
@@ -162,6 +182,7 @@ class Scholarships extends Component {
 							styles={colourStyles}
 						/>
 					</div>
+					
 				</div>
 
 
@@ -179,7 +200,7 @@ class Scholarships extends Component {
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
-						<button>Apply</button>
+						<button onClick={this.apply} > Apply </button>
 					</div>
 				</Modal>
 				

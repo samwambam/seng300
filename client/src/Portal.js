@@ -19,6 +19,7 @@ class Portal extends Component {
             username: 'x',
             type: 'x',
             details: {},
+            appliedFor: [],
         }
 
         this.response = {
@@ -26,8 +27,10 @@ class Portal extends Component {
             username: 'x',
             type: 'x',
             details: {},
+            appliedFor: [],
         }
         
+        this.handleAppliedUpdate = this.handleAppliedUpdate.bind(this);
     }
 
 
@@ -42,6 +45,8 @@ class Portal extends Component {
             this.setState({ ...user })
 
         } else {
+            // Get all the necessary information about the user
+            // 1. get their username and type
             fetch('/info')
                 .then((res) => res.json())
                 .then((res) => {
@@ -53,28 +58,42 @@ class Portal extends Component {
                     
                 })
                 .then(() => {
+            // 2. get their id
                     fetch(`/api/users/${this.response.type}/${this.response.username}`)
                         .then((res) => res.json())
                         .then((res) => {
                             res = res.response[0]
-                            // this.setState({id: res.student_id})
                             this.response.id = res.student_id;
                             return res.student_id;
                         })
-                        .then((id) => {                        
+                        .then((id) => {
+            // 3. if they're a student, get an additional set of info containing faculty, program, gpa, etc.
                             if (this.response.type === 'student') {
                                 fetch(`api/students/${this.response.id}`)
                                     .then((res) => res.json())
                                     .then((res) => {
                                         res = res.response[0]
                                         this.response.details = res;
-    
-                                        this.setState({ ...this.response, fetching: false })
-                                        localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
                                     })
+            // 4. while we're at it, grab all the scholarships they've applied for
+                                    .then(() => {
+                                        fetch('/api/scholarships/applied/' + id)
+                                            .then((res) => res.json())
+                                            .then((res) => {
+                                                // res = res.response
+                                                this.response.appliedFor = res.response;
+                                                // this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
+                                                this.setState({ ...this.response, fetching: false })
+                                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+                                            })
+                                    })
+                            } else {
+                                this.setState({ ...this.response, fetching: false })
+                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+
                             }
                         })
-    
+
                 })
         }
 
@@ -83,6 +102,11 @@ class Portal extends Component {
     componentWillUnmount() {
         localStorage.removeItem("userInfo");
         // TODO handle logout from the server side!!!
+    }
+
+
+    handleAppliedUpdate() {
+        console.log('work in progress...')
     }
 
 
@@ -137,10 +161,9 @@ class Portal extends Component {
                             <div className="content">
 
                                 <Switch>
-                                    {/* {console.log(this.state)} */}
                                     <Route
                                         path='/portal/applications'
-                                        render={(props) => <Applications {...props} id={this.state.id} />}
+                                        render={(props) => <Applications {...props} list={this.state.appliedFor} />}
                                     />
                                     <Route
                                         path='/portal/profile'
@@ -152,7 +175,7 @@ class Portal extends Component {
                                     />
                                     <Route
                                         path='/portal/'
-                                        component = {Scholarships}
+                                        render={(props) => <Scholarships {...props} updateApplied={this.handleAppliedUpdate} />}
                                     />
                                 </Switch>    
 

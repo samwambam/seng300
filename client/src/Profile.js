@@ -18,12 +18,6 @@ class Profile extends Component {
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
 	}
 
-
-	// apply = () => {
-	// 	fetch('/api/scholarships/apply/123456/111111', {
-	// 		method: 'post'
-	// 	})
-	// }
 	
 	render() {
 
