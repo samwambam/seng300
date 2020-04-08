@@ -106,7 +106,6 @@ class Portal extends Component {
 
 
     handleAppliedUpdate() {
-        // console.log('work in progress...')
         fetch('/api/scholarships/applied/' + this.state.id)
             .then((res) => res.json())
             .then((res) => {
@@ -184,7 +183,7 @@ class Portal extends Component {
                                     />
                                     <Route
                                         path='/portal/'
-                                        render={(props) => <Scholarships {...props} updateApplied={this.handleAppliedUpdate} />}
+                                        render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
                                     />
                                 </Switch>    
 

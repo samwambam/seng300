@@ -6,6 +6,7 @@ import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
 
 
+
 class Scholarships extends Component {
 
 	constructor(props) {
@@ -25,6 +26,7 @@ class Scholarships extends Component {
 		}
 
 		this.apply = this.apply.bind(this);
+		this.unapply = this.unapply.bind(this);
 	}
 
 	componentDidMount() {
@@ -38,16 +40,46 @@ class Scholarships extends Component {
 		// 3. Has not applied for this scholarship yet
 		// 4. Scholarship has not been awarded yet
 		
+		let student = this.props.student;
+		let selected = this.state.selectedScholarship;
+		let list = this.props.appliedList;
 
-		// apply = () => {
-		// 	fetch('/api/scholarships/apply/123456/111111', {
-		// 		method: 'post'
-		// 	})
-		// }
+		let check1 = (
+					student.faculty === selected.offering_faculty &&
+					student.status === selected.offering_status &&
+					student.gpa >= selected.min_gpa &&
+					!student.wd_on_transcript
+		);
+
+		let check2 = list.length < 3;
+
+		let check3 = list.filter((item) => {
+			return item.scholarship_id === selected.scholarship_id
+		}).length === 0;
+		
+		let check4 = !selected.awarded;
+
+		// console.log(check1, check2, check3, check4);
+		
+
+		if (check1 && check2 && check3 && check4) {
+			fetch(`/api/scholarships/apply/${student.student_id}/${selected.scholarship_id}`, {
+				method: 'post'
+			})
+
+		} else {
+			console.log("Unable to apply. Check that you're eligible")
+		}
+
+		// TODO : have a popup or some form of a message for success/failure !!
 
 		// after applied for, update the state in portal by fetching the list of scholatships applied for again
 		console.log(this.state.selectedScholarship)
 		this.props.updateApplied();
+	}
+
+	unapply() {
+		console.log('work in progress...')
 	}
 
 	scholarshipList() {
