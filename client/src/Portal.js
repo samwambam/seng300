@@ -154,7 +154,7 @@ class Portal extends Component {
 
                                 <Link to="/portal/profile">
                                     <div className = "menuItem"> 
-                                        My profile
+                                        My Profile
                                     </div>
                                 </Link>
 
@@ -179,7 +179,7 @@ class Portal extends Component {
                                     />
                                     <Route
                                         path='/portal/notifications'
-                                        component = {Notifications}
+                                        render = {(props) => <Notifications {...props} appliedList={this.state.appliedFor} />}
                                     />
                                     <Route
                                         path='/portal/'

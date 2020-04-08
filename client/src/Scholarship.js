@@ -5,7 +5,10 @@ import './Scholarship.css';
 
 
 class Scholarship extends Component {
-	
+	/*
+	Sets up the format of how scholarships will be displayed 
+	*/
+
 	render() {
     	return (
 			<div className="scholarship">

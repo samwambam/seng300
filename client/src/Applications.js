@@ -5,27 +5,40 @@ import Modal from 'react-modal'
 
 
 class Applications extends Component {
+	/*
+	The list of scholarships that were applied for are displayed
+	*/
+
 	constructor(props){
 		super(props);
 		this.state = {
 			scholarships: [],
-			selectedScholarship: {},
+			selectedScholarship: {}, //the scholarship that is clicked on
 			scholarshipsToDisplay:  [],
-			modalOpen: false,
+			modalOpen: false, //boolean that decides if an element will popup
 		}
 	}
 	
+	/*
+	The first character of paramter stringInput is converted to uppercase, and the whole string is returned
+	*/
 	capitalize = (stringInput) => {
 		let str = stringInput.toString()		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
 	}
 
+	/*
+	The parameter dateString is converted to Universal Coordinated Time format and returned
+	*/
 	getDisplayDate = (dateString) => {
 		let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
 	}
 	
 	
+	/*
+	Goes through each scholarship that was applied for and sets up the information that will be displayed. The list is returned.
+	*/
 	createList = () => {
 		let list = []
 
@@ -71,6 +84,11 @@ class Applications extends Component {
 				{this.createList()}
 				</ul>
 				
+				{/*
+				When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
+				scholarship
+				*/
+				}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
 					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
 					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
