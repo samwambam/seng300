@@ -14,125 +14,193 @@ class Portal extends Component {
         super(props);
 
         this.state = {
+            fetching: true,
             id: 0,
             username: 'x',
             type: 'x',
             details: {},
+            appliedFor: [],
+        }
+
+        this.response = {
+            id: 0,
+            username: 'x',
+            type: 'x',
+            details: {},
+            appliedFor: [],
         }
         
+        this.handleAppliedUpdate = this.handleAppliedUpdate.bind(this);
+    }
 
+
+    componentDidMount() {
+
+        let user = localStorage.getItem("userInfo");
+
+        if (user) {
+            console.log(user);
+            
+            user = JSON.parse(user);
+            this.setState({ ...user })
+
+        } else {
+            // Get all the necessary information about the user
+            // 1. get their username and type
+            fetch('/info')
+                .then((res) => res.json())
+                .then((res) => {
+                    res = res.response
+                    // this.setState({ username: res.username, type: res.type })
+                    this.response.username =  res.username;
+                    this.response.type = res.type;
+    
+                    
+                })
+                .then(() => {
+            // 2. get their id
+                    fetch(`/api/users/${this.response.type}/${this.response.username}`)
+                        .then((res) => res.json())
+                        .then((res) => {
+                            res = res.response[0]
+                            this.response.id = res.student_id;
+                            return res.student_id;
+                        })
+                        .then((id) => {
+            // 3. if they're a student, get an additional set of info containing faculty, program, gpa, etc.
+                            if (this.response.type === 'student') {
+                                fetch(`api/students/${this.response.id}`)
+                                    .then((res) => res.json())
+                                    .then((res) => {
+                                        res = res.response[0]
+                                        this.response.details = res;
+                                    })
+            // 4. while we're at it, grab all the scholarships they've applied for
+                                    .then(() => {
+                                        fetch('/api/scholarships/applied/' + id)
+                                            .then((res) => res.json())
+                                            .then((res) => {
+                                                // res = res.response
+                                                this.response.appliedFor = res.response;
+                                                // this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
+                                                this.setState({ ...this.response, fetching: false })
+                                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+                                            })
+                                    })
+                            } else {
+                                this.setState({ ...this.response, fetching: false })
+                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+
+                            }
+                        })
+
+                })
+        }
 
     }
 
-    componentDidMount(){    /*get the user information from server after components are rendered*/
-        this.getUserInfo();
-
+    componentWillUnmount() {
+        localStorage.removeItem("userInfo");
+        // TODO handle logout from the server side!!!
     }
 
-    getUserInfo() {
-        fetch('/info')  /*returns the last recorded username and user type*/
-            .then((res) => res.json()) /*changes the user information to json format*/
+
+    handleAppliedUpdate() {
+        fetch('/api/scholarships/applied/' + this.state.id)
+            .then((res) => res.json())
             .then((res) => {
-                res = res.response  /*sets res to be the user information we are intersted in: username, password, type, id*/
-                this.setState({ username: res.username, type: res.type })
-            })
-            .then(() => {
-                fetch(`/api/users/${this.state.type}/${this.state.username}`) /*returns the user id by username*/
-                    .then((res) => res.json()) /*changes this information to json format */
-                    .then((res) => {    
-                        res = res.response[0]   /*sets res to be the first element of the array of the response key*/
-                        this.setState({id: res.student_id})
-                        return res.student_id;
-                    })
-                    .then((id) => {                        
-                        if (this.state.type === 'student') {
-                            fetch(`api/students/${this.state.id}`)  /*returns information about the student*/
-                                .then((res) => res.json()) /*changes the information to json format*/
-                                .then((res) => {
-                                    res = res.response[0]   /*sets res to be the first element of the array of the response key: all the information of the student we are interseted in*/
-                                    this.setState({ details : res}) 
-                                })
-                        }
-                    })
+                this.response.appliedFor = res.response;
 
+                this.setState({ ...this.response, fetching: false })
+                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
             })
+
     }
+
 
     render() {
+        console.log(this.state);
         
-        return (
-        
-            <div style={{margin: 20 + 'pt'}}>
-                
-                <div className = "logo portal"></div>
+        if (!this.state.fetching) {
 
-                <Link to='/'> 
-                    <div className = "signout"> Sign Out </div>
-                    <div className = "door" > </div>
-                </Link>
-                
+            return (
             
-            <Router>
-                <div className='portal'>  
-
-              <div className="navigation student">
-
-                <Link to="portal">
-                  <div className="menuItem">
-                    Scholarships
-                            </div>
-                </Link>
-
-                        <Link to="/portal/applications">
-                            <div className = "menuItem">
-                                My Applications
-                            </div>  
-                        </Link>
-
-                        <Link to="/portal/profile">
-                            <div className = "menuItem"> 
-                                My Profile
-                            </div>
-                </Link>
-
-                <Link to="/portal/notifications">
-                  <div className="menuItem">
-                    Notifications
-                            </div>
-
-                        </Link>
-
-                    </div>
+                <div style={{margin: 20 + 'pt'}}>
                     
-                    <div className="content">
+                    <div className = "logo portal"></div>
 
-                        <Switch>
-                            {/* {console.log(this.state)} */}
-                            <Route
-                                path='/portal/applications'
-                                render={(props) => <Applications {...props} id={this.state.id} />}
-                            />
-                            <Route
-                                path='/portal/profile'
-                                render={(props) => <Profile {...props} info={this.state.details} />}
-                            />
-                            <Route
-                                path='/portal/notifications'
-                                component = {Notifications}
-                            />
-                            <Route
-                                path='/portal/'
-                                component = {Scholarships}
-                            />
-                        </Switch>    
+                    <Link to='/'> 
+                        <div className = "signout"> Sign Out </div>
+                        <div className = "door" > </div>
+                    </Link>
+                    
+                
+                    <Router>
+                        <div className='portal'>  
 
-                    </div>
+                            <div className = "navigation student">
+
+                                <Link to = "portal">
+                                    <div className = "menuItem"> 
+                                        Scholarships
+                                    </div>
+                                </Link>
+
+                                <Link to="/portal/applications">
+                                    <div className = "menuItem">
+                                        My Applications
+                                    </div>  
+                                </Link>
+
+                                <Link to="/portal/profile">
+                                    <div className = "menuItem"> 
+                                        My profile
+                                    </div>
+                                </Link>
+
+                                <Link to="/portal/notifications">
+                                    <div className = "menuItem">
+                                        Notifications
+                                    </div>
+                                </Link>
+
+                            </div>
+                            
+                            <div className="content">
+
+                                <Switch>
+                                    <Route
+                                        path='/portal/applications'
+                                        render={(props) => <Applications {...props} list={this.state.appliedFor} />}
+                                    />
+                                    <Route
+                                        path='/portal/profile'
+                                        render={(props) => <Profile {...props} info={this.state.details} />}
+                                    />
+                                    <Route
+                                        path='/portal/notifications'
+                                        component = {Notifications}
+                                    />
+                                    <Route
+                                        path='/portal/'
+                                        render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
+                                    />
+                                </Switch>    
+
+                            </div>
+                            
+                        </div>
+                    </Router>
                     
                 </div>
-            </Router>
-                
-            </div>
-      );
-  }
+
+            );
+        } else {
+            return(
+                <div>fetching</div>
+            )
+        }
+    }
+
 }
 export default Portal;

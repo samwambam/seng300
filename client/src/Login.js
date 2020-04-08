@@ -25,9 +25,9 @@ class Login extends Component {
                     <input type = "submit" value = "Login"></input>
                     </div>
                 </form>
-                </div>
-              </div>
-
+                </div>              
+     
+      </div>
     );
   }
 }

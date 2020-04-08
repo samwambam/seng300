@@ -5,11 +5,16 @@ import Modal from "react-modal";
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
 
+
+
 class Scholarships extends Component {
 
 	constructor(props) {
 		super(props);
+    
 		this.state = {
+			scholarships: [],
+			// popup stuff:
 			modalOpen: false,
 			selectedScholarship: {},
 			// seacth stuff:
@@ -17,13 +22,64 @@ class Scholarships extends Component {
 			scholarshipsToDisplay:  [],
 			selectedFaculties: ["any"],
 			selectedPrograms: ["any"],
-			showAll: true,
+			personalize: false,
 		}
+
+		this.apply = this.apply.bind(this);
+		this.unapply = this.unapply.bind(this);
 	}
-	// TODO add a dummy selectedScholarship to initialize with
 
 	componentDidMount() {	/*get the list of scholarships from server after components are rendered*/
 		this.scholarshipList();
+	}
+
+	apply() {
+		// check:
+		// 1. Can apply (correct program, faculty, GPA, etc)
+		// 2. Has spots (has applied for less than 3 awards)
+		// 3. Has not applied for this scholarship yet
+		// 4. Scholarship has not been awarded yet
+		
+		let student = this.props.student;
+		let selected = this.state.selectedScholarship;
+		let list = this.props.appliedList;
+
+		let check1 = (
+					student.faculty === selected.offering_faculty &&
+					student.status === selected.offering_status &&
+					student.gpa >= selected.min_gpa &&
+					!student.wd_on_transcript
+		);
+
+		let check2 = list.length < 3;
+
+		let check3 = list.filter((item) => {
+			return item.scholarship_id === selected.scholarship_id
+		}).length === 0;
+		
+		let check4 = !selected.awarded;
+
+		// console.log(check1, check2, check3, check4);
+		
+
+		if (check1 && check2 && check3 && check4) {
+			fetch(`/api/scholarships/apply/${student.student_id}/${selected.scholarship_id}`, {
+				method: 'post'
+			})
+
+		} else {
+			console.log("Unable to apply. Check that you're eligible")
+		}
+
+		// TODO : have a popup or some form of a message for success/failure !!
+
+		// after applied for, update the state in portal by fetching the list of scholatships applied for again
+		console.log(this.state.selectedScholarship)
+		this.props.updateApplied();
+	}
+
+	unapply() {
+		console.log('work in progress...')
 	}
 
 	scholarshipList() {
@@ -110,7 +166,8 @@ class Scholarships extends Component {
 						awarded={item.awarded}
 					/>	
 				</li>
-			)
+			
+      )
 			});
 		return list
 	}
@@ -118,6 +175,7 @@ class Scholarships extends Component {
 	render() {
 
 		const colourStyles = {
+      
 			option: (styles, { isFocused }) => {
 				return {
 				  ...styles,
@@ -126,7 +184,6 @@ class Scholarships extends Component {
 			  },
   
 		  };
-		// console.log(this.state);
 
     	return (
 			<div>
@@ -158,6 +215,7 @@ class Scholarships extends Component {
 							styles={colourStyles}
 						/>
 					</div>
+					
 				</div>
 
 
@@ -175,7 +233,7 @@ class Scholarships extends Component {
 					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
 					<div>
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
-						<button>Apply</button> {/*This should allow us to upload documents and other stuff?*/}
+						<button onClick={this.apply} > Apply </button>
 					</div>
 				</Modal>
 
