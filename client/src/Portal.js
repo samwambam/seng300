@@ -53,50 +53,50 @@ class Portal extends Component {
                     res = res.response
                     // this.setState({ username: res.username, type: res.type })
                     this.response.username =  res.username;
-                    this.response.type = res.type;
-    
-                    
+                    this.response.type = res.type;                    
                 })
                 .then(() => {
-            // 2. get their id
-                    fetch(`/api/users/${this.response.type}/${this.response.username}`)
-                        .then((res) => res.json())
-                        .then((res) => {
-                            res = res.response[0]
-                            this.response.id = res.student_id;
-                            return res.student_id;
-                        })
-                        .then((id) => {
+                    if (this.response.type === "admin") {
+                        this.setState({ ...this.response, fetching: false })
+                        localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+                    } else {
+            // 2. if they're a student, get their id
+                        fetch(`/api/users/${this.response.type}/${this.response.username}`)
+                            .then((res) => res.json())
+                            .then((res) => {
+                                res = res.response[0]
+                                this.response.id = res.student_id;
+                                return res.student_id;
+                            })
+                            .then((id) => {
             // 3. if they're a student, get an additional set of info containing faculty, program, gpa, etc.
-                            if (this.response.type === 'student') {
-                                fetch(`api/students/${this.response.id}`)
-                                    .then((res) => res.json())
-                                    .then((res) => {
-                                        res = res.response[0]
-                                        this.response.details = res;
-                                    })
+                                if (this.response.type === 'student') {
+                                    fetch(`api/students/${this.response.id}`)
+                                        .then((res) => res.json())
+                                        .then((res) => {
+                                            res = res.response[0]
+                                            this.response.details = res;
+                                        })
             // 4. while we're at it, grab all the scholarships they've applied for
-                                    .then(() => {
-                                        fetch('/api/scholarships/applied/' + id)
-                                            .then((res) => res.json())
-                                            .then((res) => {
-                                                // res = res.response
-                                                this.response.appliedFor = res.response;
-                                                // this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
-                                                this.setState({ ...this.response, fetching: false })
-                                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
-                                            })
-                                    })
-                            } else {
-                                this.setState({ ...this.response, fetching: false })
-                                localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
-
-                            }
-                        })
-
+                                        .then(() => {
+                                            fetch('/api/scholarships/applied/' + id)
+                                                .then((res) => res.json())
+                                                .then((res) => {
+                                                    // res = res.response
+                                                    this.response.appliedFor = res.response;
+                                                    // this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
+                                                    this.setState({ ...this.response, fetching: false })
+                                                    localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+                                                })
+                                        })
+                                } else {
+                                    this.setState({ ...this.response, fetching: false })
+                                    localStorage.setItem("userInfo", JSON.stringify({ ...this.response, fetching: false }))
+                                }
+                            })
+                    }
                 })
         }
-
     }
 
     componentWillUnmount() {
@@ -137,55 +137,113 @@ class Portal extends Component {
                 
                     <Router>
                         <div className='portal'>  
+                            {
+                                this.state.type === "student" && 
+                                    <div className = "navigation student">
 
-                            <div className = "navigation student">
+                                        <Link to = "portal">
+                                            <div className = "menuItem"> 
+                                                Scholarships
+                                            </div>
+                                        </Link>
 
-                                <Link to = "portal">
-                                    <div className = "menuItem"> 
-                                        Scholarships
+                                        <Link to="/portal/applications">
+                                            <div className = "menuItem">
+                                                My Applications
+                                            </div>  
+                                        </Link>
+
+                                        <Link to="/portal/profile">
+                                            <div className = "menuItem"> 
+                                                My profile
+                                            </div>
+                                        </Link>
+
+                                        <Link to="/portal/notifications">
+                                            <div className = "menuItem">
+                                                Notifications
+                                            </div>
+                                        </Link>
+
                                     </div>
-                                </Link>
+                            }
 
-                                <Link to="/portal/applications">
-                                    <div className = "menuItem">
-                                        My Applications
-                                    </div>  
-                                </Link>
+                            {
+                                this.state.type === "admin" && 
+                                    <div className = "navigation student">
+                                        <p>Admin navigation goes here</p>
+                                        {/* <Link to = "portal">
+                                            <div className = "menuItem"> 
+                                                Scholarships
+                                            </div>
+                                        </Link>
 
-                                <Link to="/portal/profile">
-                                    <div className = "menuItem"> 
-                                        My profile
+                                        <Link to="/portal/applications">
+                                            <div className = "menuItem">
+                                                My Applications
+                                            </div>  
+                                        </Link>
+
+                                        <Link to="/portal/profile">
+                                            <div className = "menuItem"> 
+                                                My profile
+                                            </div>
+                                        </Link>
+
+                                        <Link to="/portal/notifications">
+                                            <div className = "menuItem">
+                                                Notifications
+                                            </div>
+                                        </Link> */}
+
                                     </div>
-                                </Link>
-
-                                <Link to="/portal/notifications">
-                                    <div className = "menuItem">
-                                        Notifications
-                                    </div>
-                                </Link>
-
-                            </div>
+                            }
+                            
                             
                             <div className="content">
-
-                                <Switch>
-                                    <Route
-                                        path='/portal/applications'
-                                        render={(props) => <Applications {...props} list={this.state.appliedFor} />}
-                                    />
-                                    <Route
-                                        path='/portal/profile'
-                                        render={(props) => <Profile {...props} info={this.state.details} />}
-                                    />
-                                    <Route
-                                        path='/portal/notifications'
-                                        component = {Notifications}
-                                    />
-                                    <Route
-                                        path='/portal/'
-                                        render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
-                                    />
-                                </Switch>    
+                                {
+                                    this.state.type === "student" && 
+                                        <Switch>
+                                            <Route
+                                                path='/portal/applications'
+                                                render={(props) => <Applications {...props} list={this.state.appliedFor} />}
+                                            />
+                                            <Route
+                                                path='/portal/profile'
+                                                render={(props) => <Profile {...props} info={this.state.details} />}
+                                            />
+                                            <Route
+                                                path='/portal/notifications'
+                                                component = {Notifications}
+                                            />
+                                            <Route
+                                                path='/portal/'
+                                                render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
+                                            />
+                                        </Switch>    
+                                }
+                                {
+                                    this.state.type === "admin" &&
+                                        <p> Admin content goes here </p>
+                                        // <Switch>
+                                        //     <Route
+                                        //         path='/portal/applications'
+                                        //         render={(props) => <Applications {...props} list={this.state.appliedFor} />}
+                                        //     />
+                                        //     <Route
+                                        //         path='/portal/profile'
+                                        //         render={(props) => <Profile {...props} info={this.state.details} />}
+                                        //     />
+                                        //     <Route
+                                        //         path='/portal/notifications'
+                                        //         component = {Notifications}
+                                        //     />
+                                        //     <Route
+                                        //         path='/portal/'
+                                        //         render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
+                                        //     />
+                                        // </Switch>    
+                                }
 
                             </div>
                             
@@ -194,10 +252,11 @@ class Portal extends Component {
                     
                 </div>
 
-            );
+            )
+
         } else {
             return(
-                <div>fetching</div>
+                <div>fetching...</div>
             )
         }
     }
