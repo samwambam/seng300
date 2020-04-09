@@ -6,6 +6,16 @@ import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
 
 
+const innerStyles = {
+	content : {
+	  top                   : '50%',
+	  left                  : '50%',
+	  right                 : 'auto',
+	  bottom                : 'auto',
+	  marginRight           : '-50%',
+	  transform             : 'translate(-50%, -50%)'
+	}
+  };
 
 class Scholarships extends Component {
 
@@ -17,6 +27,8 @@ class Scholarships extends Component {
 			// popup stuff:
 			modalOpen: false,
 			selectedScholarship: {},
+			innerModalOpen: false,
+			innerModalMessage: "You should't be here...",
 			// seacth stuff:
 			searchQuery: '',
 			scholarshipsToDisplay:  [],
@@ -63,15 +75,21 @@ class Scholarships extends Component {
 		
 
 		if (check1 && check2 && check3 && check4) {
+			// apply for a scholarship
+
 			fetch(`/api/scholarships/apply/${student.student_id}/${selected.scholarship_id}`, {
 				method: 'post'
 			})
 
+			// set a success message
+			this.setState({innerModalMessage: "Successfully applied!"})
 		} else {
-			console.log("Unable to apply. Check that you're eligible")
+			// console.log("Unable to apply. Check that you're eligible")
+			this.setState({innerModalMessage: "Couldn't apply, make sure you're eligible."})
 		}
 
-		// TODO : have a popup or some form of a message for success/failure !!
+		// Display the popup message
+		this.setState({innerModalOpen: true})
 
 		// after applied for, update the state in portal by fetching the list of scholatships applied for again
 		console.log(this.state.selectedScholarship)
@@ -227,6 +245,7 @@ class Scholarships extends Component {
 
 				{/* This is a popup "div" for more info on each scholarship */}
 				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
+					{/* Display scholarship information */}
 					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
 					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
 					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
@@ -235,6 +254,12 @@ class Scholarships extends Component {
 						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
 						<button onClick={this.apply} > Apply </button>
 					</div>
+
+					<Modal isOpen={this.state.innerModalOpen} style={innerStyles}>
+						<p>{this.state.innerModalMessage}</p>
+						<button onClick={() => this.setState({innerModalOpen: false})}> OK </button>
+					</Modal>
+
 				</Modal>
 				
 				{/* This is where all of the scholarships are displayed */}
