@@ -25,26 +25,15 @@ class Applications extends Component {
 		return date.toUTCString().slice(0,11)
 	}
 	
-	componentDidMount() {
-		this.appliedList();
-	}
-	
-	appliedList() {
-		let id = this.props.id;
-		fetch('/api/scholarships/applied/' + id)
-			.then((res) => res.json())
-			.then((response) => {
-				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response})
-			})
-			console.log(this.state);
-	}
 	
 	createList = () => {
 		let list = []
 
 		// Loop to create all the <li>-s
 
-		this.state.scholarshipsToDisplay.forEach(item => {
+		// now fetches the scholarships applied for in portal and passes to Application as a prop `this.props.list`
+
+		this.props.list.forEach(item => {
 			list.push(	
 				<li onClick={() => {
 					if (!item.awarded) {
@@ -70,9 +59,9 @@ class Applications extends Component {
 	}
 	render() {
 
-		let id = this.props.id;
+		// let id = this.props.id;
 
-		console.log(id);
+		// console.log(id);
 		
 		
     	return (
