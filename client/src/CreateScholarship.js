@@ -44,7 +44,7 @@ class CreateScholarship extends Component {
                     </div>
                     <div class="form-element">
                         <label>Minimum GPA</label>
-                        <input name = 'mingpa' type="number" placeholder="3.5" step="0.01" min="0" max="4.0">
+                        <input name = 'mingpa' type="number" placeholder="3.5" step="0.01" min="0" max="4.0"/>
                     </div>
                     <div class="form-element">
                         <label>Description</label>
