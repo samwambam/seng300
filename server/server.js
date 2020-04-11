@@ -231,9 +231,17 @@ app.get('/api/applicants/:scholarship_id', (req,res) => {
   sendQuery(sql, res);        
 });
 
+//add scholarship to database
+app.put('/api/scholarships/add',(req,res) => {
+  let sql = 'INSERT INTO scholarships.scholarship (scholarship_id, scholarship_name, awarded, ' +       
+            'offering_faculty, offering_status, deadline, min_gpa,scholarship_description) VALUES ' +
+            `(${req.body.scholarshipId}, \'${req.body.scholarshipName}\', 0, \'${req.body.faculty}\',` +
+            `\'${req.body.status}\', \'${req.body.deadline}\',\'${req.body.mingpa}\', \'${req.body.description}\');`;
+  sendQuery(sql,res);          
+});
+
 /*
 TODO: 
-add scholarship to database? HOW maybe json?
 edit scholarship? edit what part?
 get all applicants for a scholarship
 
