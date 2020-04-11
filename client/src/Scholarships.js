@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import './Scholarships.css';
 import Scholarship from './Scholarship';
-import Modal from "react-modal";
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
+import Popup from "./Popup";
 
-
-const innerStyles = {
-	content : {
-	  top                   : '50%',
-	  left                  : '50%',
-	  right                 : 'auto',
-	  bottom                : 'auto',
-	  marginRight           : '-50%',
-	  transform             : 'translate(-50%, -50%)'
-	}
-  };
 
 class Scholarships extends Component {
 
@@ -38,7 +27,6 @@ class Scholarships extends Component {
 		}
 
 		this.apply = this.apply.bind(this);
-		this.unapply = this.unapply.bind(this);
 	}
 
 	componentDidMount() {	/*get the list of scholarships from server after components are rendered*/
@@ -96,9 +84,8 @@ class Scholarships extends Component {
 		this.props.updateApplied();
 	}
 
-	unapply() {
-		console.log('work in progress...')
-	}
+
+
 
 	scholarshipList() {
 		fetch('/api/scholarships')	/*returns the scholarships in database*/
@@ -236,31 +223,22 @@ class Scholarships extends Component {
 					
 				</div>
 
-
-					{/*
-						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
-						note to self 2: have the scholarship panels and pages display the program it's offered to (eg: undergrad, masters, etc.)
-					*/}
-
-
 				{/* This is a popup "div" for more info on each scholarship */}
-				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
-					{/* Display scholarship information */}
-					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
-					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
-					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
-					<div>
-						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
-						<button onClick={this.apply} > Apply </button>
-					</div>
+				<Popup
+					isOpen={this.state.modalOpen}
+					innerIsOpen={this.state.innerModalOpen}
+					innerMessage={this.state.innerModalMessage}
+					close={() => this.setState({modalOpen: false})}
+					innerClose={() => this.setState({innerModalOpen : false})}
+					scholarship={this.state.selectedScholarship}
+					appliedFor={this.props.appliedList.filter((item) => { return item.scholarship_id === this.state.selectedScholarship.scholarship_id }).length }
+					offered={false}
+					accepted={false}
+					apply={this.apply}
+					accept={() => console.log("accepted!")}
+					reject={() => console.log("rejected!")}
+				/>
 
-					<Modal isOpen={this.state.innerModalOpen} style={innerStyles}>
-						<p>{this.state.innerModalMessage}</p>
-						<button onClick={() => this.setState({innerModalOpen: false})}> OK </button>
-					</Modal>
-
-				</Modal>
 
 				{/* This is where all of the scholarships are displayed */}
 				<ul>

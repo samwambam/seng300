@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Scholarship from './Scholarship'
-import Modal from 'react-modal'
+import Popup from './Popup';
 
 
 class Applications extends Component {
@@ -12,6 +12,8 @@ class Applications extends Component {
 			selectedScholarship: {},
 			scholarshipsToDisplay:  [],
 			modalOpen: false,
+			innerModalOpen: false,
+			innerModalMessage: "You should't be here...",
 		}
 	}
 	
@@ -71,7 +73,22 @@ class Applications extends Component {
 				{this.createList()}
 				</ul>
 				
-				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
+				<Popup
+					isOpen={this.state.modalOpen}
+					innerIsOpen={this.state.innerModalOpen}
+					innerMessage={this.state.innerModalMessage}
+					close={() => this.setState({modalOpen: false})}
+					innerClose={() => this.setState({innerModalOpen : false})}
+					scholarship={this.state.selectedScholarship}
+					appliedFor={true}
+					offered={false}
+					accepted={false}
+					apply={this.apply}
+					accept={() => console.log("accepted!")}
+					reject={() => console.log("rejected!")}
+				/>
+
+				{/* <Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
 					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
 					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
 					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
@@ -80,7 +97,7 @@ class Applications extends Component {
 						<button onClick={() => this.setState({modalOpen: false})}>close</button>
 	
 					</div>
-				</Modal>
+				</Modal> */}
 			</div>
 		);
 	}
