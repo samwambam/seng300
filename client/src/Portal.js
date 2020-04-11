@@ -5,6 +5,7 @@ import Scholarships from './Scholarships';
 import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
+import CreateScholarship from './CreateScholarship';
 
 
 
@@ -171,31 +172,17 @@ class Portal extends Component {
                             {
                                 this.state.type === "admin" && 
                                     <div className = "navigation student">
-                                        <p>Admin navigation goes here</p>
-                                        {/* <Link to = "portal">
+                                        <Link to = "/portal/addnew">
                                             <div className = "menuItem"> 
-                                                Scholarships
+                                                Add Scholarship
                                             </div>
                                         </Link>
 
                                         <Link to="/portal/applications">
                                             <div className = "menuItem">
-                                                My Applications
+                                                View Applicants
                                             </div>  
                                         </Link>
-
-                                        <Link to="/portal/profile">
-                                            <div className = "menuItem"> 
-                                                My profile
-                                            </div>
-                                        </Link>
-
-                                        <Link to="/portal/notifications">
-                                            <div className = "menuItem">
-                                                Notifications
-                                            </div>
-                                        </Link> */}
-
                                     </div>
                             }
                             
@@ -224,25 +211,12 @@ class Portal extends Component {
                                 }
                                 {
                                     this.state.type === "admin" &&
-                                        <p> Admin content goes here </p>
-                                        // <Switch>
-                                        //     <Route
-                                        //         path='/portal/applications'
-                                        //         render={(props) => <Applications {...props} list={this.state.appliedFor} />}
-                                        //     />
-                                        //     <Route
-                                        //         path='/portal/profile'
-                                        //         render={(props) => <Profile {...props} info={this.state.details} />}
-                                        //     />
-                                        //     <Route
-                                        //         path='/portal/notifications'
-                                        //         component = {Notifications}
-                                        //     />
-                                        //     <Route
-                                        //         path='/portal/'
-                                        //         render={(props) => <Scholarships {...props} student={this.state.details} appliedList={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
-                                        //     />
-                                        // </Switch>    
+                                        <Switch>
+                                            <Route 
+                                                path='/portal/addnew'
+                                                component = {CreateScholarship}
+                                            />
+                                        </Switch>  
                                 }
 
                             </div>
