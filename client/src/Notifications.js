@@ -7,7 +7,8 @@ class Notifications extends Component {
 	render() {
     	return (
 			<div>
-				<div className = "Title">Notifications</div>
+				<h1 className = "Title">Notifications</h1>
+				
 				{/* <ul>
 				  <li>
 						Scholarship 1

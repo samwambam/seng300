@@ -6,8 +6,6 @@ import Login from "./Login";
 
 class App extends Component {
     render() {
-
-    /*bad area below D:*/
         return (
             <Router> 
                 <Switch>
@@ -18,6 +16,7 @@ class App extends Component {
             </Router>
         );
     }
+
 }
 
 export default App;
