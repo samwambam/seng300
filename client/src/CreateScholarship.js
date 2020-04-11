@@ -3,6 +3,31 @@ import './CreateScholarship.css';
 
 
 class CreateScholarship extends Component {
+    constructor(props) {
+		super(props);
+    
+		this.state = {
+            scholarshipName: '',
+            scholarshipId: 0,
+            deadline: '',
+            faculty: '',
+            status: '',
+            minGpa: 0.0,
+            description: ''
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const name = target.name;
+        const value = target.value;
+        
+        this.setState({
+            [name]: value
+        });
+    }
 
 	render() {
     	return (
@@ -11,7 +36,11 @@ class CreateScholarship extends Component {
                 <form>
                     <div class="form-element">
                         <label>Name</label>
-                        <input name="scholarshipName" type="text"/>
+                        <input 
+                            name = "scholarshipName"
+                            type = "text"
+                            value = {this.state.scholarshipName} 
+                            onChange={this.handleInputChange}/>
                     </div>
 
                     <div class="form-element">
@@ -44,7 +73,7 @@ class CreateScholarship extends Component {
                     </div>
                     <div class="form-element">
                         <label>Minimum GPA</label>
-                        <input name = 'mingpa' type="number" placeholder="3.5" step="0.01" min="0" max="4.0"/>
+                        <input name = 'minGpa' type="number" placeholder="3.5" step="0.01" min="0" max="4.0"/>
                     </div>
                     <div class="form-element">
                         <label>Description</label>
