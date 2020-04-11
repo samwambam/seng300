@@ -16,6 +16,7 @@ class CreateScholarship extends Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // function to set state variables when they are updated in the form
