@@ -156,7 +156,7 @@ class Portal extends Component {
 
                                         <Link to="/portal/profile">
                                             <div className = "menuItem"> 
-                                                My profile
+                                                My Profile
                                             </div>
                                         </Link>
 

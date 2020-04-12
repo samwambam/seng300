@@ -5,6 +5,10 @@ import Portal from './Portal';
 import Login from "./Login";
 
 class App extends Component {
+    /*
+    If the url ends with /login or /, then we will be taken to the login page.
+    If the url ends with /portal, then we will be taken to the main page.
+    */
     render() {
         return (
             <Router> 

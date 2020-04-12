@@ -3,7 +3,9 @@ import './App.css';
 
 
 class Login extends Component {
-
+  /*
+  sets up the page style and ability to log in
+  */
   render() {
     return (
         <div className="Login">

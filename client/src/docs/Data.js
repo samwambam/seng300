@@ -1,3 +1,4 @@
+{ /*The options to choose from for faculty and program fitlering are set up*/}
 export const facultyOptions = [
     {
         label: 'Faculties',
