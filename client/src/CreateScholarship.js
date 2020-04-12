@@ -47,8 +47,16 @@ class CreateScholarship extends Component {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: formData.toString()
+            body: formData
+        })
+        .then(response => {
+            console.log('hi');
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
         });
+
     }
 
 	render() {
@@ -57,17 +65,17 @@ class CreateScholarship extends Component {
 				<h1 className = "Title">Add New Scholarship</h1>
                 <form onSubmit={this.handleSubmit}>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Name</label>
                         <input 
                             name = "scholarshipName"
                             type = "text"
-                            maxlength = "45"
+                            maxLength = "45"
                             value = {this.state.scholarshipName} 
                             onChange={this.handleInputChange}/>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>ID</label>
                         <input 
                             name = "scholarshipId"
@@ -78,7 +86,7 @@ class CreateScholarship extends Component {
                             onChange = {this.handleInputChange}/>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Deadline</label>
                         <input 
                             name="deadline"
@@ -87,7 +95,7 @@ class CreateScholarship extends Component {
                             onChange = {this.handleInputChange}/>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Faculty</label>
                         <select name='faculty'value={this.state.faculty} onChange={this.handleInputChange}>
                             <option value="science">Science</option>
@@ -98,7 +106,7 @@ class CreateScholarship extends Component {
                         </select>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Status</label>
                         <select name='faculty'value={this.state.status} onChange={this.handleInputChange}>
                             <option value="undergraduate">Undergraduate</option>
@@ -108,7 +116,7 @@ class CreateScholarship extends Component {
                         </select>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Minimum GPA</label>
                         <input 
                             name = 'minGpa'
@@ -120,7 +128,7 @@ class CreateScholarship extends Component {
                             max="4.0"/>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>Description</label>
                         <textarea 
                             name="description"
