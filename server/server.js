@@ -179,7 +179,19 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
 
 //get user id by username
 app.get('/api/users/:usertype/:username', (req, res) => {
-  let sql = `SELECT student_id FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
+  let idString;
+  switch (req.params.usertype) {
+    case 'student':
+       idString= 'student_id';
+      break;
+    case 'faculty':
+      idString = 'faculty_id';
+      break;
+    case 'administrator':
+      idString = 'ID';
+      break;
+  }
+  let sql = `SELECT ${idString} FROM ${req.params.usertype} WHERE username = '${req.params.username}'`
   sendQuery(sql, res);
 });
 
@@ -219,9 +231,17 @@ app.get('/api/applicants/:scholarship_id', (req,res) => {
   sendQuery(sql, res);        
 });
 
+//add scholarship to database
+app.put('/api/scholarships/add',(req,res) => {
+  let sql = 'INSERT INTO scholarships.scholarship (scholarship_id, scholarship_name, awarded, ' +       
+            'offering_faculty, offering_status, deadline, min_gpa,scholarship_description) VALUES ' +
+            `(${req.body.scholarshipId}, \'${req.body.scholarshipName}\', 0, \'${req.body.faculty}\',` +
+            `\'${req.body.status}\', \'${req.body.deadline}\',\'${req.body.mingpa}\', \'${req.body.description}\');`;
+  sendQuery(sql,res);          
+});
+
 /*
 TODO: 
-add scholarship to database? HOW maybe json?
 edit scholarship? edit what part?
 get all applicants for a scholarship
 

@@ -1,0 +1,33 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "Conference",
+            "dialect": "MySQL",
+            "isActive": false,
+            "isConnected": false,
+            "name": "Conference",
+            "password": "feyn",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        },
+        {
+            "database": "Question3",
+            "dialect": "MySQL",
+            "name": "Question3",
+            "password": "feyn",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        },
+        {
+            "database": "Question2",
+            "dialect": "MySQL",
+            "name": "Question2",
+            "password": "feyn",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        }
+    ]
+}

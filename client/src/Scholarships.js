@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './Scholarships.css';
 import Scholarship from './Scholarship';
-import Modal from "react-modal";
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
-
+import Popup from "./Popup";
 
 
 class Scholarships extends Component {
@@ -20,16 +19,17 @@ class Scholarships extends Component {
 			// popup stuff:
 			modalOpen: false,
 			selectedScholarship: {},
-			// search stuff:
-			searchQuery: '',	//the input typed in by the user
-			scholarshipsToDisplay:  [],	//scholarships that the user wants to see
-			selectedFaculties: ["any"],	//the faculties that the user wants scholarships from 
-			selectedPrograms: ["any"],	//the programs that the user wants scholarships from
+			innerModalOpen: false,
+			innerModalMessage: "You should't be here...",
+			// seacth stuff:
+			searchQuery: '', //the input typed in by the user
+			scholarshipsToDisplay:  [], //scholarships that the user wants to see
+			selectedFaculties: ["any"], //the faculties that the user wants scholarships from 
+			selectedPrograms: ["any"], //the programs that the user wants scholarships from
 			personalize: false,
 		}
 
 		this.apply = this.apply.bind(this);
-		this.unapply = this.unapply.bind(this);
 	}
 
 	/*get the list of scholarships from server after components are rendered*/
@@ -70,27 +70,27 @@ class Scholarships extends Component {
 		
 
 		if (check1 && check2 && check3 && check4) {
+			// apply for a scholarship
+
 			fetch(`/api/scholarships/apply/${student.student_id}/${selected.scholarship_id}`, {
 				method: 'post'
 			})
 
+			// set a success message
+			this.setState({innerModalMessage: "Successfully applied!"})
 		} else {
-			console.log("Unable to apply. Check that you're eligible")
+			// console.log("Unable to apply. Check that you're eligible")
+			this.setState({innerModalMessage: "Couldn't apply, make sure you're eligible."})
 		}
 
-		// TODO : have a popup or some form of a message for success/failure !!
+		// Display the popup message
+		this.setState({innerModalOpen: true})
 
 		// after applied for, update the state in portal by fetching the list of scholatships applied for again
 		console.log(this.state.selectedScholarship)
 		this.props.updateApplied();
 	}
 
-	/*
-	Unapplying for a scholarship that was applied for
-	*/
-	unapply() {
-		console.log('work in progress...')
-	}
 
 	/*
 	Obtains scholarships from the server side 
@@ -240,24 +240,22 @@ class Scholarships extends Component {
 					
 				</div>
 
-
-					{/*
-						also a show all/"for me" toggle to show all scholarships or only those that the students eligible for 
-						note to self 2: have the scholarship panels and pages display the program it's offered to (eg: undergrad, masters, etc.)
-					*/}
-
-
 				{/* This is a popup "div" for more info on each scholarship */}
-				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
-					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
-					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
-					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
-					<div>
-						<button onClick={() => this.setState({modalOpen: false})}>Cancel</button>
-						<button onClick={this.apply} > Apply </button>
-					</div>
-				</Modal>
+				<Popup
+					isOpen={this.state.modalOpen}
+					innerIsOpen={this.state.innerModalOpen}
+					innerMessage={this.state.innerModalMessage}
+					close={() => this.setState({modalOpen: false})}
+					innerClose={() => this.setState({innerModalOpen : false})}
+					scholarship={this.state.selectedScholarship}
+					appliedFor={this.props.appliedList.filter((item) => { return item.scholarship_id === this.state.selectedScholarship.scholarship_id }).length }
+					offered={false}
+					accepted={false}
+					apply={this.apply}
+					accept={() => console.log("accepted!")}
+					reject={() => console.log("rejected!")}
+				/>
+
 
 				<ul>
 					{this.createList() //This is where all of the scholarships are displayed

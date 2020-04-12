@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Scholarship from './Scholarship'
-import Modal from 'react-modal'
+import Popup from './Popup';
 
 
 class Applications extends Component {
@@ -16,6 +16,8 @@ class Applications extends Component {
 			selectedScholarship: {}, //the scholarship that is clicked on
 			scholarshipsToDisplay:  [],
 			modalOpen: false, //boolean that decides if an element will popup
+			innerModalOpen: false,
+			innerModalMessage: "You should't be here...",
 		}
 	}
 	
@@ -84,21 +86,26 @@ class Applications extends Component {
 				{this.createList()}
 				</ul>
 				
-				{/*
+        {/*
 				When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
 				scholarship
 				*/
 				}
-				<Modal isOpen={this.state.modalOpen} onRequestClose={() => this.setState({modalOpen: false})} >
-					<h2>{this.state.selectedScholarship.scholarship_name}</h2>
-					<p>Faculty: {this.state.selectedScholarship.offering_faculty}</p>
-					<p>Minimum Required GPA: {this.state.selectedScholarship.min_gpa}, Apply By: {new Date(this.state.selectedScholarship.deadline).toUTCString()}</p>
-					<p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
-					<div>
-						<button onClick={() => this.setState({modalOpen: false})}>close</button>
-	
-					</div>
-				</Modal>
+				<Popup
+					isOpen={this.state.modalOpen}
+					innerIsOpen={this.state.innerModalOpen}
+					innerMessage={this.state.innerModalMessage}
+					close={() => this.setState({modalOpen: false})}
+					innerClose={() => this.setState({innerModalOpen : false})}
+					scholarship={this.state.selectedScholarship}
+					appliedFor={true}
+					offered={false}
+					accepted={false}
+					apply={this.apply}
+					accept={() => console.log("accepted!")}
+					reject={() => console.log("rejected!")}
+				/>
+
 			</div>
 		);
 	}
