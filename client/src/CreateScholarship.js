@@ -5,14 +5,15 @@ class CreateScholarship extends Component {
     constructor(props) {
 		super(props);
     
+        // default values populated for testing. set blank once works
 		this.state = {
-            scholarshipName: '',
-            scholarshipId: 0,
-            deadline: '',
-            faculty: '',
-            status: '',
-            minGpa: 0.0,
-            description: ''
+            scholarshipName: 'Test',
+            scholarshipId: 222222,
+            deadline: '2020-04-20',
+            faculty: 'science',
+            status: 'graduate',
+            minGpa: 3.5,
+            description: 'This is a test'
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,14 +34,15 @@ class CreateScholarship extends Component {
     handleSubmit(event) {
         event.preventDefault();
         
-        let formData = new URLSearchParams();
-        formData.append('scholarshipName',this.state.scholarshipName);
-        formData.append('scholarshipId',this.state.scholarshipId);
-        formData.append('deadline',this.state.deadline);
-        formData.append('faculty',this.state.faculty);
-        formData.append('status',this.state.status);
-        formData.append('mingpa',this.state.minGpa);
-        formData.append('description',this.state.description);
+        let formData = new URLSearchParams({
+            'scholarshipName' : `${this.state.scholarshipName}`,
+            'scholarshipId' : `${this.state.scholarshipId}`,
+            'deadline' : `${this.state.deadline}`,
+            'faculty' : `${this.state.faculty}`,
+            'status' : `${this.state.status}`,
+            'mingpa': `${this.state.minGpa}`,
+            'description': `${this.state.description}`
+        });
 
         fetch('/api/scholarhips/add', {
             method: 'PUT',
@@ -56,7 +58,6 @@ class CreateScholarship extends Component {
         .then((data) => {
             console.log(data);
         });
-
     }
 
 	render() {
