@@ -201,7 +201,7 @@ class Portal extends Component {
                                             />
                                             <Route
                                                 path='/portal/notifications'
-                                                component = {Notifications}
+                                                render = {(props) => <Notifications {...props} appliedList={this.state.appliedFor} />}
                                             />
                                             <Route
                                                 path='/portal/'
