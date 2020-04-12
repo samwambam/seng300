@@ -131,24 +131,6 @@ app.get('/info', (req, res) => {
   }
 })
 
-// function to query database and send response
-function sendQuery(sql, res) {
-  let query = db.query(sql, (err,results) => {
-    if (err) {
-      res.json({
-        'status' : 300,
-        'error': err 
-      });
-    } else {
-      res.json({
-          'status' : 200,
-          'error': null,
-          'response' : results
-      });
-    }
-  });
-}
-
 // get all scholarships
 app.get('/api/scholarships', (req,res) => {
   let sql = 'SELECT * from scholarship';
@@ -232,7 +214,7 @@ app.get('/api/applicants/:scholarship_id', (req,res) => {
 });
 
 //add scholarship to database
-app.put('/api/scholarships/add',(req,res) => {
+app.post('/api/addScholarship',(req,res) => {
   let sql = 'INSERT INTO scholarships.scholarship (scholarship_id, scholarship_name, awarded, ' +       
             'offering_faculty, offering_status, deadline, min_gpa,scholarship_description) VALUES ' +
             `(${req.body.scholarshipId}, \'${req.body.scholarshipName}\', 0, \'${req.body.faculty}\',` +
