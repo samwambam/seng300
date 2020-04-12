@@ -44,8 +44,8 @@ class CreateScholarship extends Component {
             'description': `${this.state.description}`
         });
 
-        fetch('/api/scholarhips/add', {
-            method: 'PUT',
+        fetch('/api/addScholarship', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
