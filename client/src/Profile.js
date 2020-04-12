@@ -3,7 +3,10 @@ import './App.css';
 
 
 class Profile extends Component {
-	
+	/*
+	The users information is displayed
+	*/
+
 	constructor(props) {
 		super(props);
 
@@ -12,7 +15,9 @@ class Profile extends Component {
 		}
 	}
 
-
+	/*
+	The first character of the parameter stringInput is converted to uppercase, and the whole string is returned 
+	*/
 	capitalize = (stringInput) => {
 		let str = stringInput.toString()		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)

@@ -43,10 +43,10 @@ class Popup extends Component {
             <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} >
                 {/* Display scholarship information */}
 
-                <h2>{scholarship.scholarship_name}</h2>
-                <p>Faculty: {scholarship.offering_faculty}</p>
-                <p>Minimum Required GPA: {scholarship.min_gpa}, Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
-                <p>A description would usually go here. Also, for now, the apply button is a dummy, but cancel should work. You can also click outside of the popup to close it.</p>
+                <h2>{this.props.scholarship.scholarship_name}</h2>
+                <p>Faculty: {this.props.scholarship.offering_faculty}</p>
+                <p>Minimum Required GPA: {this.props.scholarship.min_gpa}, Apply By: {new Date(this.props.scholarship.deadline).toUTCString()}</p>
+                <p>{this.props.scholarship.scholarship_description}</p>
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
                     {

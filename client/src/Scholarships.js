@@ -7,6 +7,9 @@ import Popup from "./Popup";
 
 
 class Scholarships extends Component {
+	/*
+	displays scholarships that we can search for and filter through
+	*/
 
 	constructor(props) {
 		super(props);
@@ -19,20 +22,24 @@ class Scholarships extends Component {
 			innerModalOpen: false,
 			innerModalMessage: "You should't be here...",
 			// seacth stuff:
-			searchQuery: '',
-			scholarshipsToDisplay:  [],
-			selectedFaculties: ["any"],
-			selectedPrograms: ["any"],
+			searchQuery: '', //the input typed in by the user
+			scholarshipsToDisplay:  [], //scholarships that the user wants to see
+			selectedFaculties: ["any"], //the faculties that the user wants scholarships from 
+			selectedPrograms: ["any"], //the programs that the user wants scholarships from
 			personalize: false,
 		}
 
 		this.apply = this.apply.bind(this);
 	}
 
-	componentDidMount() {	/*get the list of scholarships from server after components are rendered*/
+	/*get the list of scholarships from server after components are rendered*/
+	componentDidMount() {	
 		this.scholarshipList();
 	}
 
+	/*
+	Applying for a scholarship
+	*/
 	apply() {
 		// check:
 		// 1. Can apply (correct program, faculty, GPA, etc)
@@ -85,21 +92,28 @@ class Scholarships extends Component {
 	}
 
 
-
-
+	/*
+	Obtains scholarships from the server side 
+	*/
 	scholarshipList() {
-		fetch('/api/scholarships')	/*returns the scholarships in database*/
-			.then((res) => res.json())	/*changes the scholarships information to json format*/
+		fetch('/api/scholarships')	//returns the scholarships from database
+			.then((res) => res.json())	//changes the scholarships information to json format
 			.then((response) => {	
-				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response}) /*puts all the scholarship information in the two arrays*/
+				this.setState({scholarships: response.response, scholarshipsToDisplay: response.response}) //puts the scholarship information in the two arrays
 			})
 	}
 
+	/*
+	The first character in parameter stringInput is converted to uppercase, and the whole string is returned
+	*/
 	capitalize = (stringInput) => {
 		let str = stringInput.toString()		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
 	}
 
+	/*
+	The parameter dateString is converted to Universal Coordinated Time format and returned
+	*/
 	getDisplayDate = (dateString) => {
 		let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
@@ -120,15 +134,15 @@ class Scholarships extends Component {
 
 		switch (type) {
 			case 'faculties': 
-				facultiesPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; /*returns the array of values(name) of the faculty options that were picked*/
+				facultiesPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; //returns the array of values(name) of the faculty options that were picked
 				this.setState({ selectedFaculties: facultiesPicked });
 				break;
 			case 'programs': 
-				programsPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; /*returns the array of values(name) of the program options that were picked*/
+				programsPicked = criteria ? criteria.map(((item) => item.value)) : ['any']; //returns the array of values(name) of the program options that were picked
 				this.setState({ selectedPrograms: programsPicked });
 				break;
 			case 'search': 
-				searchQuery = criteria;
+				searchQuery = criteria;	//the input entered in the search bar
 				this.setState({ searchQuery: criteria })
 				break;
 			default:
@@ -136,10 +150,10 @@ class Scholarships extends Component {
 		}
 		
 		let awards = this.state.scholarships;
-		let awardsToDisplay = awards.filter((award) => { /*returns an array of scholarships that were searched for, or picked by faculty or program*/
-			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1; /*check if all letters up to a certain position match*/
-			let matchesFaculty = facultiesPicked[0] === "any" ? true : facultiesPicked.includes(award.offering_faculty.toString().toLowerCase()); 
-			let matchesProgram = programsPicked[0] === 'any' ? true : programsPicked.includes(award.offering_status.toString().toLowerCase());
+		let awardsToDisplay = awards.filter((award) => { //returns an array of scholarships that were searched for, or picked by faculty or program
+			let matchesSearch = award.scholarship_name.toString().toLowerCase().search(searchQuery.toString().toLowerCase()) !== -1; //check if all letters up to a certain position match
+			let matchesFaculty = facultiesPicked[0] === "any" ? true : facultiesPicked.includes(award.offering_faculty.toString().toLowerCase()); //if the scholarship's faculty matches the faculty that the user wants 
+			let matchesProgram = programsPicked[0] === 'any' ? true : programsPicked.includes(award.offering_status.toString().toLowerCase());	//if the scholarship's program matches the program that the user wants 
 			return matchesSearch && matchesFaculty && matchesProgram;
 		});
 
@@ -148,6 +162,9 @@ class Scholarships extends Component {
 		
 	}
 
+	/*
+	Goes through the list of scholarships that are to be shown and returns the list of scholarships formatted by Scholarship.js 
+	*/
 	createList = () => {
 		let list = []
 
@@ -240,9 +257,9 @@ class Scholarships extends Component {
 				/>
 
 
-				{/* This is where all of the scholarships are displayed */}
 				<ul>
-					{this.createList()}
+					{this.createList() //This is where all of the scholarships are displayed
+					}
 				</ul>
 
 			</div>
