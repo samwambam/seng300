@@ -13,7 +13,8 @@ class CreateScholarship extends Component {
             faculty: '',
             status: '',
             minGpa: 0.0,
-            description: ''
+            description: '',
+            amount: 0
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -41,7 +42,9 @@ class CreateScholarship extends Component {
             'faculty' : `${this.state.faculty}`,
             'status' : `${this.state.status}`,
             'mingpa': `${this.state.minGpa}`,
-            'description': `${this.state.description}`
+            'description': `${this.state.description}`,
+            'amount': `${this.state.amount}`
+            
         });
 
         fetch('/api/addScholarship', {
@@ -63,10 +66,11 @@ class CreateScholarship extends Component {
                     scholarshipName: '',
                     scholarshipId: 0,
                     deadline: '',
-                    faculty: '',
-                    status: '',
+                    faculty: 'science',
+                    status: 'undergraduate',
                     minGpa: 0.0,
-                    description: ''
+                    description: '',
+                    amount: 0
                 });
             }
         });
@@ -98,6 +102,18 @@ class CreateScholarship extends Component {
                             value = {this.state.scholarshipId}
                             onChange = {this.handleInputChange}/>
                     </div>
+
+                    <div className="form-element">
+                        <label>Value</label>
+                        <input 
+                            name = "amount"
+                            type = "number"
+                            min = "0"
+                            max = "20000"
+                            value = {this.state.amount}
+                            onChange = {this.handleInputChange}/>
+                    </div>
+
 
                     <div className="form-element">
                         <label>Deadline</label>
