@@ -7,13 +7,13 @@ class CreateScholarship extends Component {
     
         // default values populated for testing. set blank once works
 		this.state = {
-            scholarshipName: 'Test',
-            scholarshipId: 222222,
-            deadline: '2020-04-20',
-            faculty: 'science',
-            status: 'graduate',
-            minGpa: 3.5,
-            description: 'This is a test'
+            scholarshipName: '',
+            scholarshipId: 0,
+            deadline: '',
+            faculty: '',
+            status: '',
+            minGpa: 0.0,
+            description: ''
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -52,11 +52,23 @@ class CreateScholarship extends Component {
             body: formData
         })
         .then(response => {
-            console.log('hi');
             return response.json();
         })
         .then((data) => {
-            console.log(data);
+            if (data.error !== null) {
+                alert("Error: "+ data.error.code);
+            } else {
+                alert("Added scholasrhip!");
+                this.setState({
+                    scholarshipName: '',
+                    scholarshipId: 0,
+                    deadline: '',
+                    faculty: '',
+                    status: '',
+                    minGpa: 0.0,
+                    description: ''
+                });
+            }
         });
     }
 
