@@ -6,8 +6,7 @@ import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
 import CreateScholarship from './CreateScholarship';
-import AdminScholarship from './AdminScholarship';
-
+import AdminScholarships from './AdminScholarships';
 
 
 class Portal extends Component {
@@ -136,7 +135,7 @@ class Portal extends Component {
                         <div className = "door" > </div>
                     </Link>
                     
-                
+
                     <Router>
                         <div className='portal'>  
                             {
@@ -196,7 +195,8 @@ class Portal extends Component {
                                                 path='/portal/applications'
                                                 render={(props) => <Applications {...props} studentID={this.state.id} list={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
                                             />
-                                            <Route
+
+                                 <Route
                                                 path='/portal/profile'
                                                 render={(props) => <Profile {...props} info={this.state.details} />}
                                             />
@@ -219,7 +219,7 @@ class Portal extends Component {
                                             />
                                             <Route
                                                 path='/portal/adminlist'
-                                                component = {AdminScholarship}
+                                                component = {AdminScholarships}
                                             />
                                         </Switch>  
                                 }
