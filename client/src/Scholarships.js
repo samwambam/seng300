@@ -26,7 +26,6 @@ class Scholarships extends Component {
 			scholarshipsToDisplay:  [], //scholarships that the user wants to see
 			selectedFaculties: ["any"], //the faculties that the user wants scholarships from 
 			selectedPrograms: ["any"], //the programs that the user wants scholarships from
-			personalize: false,
 		}
 
 		this.apply = this.apply.bind(this);

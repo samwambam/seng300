@@ -1,19 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Scholarship from './Scholarship'
 import Popup from './Popup';
 import Scholarships from './Scholarships';
 
-
-class Applications extends Scholarships {
-	/*
+/*
 	The list of scholarships that were applied for are displayed
-	*/
-
-	constructor(props){
-		super(props);
-
-	}	
+*/
+class Applications extends Scholarships {
 	
 	/*
 	Goes through each scholarship that was applied for and sets up the information that will be displayed. The list is returned.
@@ -54,15 +48,15 @@ class Applications extends Scholarships {
     	return (
 			<div>
 				<h1 className = "Title"> My Applications </h1>
-				<ul>
-				{this.createList()}
-				</ul>
 				
-        {/*
-				When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
-				scholarship
-				*/
-				}
+				<ul> {
+					this.createList()
+				} </ul>
+				
+        		{/*
+					When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
+					scholarship
+				*/}
 				<Popup
 					isOpen={this.state.modalOpen}
 					innerIsOpen={this.state.innerModalOpen}
