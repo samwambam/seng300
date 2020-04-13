@@ -14,7 +14,7 @@ class Scholarship extends Component {
 			<div className="scholarship">
 				
 				<div className="container">
-					<h3 className = "name"> {this.props.name} </h3>
+					<h3 className = "name"> {this.props.name + "  ($" + this.props.amount +")"} </h3>
 					<h3 className = "faculty"> {this.props.faculty} </h3>
 				</div>
 
