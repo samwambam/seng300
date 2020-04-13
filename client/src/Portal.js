@@ -6,6 +6,7 @@ import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
 import CreateScholarship from './CreateScholarship';
+import AdminScholarship from './AdminScholarship';
 
 
 
@@ -178,9 +179,9 @@ class Portal extends Component {
                                             </div>
                                         </Link>
 
-                                        <Link to="/portal/applications">
+                                        <Link to="/portal/adminlist">
                                             <div className = "menuItem">
-                                                View Applicants
+                                                View Scholarships
                                             </div>  
                                         </Link>
                                     </div>
@@ -215,6 +216,10 @@ class Portal extends Component {
                                             <Route 
                                                 path='/portal/addnew'
                                                 component = {CreateScholarship}
+                                            />
+                                            <Route
+                                                path='/portal/adminlist'
+                                                component = {AdminScholarship}
                                             />
                                         </Switch>  
                                 }
