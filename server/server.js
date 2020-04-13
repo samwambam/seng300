@@ -159,6 +159,12 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
   sendQuery(sql, res);
 });
 
+//unapply from a scholarship
+app.post('/api/scholarships/unapply/:student_id/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.apply WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id}`
+  sendQuery(sql, res);
+})
+
 //get user id by username
 app.get('/api/users/:usertype/:username', (req, res) => {
   let idString;
@@ -204,6 +210,14 @@ app.put('/api/award/:student_id/:scholarship_id', (req,res) => {
 app.put('/api/accept/:student_id/:scholarship_id', (req, res) => {
   let sql = `UPDATE scholarships.award SET accepted=1 ` + 
             `WHERE (student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id});`;
+  sendQuery(sql, res);        
+});
+
+// reject awarded scholarship
+app.post('/api/reject/:student_id/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.award` + 
+            `WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id}; ` + 
+            `DELETE FROM scholarships.apply WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params,s.scholarship_id}`;
   sendQuery(sql, res);        
 });
 

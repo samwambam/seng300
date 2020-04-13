@@ -193,7 +193,7 @@ class Portal extends Component {
                                         <Switch>
                                             <Route
                                                 path='/portal/applications'
-                                                render={(props) => <Applications {...props} list={this.state.appliedFor} />}
+                                                render={(props) => <Applications {...props} studentID={this.state.id} list={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
                                             />
                                             <Route
                                                 path='/portal/profile'

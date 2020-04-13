@@ -15,8 +15,13 @@ const innerStyles = {
 };
 
 class Popup extends Component {
-    
-    
+    constructor(props) {
+        super(props);
+
+        this.unapply = this.unapply.bind(this);
+        this.accept = this.accept.bind(this);
+        this.reject = this.reject.bind(this);
+    }
     
     capitalize = (stringInput) => {
         let str = stringInput.toString()		
@@ -28,11 +33,40 @@ class Popup extends Component {
 		return date.toUTCString().slice(0,11)
     }
     
-    // TODO IMPLEMENT UNAPPLY HERE NOT IN SCHOLARSHIP.JS
-    
     unapply() {
-		console.log('work in progress...')
-	}
+        fetch(`/api/scholarships/unapply/${this.props.studentID}/${this.props.scholarship.scholarship_id}`, {
+            method: 'post',
+        })
+            .then((res) => {
+                console.log(res);
+                this.props.update();
+                this.props.close();
+            })
+    }
+    
+    accept() {
+        // api is untested currently
+        fetch(`api/accept/${this.props.studentID}/${this.props.scholarship.scholarship_id}`, {
+            method: 'put',
+        })
+            .then((res) => {
+                console.log(res);
+                this.props.update();
+                // we should print a message here (set the state of SCHOLARSHIPS innerMessage)
+            })
+    }
+
+    reject() {
+        // api is untested currently
+        fetch(`api/reject/${this.props.studentID}/${this.props.scholarship.scholarship_id}`, {
+            method: 'post',
+        })
+            .then((res) => {
+                console.log(res);
+                this.props.update();
+                // we should print a message here (set the state of SCHOLARSHIPS innerMessage)
+            })
+    }
 
 	render() {
 
@@ -43,10 +77,10 @@ class Popup extends Component {
             <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} >
                 {/* Display scholarship information */}
 
-                <h2>{this.props.scholarship.scholarship_name}</h2>
-                <p>Faculty: {this.props.scholarship.offering_faculty}</p>
-                <p>Minimum Required GPA: {this.props.scholarship.min_gpa}, Apply By: {new Date(this.props.scholarship.deadline).toUTCString()}</p>
-                <p>{this.props.scholarship.scholarship_description}</p>
+                <h2>{scholarship.scholarship_name}</h2>
+                <p>Faculty: {scholarship.offering_faculty}</p>
+                <p>Minimum Required GPA: {scholarship.min_gpa}, Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
+                <p>{scholarship.scholarship_description}</p>
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
                     {
@@ -60,8 +94,8 @@ class Popup extends Component {
                     {
                         this.props.offered && !this.props.accepted &&
                         <div>
-                            <button onClick={this.props.accepted} > Accept </button>
-                            <button onClick={this.props.reject} > Reject </button>
+                            <button onClick={this.accept} > Accept </button>
+                            <button onClick={this.reject} > Reject </button>
                         </div>
                     }
                 </div>
