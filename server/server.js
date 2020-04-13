@@ -236,6 +236,26 @@ app.post('/api/addScholarship',(req,res) => {
   sendQuery(sql,res);          
 });
 
+// get a list of all scholarships and the average gpa for applying
+app.get('/api/getAvgGpa', (req,res) => {
+  let sql = 'SELECT scholarship_ID, AVG(gpa) AS average_gpa ' +
+            'FROM apply JOIN student USING (student_id) ' +
+            'GROUP BY scholarship_id;'
+  sendQuery(sql,res);          
+});
+
+// get a list of gpa's of scholarships by id
+app.get('/api/getGpa/:scholarship_id',(req, res) => {
+  let sql = `SELECT gpa FROM apply JOIN student USING (student_id) WHERE scholarship_id=${req.params.scholarship_id}`
+  sendQuery(sql,res);
+});
+
+// delete a scholarship
+app.delete('/api/deleteScholarship/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.scholarship WHERE (scholarship_id = ${req.params.scholarship_id});`
+  sendQuery(sql,res);
+});
+
 /*
 TODO: 
 edit scholarship? edit what part?
