@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Scholarships.css';
 import Modal from "react-modal";
 
 
@@ -78,8 +77,9 @@ class Popup extends Component {
                 {/* Display scholarship information */}
 
                 <h2>{scholarship.scholarship_name}</h2>
-                <p>Faculty: {scholarship.offering_faculty}</p>
-                <p>Minimum Required GPA: {scholarship.min_gpa}, Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
+                <p className = "Faculty">Faculty: {scholarship.offering_faculty}</p>
+                <p>Minimum Required GPA: {scholarship.min_gpa}</p>
+                <p>Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
                 <p>{scholarship.scholarship_description}</p>
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
