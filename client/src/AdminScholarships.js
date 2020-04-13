@@ -3,6 +3,7 @@ import './AdminScholarships.css';
 import AdminScholarship from './AdminScholarship';
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
+import PopupAdmin from './PopupAdmin';
 
 
 class AdminScholarships extends Component {
@@ -17,12 +18,17 @@ class AdminScholarships extends Component {
 			scholarships: [],
 			// popup stuff
 			selectedScholarship: {},
+			// popup stuff:
+			modalOpen: false,
+			selectedScholarship: {},
+			innerModalOpen: false,
+			innerModalMessage: "You should't be here...",
 			// seacth stuff:
 			searchQuery: '', //the input typed in by the user
 			scholarshipsToDisplay:  [], //scholarships that the user wants to see
 			selectedFaculties: ["any"], //the faculties that the user wants scholarships from 
 			selectedPrograms: ["any"], //the programs that the user wants scholarships from
-			personalize: false,
+
 		}
 	}
 
@@ -113,13 +119,11 @@ class AdminScholarships extends Component {
 		this.state.scholarshipsToDisplay.forEach(item => {
 			list.push(	
 				<li onClick={() => {
-					if (!item.awarded) {
-						this.setState({
-                            selectedScholarship: item
-						})
-					}
-					alert('selected '+ this.state.selectedScholarship.scholarship_name);
-				} }>
+					this.setState({
+						modalOpen: true,
+						selectedScholarship: item,
+					})
+				}}>
 					<AdminScholarship
 						name={item.scholarship_name}
 						gpa={item.min_gpa}
@@ -180,10 +184,21 @@ class AdminScholarships extends Component {
 					
 				</div>
 
+				<PopupAdmin
+					isOpen={this.state.modalOpen}
+					innerIsOpen={this.state.innerModalOpen}
+					innerMessage={this.state.innerModalMessage}
+					close={() => this.setState({modalOpen: false})}
+					innerClose={() => this.setState({innerModalOpen : false})}
+
+					scholarship={this.state.selectedScholarship}
+
+					// maybe add update and other functions later...
+				/>
 
 				<ul>
-					{this.createList() //This is where all of the scholarships are displayed
-					}
+					{/* This is where all of the scholarships are displayed */}
+					{this.createList()}
 				</ul>
 
 			</div>
