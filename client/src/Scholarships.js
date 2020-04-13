@@ -247,18 +247,21 @@ class Scholarships extends Component {
 					innerMessage={this.state.innerModalMessage}
 					close={() => this.setState({modalOpen: false})}
 					innerClose={() => this.setState({innerModalOpen : false})}
+
+					studentID={this.props.student.student_id}
 					scholarship={this.state.selectedScholarship}
 					appliedFor={this.props.appliedList.filter((item) => { return item.scholarship_id === this.state.selectedScholarship.scholarship_id }).length }
 					offered={false}
 					accepted={false}
+
+					update={() => this.props.updateApplied()}
 					apply={this.apply}
-					accept={() => console.log("accepted!")}
-					reject={() => console.log("rejected!")}
 				/>
 
 
 				<ul>
-					{this.createList() //This is where all of the scholarships are displayed
+					{
+						this.createList() //This is where all of the scholarships are displayed
 					}
 				</ul>
 
