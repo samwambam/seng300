@@ -22,10 +22,6 @@ class AdminScholarship extends Component {
 					<h3 className = "deadline">{this.props.awarded ? "Awarded" : this.props.deadline}</h3>
 				</div>
 
-                <div className="container">
-					<button className = "delete-btn">Delete</button>
-				</div>
-
 			</div>
 		);
 	}

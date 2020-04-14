@@ -15,11 +15,36 @@ const innerStyles = {
 
 
 class Popup extends Component {
-    constructor(props) {
-        super(props);
 
-
+    state = {
+        applicantNum: 0,
+        avgGPA: 0,
     }
+
+    /* componentWillMount() {
+        // grab some stats about the scholarship
+        fetch('/api/getGpa/' + this.props.scholarship.scholarship_id ? this.props.scholarship.scholarship_id : 123456)
+            .then(res => {
+                console.log(res);
+                res = res.json().response;
+                
+
+                let numApp = res.length;
+                let avg;
+                // get the average of the values if there are any applicants
+                if (numApp) {
+                    avg = res.reduce((a, b) => a + b) / numApp;
+                } else {
+                    avg = 0;
+                }
+
+                this.setState({
+                    applicantNum: numApp,
+                    avgGPA: avg,
+                })
+            })
+        // '/api/getGpa/:scholarship_id'
+    } */
     
     capitalize = (stringInput) => {
         let str = stringInput.toString()		
@@ -29,6 +54,15 @@ class Popup extends Component {
 	getDisplayDate = (dateString) => {
         let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
+    }
+
+    delete() {
+        fetch('/api/deleteScholarship/' + this.props.scholarship.scholarship_id, {
+            method: 'post'
+        })
+        .then(res => {
+            console.log(res)
+        })
     }
     
 	render() {
@@ -45,10 +79,11 @@ class Popup extends Component {
                 <p>Minimum Required GPA: {scholarship.min_gpa}</p>
                 <p>Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
                 <p>{scholarship.scholarship_description}</p>
-                <p> Number of applicants: {"number"}</p>
+                <p> Number of applicants: {this.state.applicantNum} (Average GPA: {this.state.avgGPA})</p>
 
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
+					<button className = "delete-btn" onClick={this.delete.bind(this)}>Delete</button>
                 </div>
 
 
