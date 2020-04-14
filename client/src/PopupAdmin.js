@@ -45,6 +45,31 @@ class Popup extends Component {
             })
         // '/api/getGpa/:scholarship_id'
     } */
+
+    componentWillReceiveProps() {
+        let scholarship = this.props.scholarship;
+
+        // grab some stats about the scholarship
+        fetch(`/api/getCountAndAvgGpa/${scholarship.scholarship_id ? scholarship.scholarship_id : 123456}`)
+            .then((res) => res = res.json())
+            .then(data => {
+                console.log(data.response, "data");
+                
+                if (data.response != null && data.response.length) {
+                    console.log("setting!");
+                    
+                    this.setState({
+                        applicantNum: data.response[0].num_applied,
+                        avgGPA: data.response[0].avg_gpa,
+                    })
+                } else {
+                    this.setState({
+                        applicantNum: 0,
+                        avgGPA: 0,
+                    })
+                }
+            })
+    }
     
     capitalize = (stringInput) => {
         let str = stringInput.toString()		
@@ -58,7 +83,7 @@ class Popup extends Component {
 
     delete() {
         fetch('/api/deleteScholarship/' + this.props.scholarship.scholarship_id, {
-            method: 'post'
+            method: 'delete'
         })
         .then(res => {
             console.log(res)
@@ -68,6 +93,12 @@ class Popup extends Component {
 	render() {
 
         let scholarship = this.props.scholarship;
+        // let id = Object.keys(scholarship).length ? scholarship.scholarship_id : 123456;
+        // this.getStats(id);
+        // console.log(id);
+        
+        // let applicantNum = info[0]
+        // let avgGPA = info[1]
 
     	return (
 
@@ -79,6 +110,7 @@ class Popup extends Component {
                 <p>Minimum Required GPA: {scholarship.min_gpa}</p>
                 <p>Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
                 <p>{scholarship.scholarship_description}</p>
+                {/* <p> Number of applicants: {applicantNum} (Average GPA: {avgGPA})</p> */}
                 <p> Number of applicants: {this.state.applicantNum} (Average GPA: {this.state.avgGPA})</p>
 
                 <div>
