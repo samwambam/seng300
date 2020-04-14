@@ -21,30 +21,19 @@ class Popup extends Component {
         avgGPA: 0,
     }
 
-    /* componentWillMount() {
+    componentWillMount() {
         // grab some stats about the scholarship
-        fetch('/api/getGpa/' + this.props.scholarship.scholarship_id ? this.props.scholarship.scholarship_id : 123456)
-            .then(res => {
-                console.log(res);
-                res = res.json().response;
-                
-
-                let numApp = res.length;
-                let avg;
-                // get the average of the values if there are any applicants
-                if (numApp) {
-                    avg = res.reduce((a, b) => a + b) / numApp;
-                } else {
-                    avg = 0;
-                }
-
+        fetch(`/api/getCountAndAvgGpa/${this.props.scholarship.scholarship_id}`)
+        .then((res) => res.json())
+        .then(data => {
+            if (data.response.length > 0) {
                 this.setState({
-                    applicantNum: numApp,
-                    avgGPA: avg,
+                    applicantNum: data.response.num_applied,
+                    avgGPA: data.response.avg_gpa,
                 })
-            })
-        // '/api/getGpa/:scholarship_id'
-    } */
+            }
+        })
+    }
     
     capitalize = (stringInput) => {
         let str = stringInput.toString()		
@@ -58,7 +47,7 @@ class Popup extends Component {
 
     delete() {
         fetch('/api/deleteScholarship/' + this.props.scholarship.scholarship_id, {
-            method: 'post'
+            method: 'delete'
         })
         .then(res => {
             console.log(res)
