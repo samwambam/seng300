@@ -256,6 +256,15 @@ app.delete('/api/deleteScholarship/:scholarship_id', (req, res) => {
   sendQuery(sql,res);
 });
 
+//get a number of applicants and average gpa for scholarship
+app.get('/api/getCountAndAvgGpa/:scholarship_id', (req,res) =>{
+  let sql = `SELECT scholarship_id, COUNT(*) AS num_applied, AVG(gpa) as avg_gpa ` +
+            `FROM apply JOIN student USING(student_id) ` +
+            `WHERE scholarship_id = ${req.params.scholarship_id} ` +
+            `GROUP BY scholarship_id;`;
+  sendQuery(sql,res);           
+});
+
 /*
 TODO: 
 edit scholarship? edit what part?

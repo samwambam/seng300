@@ -15,10 +15,60 @@ const innerStyles = {
 
 
 class Popup extends Component {
-    constructor(props) {
-        super(props);
 
+    state = {
+        applicantNum: 0,
+        avgGPA: 0,
+    }
 
+    /* componentWillMount() {
+        // grab some stats about the scholarship
+        fetch('/api/getGpa/' + this.props.scholarship.scholarship_id ? this.props.scholarship.scholarship_id : 123456)
+            .then(res => {
+                console.log(res);
+                res = res.json().response;
+                
+
+                let numApp = res.length;
+                let avg;
+                // get the average of the values if there are any applicants
+                if (numApp) {
+                    avg = res.reduce((a, b) => a + b) / numApp;
+                } else {
+                    avg = 0;
+                }
+
+                this.setState({
+                    applicantNum: numApp,
+                    avgGPA: avg,
+                })
+            })
+        // '/api/getGpa/:scholarship_id'
+    } */
+
+    componentWillReceiveProps() {
+        let scholarship = this.props.scholarship;
+
+        // grab some stats about the scholarship
+        fetch(`/api/getCountAndAvgGpa/${scholarship.scholarship_id ? scholarship.scholarship_id : 123456}`)
+            .then((res) => res = res.json())
+            .then(data => {
+                console.log(data.response, "data");
+                
+                if (data.response != null && data.response.length) {
+                    console.log("setting!");
+                    
+                    this.setState({
+                        applicantNum: data.response[0].num_applied,
+                        avgGPA: data.response[0].avg_gpa,
+                    })
+                } else {
+                    this.setState({
+                        applicantNum: 0,
+                        avgGPA: 0,
+                    })
+                }
+            })
     }
     
     capitalize = (stringInput) => {
@@ -30,10 +80,25 @@ class Popup extends Component {
         let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
     }
+
+    delete() {
+        fetch('/api/deleteScholarship/' + this.props.scholarship.scholarship_id, {
+            method: 'delete'
+        })
+        .then(res => {
+            console.log(res)
+        })
+    }
     
 	render() {
 
         let scholarship = this.props.scholarship;
+        // let id = Object.keys(scholarship).length ? scholarship.scholarship_id : 123456;
+        // this.getStats(id);
+        // console.log(id);
+        
+        // let applicantNum = info[0]
+        // let avgGPA = info[1]
 
     	return (
 
@@ -45,10 +110,12 @@ class Popup extends Component {
                 <p>Minimum Required GPA: {scholarship.min_gpa}</p>
                 <p>Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
                 <p>{scholarship.scholarship_description}</p>
-                <p> Number of applicants: {"number"}</p>
+                {/* <p> Number of applicants: {applicantNum} (Average GPA: {avgGPA})</p> */}
+                <p> Number of applicants: {this.state.applicantNum} (Average GPA: {this.state.avgGPA})</p>
 
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
+					<button className = "delete-btn" onClick={this.delete.bind(this)}>Delete</button>
                 </div>
 
 
