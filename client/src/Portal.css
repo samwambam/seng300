@@ -60,7 +60,7 @@ ul {
 
 /*This is for the logo in the top left corner, just a bunch of resizing and positioning*/
 div.logo.portal{
-    background-image: url("images/Logo.png");
+    background-image: url("images/Logo.png"); /*taken from https://www.uwinnipeg.ca */
     background-repeat: no-repeat;
     height: 150px;
     width: 180px;
@@ -78,13 +78,14 @@ div.signout{
 }
 
 
-
+/*margin of the list from the left is -40px*/
 li{
     margin-left:-40px;
 }
 
+/*door picture beside the signout button*/
 div.door{
-    background-image: url("images/door.png");
+    background-image: url("images/door.png"); /*taken from http://clipart-library.com/clipart/810585.htm */
     position: absolute;
     right: 50px;
     top: 50px;
