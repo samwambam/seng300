@@ -68,8 +68,6 @@ class Applications extends Scholarships {
 
 					studentID={this.props.studentID}
 					appliedFor={true}
-					offered={false}
-					accepted={false}
 					
 					update={() => this.props.updateApplied()}
 					apply={this.apply}
