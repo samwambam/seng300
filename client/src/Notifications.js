@@ -46,6 +46,7 @@ class Notifications extends Component {
 					<Scholarship 
 						name={item.scholarship_name}
 						gpa={item.min_gpa}
+						amount={item.amount}
 						faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
 						deadline={this.getDisplayDate(item.deadline)}
 						awarded={item.awarded}
