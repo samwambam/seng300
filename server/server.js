@@ -236,6 +236,11 @@ app.post('/api/addScholarship',(req,res) => {
   sendQuery(sql,res);          
 });
 
+app.get('/api/offered/:student_id/:scholarship_id', (req,res) =>{
+  let sql = `SELECT accepted FROM award WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id}`;
+  sendQuery(sql,res); 
+})
+
 // get a list of all scholarships and the average gpa for applying
 app.get('/api/getAvgGpa', (req,res) => {
   let sql = 'SELECT scholarship_ID, AVG(gpa) AS average_gpa ' +
