@@ -131,24 +131,6 @@ app.get('/info', (req, res) => {
   }
 })
 
-// function to query database and send response
-function sendQuery(sql, res) {
-  let query = db.query(sql, (err,results) => {
-    if (err) {
-      res.json({
-        'status' : 300,
-        'error': err 
-      });
-    } else {
-      res.json({
-          'status' : 200,
-          'error': null,
-          'response' : results
-      });
-    }
-  });
-}
-
 // get all scholarships
 app.get('/api/scholarships', (req,res) => {
   let sql = 'SELECT * from scholarship';
@@ -176,6 +158,12 @@ app.post('/api/scholarships/apply/:student_id/:scholarship_id', (req,res) => {
             `VALUES (${req.params.student_id}, ${req.params.scholarship_id})`;
   sendQuery(sql, res);
 });
+
+//unapply from a scholarship
+app.post('/api/scholarships/unapply/:student_id/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.apply WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id}`
+  sendQuery(sql, res);
+})
 
 //get user id by username
 app.get('/api/users/:usertype/:username', (req, res) => {
@@ -225,6 +213,14 @@ app.put('/api/accept/:student_id/:scholarship_id', (req, res) => {
   sendQuery(sql, res);        
 });
 
+// reject awarded scholarship
+app.post('/api/reject/:student_id/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.award` + 
+            `WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params.scholarship_id}; ` + 
+            `DELETE FROM scholarships.apply WHERE student_id=${req.params.student_id} AND scholarship_id=${req.params,s.scholarship_id}`;
+  sendQuery(sql, res);        
+});
+
 //get student_id for all applicants for a scholarship
 app.get('/api/applicants/:scholarship_id', (req,res) => {
   let sql = `SELECT DISTINCT student_id FROM scholarships.apply WHERE scholarship_id=${req.params.scholarship_id}`;
@@ -232,12 +228,41 @@ app.get('/api/applicants/:scholarship_id', (req,res) => {
 });
 
 //add scholarship to database
-app.put('/api/scholarships/add',(req,res) => {
+app.post('/api/addScholarship',(req,res) => {
   let sql = 'INSERT INTO scholarships.scholarship (scholarship_id, scholarship_name, awarded, ' +       
             'offering_faculty, offering_status, deadline, min_gpa,scholarship_description) VALUES ' +
             `(${req.body.scholarshipId}, \'${req.body.scholarshipName}\', 0, \'${req.body.faculty}\',` +
             `\'${req.body.status}\', \'${req.body.deadline}\',\'${req.body.mingpa}\', \'${req.body.description}\');`;
   sendQuery(sql,res);          
+});
+
+// get a list of all scholarships and the average gpa for applying
+app.get('/api/getAvgGpa', (req,res) => {
+  let sql = 'SELECT scholarship_ID, AVG(gpa) AS average_gpa ' +
+            'FROM apply JOIN student USING (student_id) ' +
+            'GROUP BY scholarship_id;'
+  sendQuery(sql,res);          
+});
+
+// get a list of gpa's of scholarships by id
+app.get('/api/getGpa/:scholarship_id',(req, res) => {
+  let sql = `SELECT gpa FROM apply JOIN student USING (student_id) WHERE scholarship_id=${req.params.scholarship_id}`
+  sendQuery(sql,res);
+});
+
+// delete a scholarship
+app.delete('/api/deleteScholarship/:scholarship_id', (req, res) => {
+  let sql = `DELETE FROM scholarships.scholarship WHERE (scholarship_id = ${req.params.scholarship_id});`
+  sendQuery(sql,res);
+});
+
+//get a number of applicants and average gpa for scholarship
+app.get('/api/getCountAndAvgGpa/:scholarship_id', (req,res) =>{
+  let sql = `SELECT scholarship_id, COUNT(*) AS num_applied, AVG(gpa) as avg_gpa ` +
+            `FROM apply JOIN student USING(student_id) ` +
+            `WHERE scholarship_id = ${req.params.scholarship_id} ` +
+            `GROUP BY scholarship_id;`;
+  sendQuery(sql,res);           
 });
 
 /*

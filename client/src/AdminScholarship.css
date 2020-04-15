@@ -1,0 +1,30 @@
+div.scholarship {
+    border: 2px solid #000000;
+}
+
+.scholarship:hover{
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("images/BoxBackGround.png");
+    cursor: pointer;
+}
+
+div.scholarship div.container {
+    display: flex;
+    flex-direction: row;
+    
+    margin-left: 20px;
+}
+
+.faculty,.deadline{
+    position: absolute;
+    right: 60px;
+}
+
+button {
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 0;
+    margin-bottom: 0;
+    border: 2px solid #000000;
+    font-size: 25px;
+}

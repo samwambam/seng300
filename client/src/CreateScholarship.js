@@ -1,31 +1,132 @@
 import React, { Component } from 'react';
 import './CreateScholarship.css';
 
-
 class CreateScholarship extends Component {
+    constructor(props) {
+		super(props);
+    
+        // default values populated for testing. set blank once works
+		this.state = {
+            scholarshipName: '',
+            scholarshipId: 0,
+            deadline: '',
+            faculty: '',
+            status: '',
+            minGpa: 0.0,
+            description: '',
+            amount: 0
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    // function to set state variables when they are updated in the form
+    handleInputChange(event) {
+        const target = event.target;
+        const name = target.name;
+        const value = target.value;
+        
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        
+        let formData = new URLSearchParams({
+            'scholarshipName' : `${this.state.scholarshipName}`,
+            'scholarshipId' : `${this.state.scholarshipId}`,
+            'deadline' : `${this.state.deadline}`,
+            'faculty' : `${this.state.faculty}`,
+            'status' : `${this.state.status}`,
+            'mingpa': `${this.state.minGpa}`,
+            'description': `${this.state.description}`,
+            'amount': `${this.state.amount}`
+            
+        });
+
+        fetch('/api/addScholarship', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then((data) => {
+            if (data.error !== null) {
+                alert("Error: "+ data.error.code);
+            } else {
+                alert("Added scholasrhip!");
+                this.setState({
+                    scholarshipName: '',
+                    scholarshipId: 0,
+                    deadline: '',
+                    faculty: 'science',
+                    status: 'undergraduate',
+                    minGpa: 0.0,
+                    description: '',
+                    amount: 0
+                });
+            }
+        });
+    }
 
 	render() {
     	return (
 			<div>
 				<h1 className = "Title">Add New Scholarship</h1>
-                <form>
-                    <div class="form-element">
+                <form onSubmit={this.handleSubmit}>
+
+                    <div className="form-element">
                         <label>Name</label>
-                        <input name="scholarshipName" type="text"/>
+                        <input 
+                            name = "scholarshipName"
+                            type = "text"
+                            maxLength = "45"
+                            value = {this.state.scholarshipName} 
+                            onChange={this.handleInputChange}/>
                     </div>
 
-                    <div class="form-element">
+                    <div className="form-element">
                         <label>ID</label>
-                        <input name="scholarshipId" type="number"/>
+                        <input 
+                            name = "scholarshipId"
+                            type = "number"
+                            min = "100000"
+                            max = "999999"
+                            value = {this.state.scholarshipId}
+                            onChange = {this.handleInputChange}/>
                     </div>
 
-                    <div class="form-element">
-                        <label>Deadline</label>
-                        <input name="deadline" type="date"/>
+                    <div className="form-element">
+                        <label>Value</label>
+                        <input 
+                            name = "amount"
+                            type = "number"
+                            min = "0"
+                            max = "20000"
+                            value = {this.state.amount}
+                            onChange = {this.handleInputChange}/>
                     </div>
-                    <div class="form-element">
+
+
+                    <div className="form-element">
+                        <label>Deadline</label>
+                        <input 
+                            name="deadline"
+                            type="date"
+                            value = {this.state.deadline}
+                            onChange = {this.handleInputChange}/>
+                    </div>
+
+                    <div className="form-element">
                         <label>Faculty</label>
-                        <select name='faculty'>
+                        <select name='faculty'value={this.state.faculty} onChange={this.handleInputChange}>
                             <option value="science">Science</option>
                             <option value="engineering">Engineering</option>
                             <option value="arts">Arts</option>
@@ -33,24 +134,38 @@ class CreateScholarship extends Component {
                             <option value="nursing">Nursing</option>
                         </select>
                     </div>
-                    <div class="form-element">
+
+                    <div className="form-element">
                         <label>Status</label>
-                        <select name='status'>
+                        <select name='faculty'value={this.state.status} onChange={this.handleInputChange}>
                             <option value="undergraduate">Undergraduate</option>
                             <option value="graduate">Graduate</option>
                             <option value="masters">Masters</option>
                             <option value="doctoral">Doctoral</option>
                         </select>
                     </div>
-                    <div class="form-element">
+
+                    <div className="form-element">
                         <label>Minimum GPA</label>
-                        <input name = 'mingpa' type="number" placeholder="3.5" step="0.01" min="0" max="4.0"/>
+                        <input 
+                            name = 'minGpa'
+                            type="number"
+                            value = {this.state.minGpa}
+                            onChange = {this.handleInputChange}
+                            step="0.01"
+                            min="0.0"
+                            max="4.0"/>
                     </div>
-                    <div class="form-element">
+
+                    <div className="form-element">
                         <label>Description</label>
-                        <textarea name="description"></textarea>
+                        <textarea 
+                            name="description"
+                            value={this.state.description}
+                            onChange={this.handleInputChange}/>
                     </div>
-                    <input type="submit" value="Submit" />
+
+                    <input type="submit" value="Submit"/>
                 </form>
 			</div>
 		);

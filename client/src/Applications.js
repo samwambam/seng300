@@ -1,42 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Scholarship from './Scholarship'
 import Popup from './Popup';
+import Scholarships from './Scholarships';
 
-
-class Applications extends Component {
-	/*
+/*
 	The list of scholarships that were applied for are displayed
-	*/
-
-	constructor(props){
-		super(props);
-		this.state = {
-			scholarships: [],
-			selectedScholarship: {}, //the scholarship that is clicked on
-			scholarshipsToDisplay:  [],
-			modalOpen: false, //boolean that decides if an element will popup
-			innerModalOpen: false,
-			innerModalMessage: "You should't be here...",
-		}
-	}
-	
-	/*
-	The first character of paramter stringInput is converted to uppercase, and the whole string is returned
-	*/
-	capitalize = (stringInput) => {
-		let str = stringInput.toString()		
-		return str.charAt(0).toUpperCase() + '' + str.slice(1)
-	}
-
-	/*
-	The parameter dateString is converted to Universal Coordinated Time format and returned
-	*/
-	getDisplayDate = (dateString) => {
-		let date = new Date(dateString)
-		return date.toUTCString().slice(0,11)
-	}
-	
+*/
+class Applications extends Scholarships {
 	
 	/*
 	Goes through each scholarship that was applied for and sets up the information that will be displayed. The list is returned.
@@ -72,25 +43,20 @@ class Applications extends Component {
 		});
 		return list;
 	}
-	render() {
-
-		// let id = this.props.id;
-
-		// console.log(id);
-		
+	render() {		
 		
     	return (
 			<div>
 				<h1 className = "Title"> My Applications </h1>
-				<ul>
-				{this.createList()}
-				</ul>
 				
-        {/*
-				When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
-				scholarship
-				*/
-				}
+				<ul> {
+					this.createList()
+				} </ul>
+				
+        		{/*
+					When a scholarship is clicked on, an element pops up and shows the name, faculty, GPA requried, and description of the
+					scholarship
+				*/}
 				<Popup
 					isOpen={this.state.modalOpen}
 					innerIsOpen={this.state.innerModalOpen}
@@ -98,12 +64,14 @@ class Applications extends Component {
 					close={() => this.setState({modalOpen: false})}
 					innerClose={() => this.setState({innerModalOpen : false})}
 					scholarship={this.state.selectedScholarship}
+
+					studentID={this.props.studentID}
 					appliedFor={true}
 					offered={false}
 					accepted={false}
+					
+					update={() => this.props.updateApplied()}
 					apply={this.apply}
-					accept={() => console.log("accepted!")}
-					reject={() => console.log("rejected!")}
 				/>
 
 			</div>

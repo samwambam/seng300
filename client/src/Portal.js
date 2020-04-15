@@ -6,7 +6,7 @@ import Applications from './Applications';
 import Profile from './Profile';
 import Notifications from './Notifications';
 import CreateScholarship from './CreateScholarship';
-
+import AdminScholarships from './AdminScholarships';
 
 
 class Portal extends Component {
@@ -135,7 +135,7 @@ class Portal extends Component {
                         <div className = "door" > </div>
                     </Link>
                     
-                
+
                     <Router>
                         <div className='portal'>  
                             {
@@ -178,9 +178,9 @@ class Portal extends Component {
                                             </div>
                                         </Link>
 
-                                        <Link to="/portal/applications">
+                                        <Link to="/portal/adminlist">
                                             <div className = "menuItem">
-                                                View Applicants
+                                                View Scholarships
                                             </div>  
                                         </Link>
                                     </div>
@@ -193,9 +193,10 @@ class Portal extends Component {
                                         <Switch>
                                             <Route
                                                 path='/portal/applications'
-                                                render={(props) => <Applications {...props} list={this.state.appliedFor} />}
+                                                render={(props) => <Applications {...props} studentID={this.state.id} list={this.state.appliedFor} updateApplied={this.handleAppliedUpdate} />}
                                             />
-                                            <Route
+
+                                 <Route
                                                 path='/portal/profile'
                                                 render={(props) => <Profile {...props} info={this.state.details} />}
                                             />
@@ -215,6 +216,10 @@ class Portal extends Component {
                                             <Route 
                                                 path='/portal/addnew'
                                                 component = {CreateScholarship}
+                                            />
+                                            <Route
+                                                path='/portal/adminlist'
+                                                component = {AdminScholarships}
                                             />
                                         </Switch>  
                                 }

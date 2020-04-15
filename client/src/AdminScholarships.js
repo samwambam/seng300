@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import './Scholarships.css';
-import Scholarship from './Scholarship';
+import './AdminScholarships.css';
+import AdminScholarship from './AdminScholarship';
 import Select from "react-select";
 import { facultyOptions, programOptions } from "./docs/Data";
-import Popup from "./Popup";
+import PopupAdmin from './PopupAdmin';
 
 
-class Scholarships extends Component {
+class AdminScholarships extends Component {
 	/*
 	displays scholarships that we can search for and filter through
 	*/
@@ -16,6 +16,8 @@ class Scholarships extends Component {
     
 		this.state = {
 			scholarships: [],
+			// popup stuff
+			selectedScholarship: {},
 			// popup stuff:
 			modalOpen: false,
 			selectedScholarship: {},
@@ -26,68 +28,13 @@ class Scholarships extends Component {
 			scholarshipsToDisplay:  [], //scholarships that the user wants to see
 			selectedFaculties: ["any"], //the faculties that the user wants scholarships from 
 			selectedPrograms: ["any"], //the programs that the user wants scholarships from
-		}
 
-		this.apply = this.apply.bind(this);
+		}
 	}
 
 	/*get the list of scholarships from server after components are rendered*/
 	componentDidMount() {	
 		this.scholarshipList();
-	}
-
-	/*
-	Applying for a scholarship
-	*/
-	apply() {
-		// check:
-		// 1. Can apply (correct program, faculty, GPA, etc)
-		// 2. Has spots (has applied for less than 3 awards)
-		// 3. Has not applied for this scholarship yet
-		// 4. Scholarship has not been awarded yet
-		
-		let student = this.props.student;
-		let selected = this.state.selectedScholarship;
-		let list = this.props.appliedList;
-
-		let check1 = (
-					student.faculty === selected.offering_faculty &&
-					student.status === selected.offering_status &&
-					student.gpa >= selected.min_gpa &&
-					!student.wd_on_transcript
-		);
-
-		let check2 = list.length < 3;
-
-		let check3 = list.filter((item) => {
-			return item.scholarship_id === selected.scholarship_id
-		}).length === 0;
-		
-		let check4 = !selected.awarded;
-
-		// console.log(check1, check2, check3, check4);
-		
-
-		if (check1 && check2 && check3 && check4) {
-			// apply for a scholarship
-
-			fetch(`/api/scholarships/apply/${student.student_id}/${selected.scholarship_id}`, {
-				method: 'post'
-			})
-
-			// set a success message
-			this.setState({innerModalMessage: "Successfully applied!"})
-		} else {
-			// console.log("Unable to apply. Check that you're eligible")
-			this.setState({innerModalMessage: "Couldn't apply, make sure you're eligible."})
-		}
-
-		// Display the popup message
-		this.setState({innerModalOpen: true})
-
-		// after applied for, update the state in portal by fetching the list of scholatships applied for again
-		console.log(this.state.selectedScholarship)
-		this.props.updateApplied();
 	}
 
 
@@ -172,17 +119,14 @@ class Scholarships extends Component {
 		this.state.scholarshipsToDisplay.forEach(item => {
 			list.push(	
 				<li onClick={() => {
-					if (!item.awarded) {
-						this.setState({
-							modalOpen: true,
-							selectedScholarship: item
-						})
-					}
-				} }>
-					<Scholarship
+					this.setState({
+						modalOpen: true,
+						selectedScholarship: item,
+					})
+				}}>
+					<AdminScholarship
 						name={item.scholarship_name}
 						gpa={item.min_gpa}
-						amount={item.amount}
 						faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
 						deadline={this.getDisplayDate(item.deadline)}
 						awarded={item.awarded}
@@ -240,29 +184,21 @@ class Scholarships extends Component {
 					
 				</div>
 
-				{/* This is a popup "div" for more info on each scholarship */}
-				<Popup
+				<PopupAdmin
 					isOpen={this.state.modalOpen}
 					innerIsOpen={this.state.innerModalOpen}
 					innerMessage={this.state.innerModalMessage}
 					close={() => this.setState({modalOpen: false})}
 					innerClose={() => this.setState({innerModalOpen : false})}
 
-					studentID={this.props.student.student_id}
 					scholarship={this.state.selectedScholarship}
-					appliedFor={this.props.appliedList.filter((item) => { return item.scholarship_id === this.state.selectedScholarship.scholarship_id }).length }
-					offered={false}
-					accepted={false}
 
-					update={() => this.props.updateApplied()}
-					apply={this.apply}
+					// maybe add update and other functions later...
 				/>
 
-
 				<ul>
-					{
-						this.createList() //This is where all of the scholarships are displayed
-					}
+					{/* This is where all of the scholarships are displayed */}
+					{this.createList()}
 				</ul>
 
 			</div>
@@ -270,5 +206,4 @@ class Scholarships extends Component {
 	}
 }
 
-
-export default Scholarships;
+export default AdminScholarships;

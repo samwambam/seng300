@@ -1,10 +1,10 @@
-/*This is the search bar, it sets the formation in a row*/
+
 .filter {
     display: flex;
     flex-direction: row;
 }
 
-/*Gives each element padding and sets the font*/
+
 .filter input[type=text] {
     /* float: right; */
     padding: 6px;
@@ -16,7 +16,7 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
-/*This just lays out the search formation*/
+
 .filter .select {
     margin: 16px;
     width: 32%;

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import './Scholarship.css';
-// import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-// import Login from './Login';
+import './AdminScholarship.css';
 
 
-class Scholarship extends Component {
+
+class AdminScholarship extends Component {
 	/*
 	Sets up the format of how scholarships will be displayed 
 	*/
@@ -14,14 +13,13 @@ class Scholarship extends Component {
 			<div className="scholarship">
 				
 				<div className="container">
-					<h3 className = "name"> {this.props.name + "  ($" + this.props.amount +")"} </h3>
+					<h3 className = "name"> {this.props.name} </h3>
 					<h3 className = "faculty"> {this.props.faculty} </h3>
 				</div>
 
 				<div className="container">
 					<h3 className = "gpa"> GPA: {this.props.gpa} </h3>
 					<h3 className = "deadline">{this.props.awarded ? "Awarded" : this.props.deadline}</h3>
-				
 				</div>
 
 			</div>
@@ -29,4 +27,4 @@ class Scholarship extends Component {
 	}
 }
 
-export default Scholarship;
+export default AdminScholarship;
