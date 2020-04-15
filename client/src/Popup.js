@@ -22,16 +22,19 @@ class Popup extends Component {
         this.reject = this.reject.bind(this);
     }
     
+    /*This function capitalizes any string input*/ 
     capitalize = (stringInput) => {
         let str = stringInput.toString()		
 		return str.charAt(0).toUpperCase() + '' + str.slice(1)
 	}
     
+    /*Changes the date to UTC format*/ 
 	getDisplayDate = (dateString) => {
         let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
     }
     
+  
     unapply() {
         fetch(`/api/scholarships/unapply/${this.props.studentID}/${this.props.scholarship.scholarship_id}`, {
             method: 'post',
@@ -72,7 +75,7 @@ class Popup extends Component {
         let scholarship = this.props.scholarship;
 
     	return (
-
+            /*When you click on the scholarship the modal opens up, displays the scholarship information, it handles accepting, rejecting, unapplying and applying */
             <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} >
                 {/* Display scholarship information */}
 
@@ -96,10 +99,12 @@ class Popup extends Component {
                         <div>
                             <button onClick={this.accept} > Accept </button>
                             <button onClick={this.reject} > Reject </button>
+                            
                         </div>
                     }
                 </div>
-
+                
+                {/*When clicking the apply/unapply button it opens a secondary modal that just says if the application or unapplication was successful*/}
                 <Modal isOpen={this.props.innerIsOpen} style={innerStyles}>
                     <p>{this.props.innerMessage}</p>
                     <button onClick={this.props.innerClose}> OK </button>

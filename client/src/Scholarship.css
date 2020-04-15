@@ -1,14 +1,17 @@
+/*borders the scholarship*/
 div.scholarship {
     border: 2px solid #000000;
 }
 
+/*Highlights the scholarship when you hover over it*/
 .scholarship:hover{
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-image: url("images/BoxBackGround.png");
+    background-image: url("images/BoxBackGround.png"); /*taken from https://www.uwinnipeg.ca/_files/images/responsive-2014/topBar.png*/
     cursor: pointer;
 }
 
+/*Formatting the information in the div of the scholarship to be in row form*/
 div.scholarship div.container {
     display: flex;
     flex-direction: row;
@@ -16,6 +19,7 @@ div.scholarship div.container {
     margin-left: 20px;
 }
 
+/*This sets the position of the faculty and the deadline that is portrayed in the scholarship*/
 .faculty,.deadline{
     position: absolute;
     right: 60px;

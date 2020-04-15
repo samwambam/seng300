@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Notifications.css';
 import Scholarship from './Scholarship'
 
 
@@ -40,27 +40,29 @@ class Notifications extends Component {
 
 		this.props.appliedList.forEach(item => {
 			if(item.awarded){
-				list.push(<li> 
-							Your application for the {item.scholarship_name} scholarship has been accepted
-							<Scholarship
-								name={item.scholarship_name}
-								gpa={item.min_gpa}
-								faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
-								deadline={this.getDisplayDate(item.deadline)}
-								awarded={item.awarded}
-							/>	
-						</li>)
+				list.push(<div className = "notif">
+					<p className = "message"> 
+						Your application for the {item.scholarship_name} scholarship has been accepted </p>
+					<Scholarship 
+						name={item.scholarship_name}
+						gpa={item.min_gpa}
+						faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
+						deadline={this.getDisplayDate(item.deadline)}
+						awarded={item.awarded}
+					/>	
+				</div>)
 			}else{
-				list.push(<li> 
-							Sorry, your application for the {item.scholarship_name} scholarship has not been accepted
-							<Scholarship
-								name={item.scholarship_name}
-								gpa={item.min_gpa}
-								faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
-								deadline={this.getDisplayDate(item.deadline)}
-								awarded={item.awarded}
-							/>
-						</li>)
+				list.push(<div className = "notif">
+					<p className = "message"> 
+						Your application for the {item.scholarship_name} scholarship has not been accepted </p>
+					<Scholarship 
+						name={item.scholarship_name}
+						gpa={item.min_gpa}
+						faculty={"Faculty: " + this.capitalize(item.offering_faculty)}
+						deadline={this.getDisplayDate(item.deadline)}
+						awarded={item.awarded}
+					/>	
+				</div>)
 			}
 		})
 		return list;
@@ -80,17 +82,6 @@ class Notifications extends Component {
     	return (
 			<div>
 				<h1 className = "Title">Notifications</h1>
-				
-				{/* <ul>
-				  <li>
-						Scholarship 1
-					</li>
-					<li>
-						Scholarship 2
-					</li>
-				</ul> */
-				}
-
 				<ul className= "notif">
 				{this.message()}
 				</ul>

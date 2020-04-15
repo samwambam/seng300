@@ -1,0 +1,9 @@
+/*Sets the font size to x-large*/
+.message {
+    font-size: x-large;
+}
+
+/*margin of the div from the left is 20px*/
+.notif{
+    margin-left: -20px;
+}

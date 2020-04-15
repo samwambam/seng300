@@ -51,10 +51,7 @@ div.profilepic{
   background-size: 100%;
 }
 
-ul.notif{
-  padding-left: 0;
-}
-
+/*changes the font family*/
 body{
   font-family: 'Times New Roman', Times, serif;
 }
