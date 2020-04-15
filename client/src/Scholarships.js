@@ -64,8 +64,6 @@ class Scholarships extends Component {
 		}).length === 0;
 		
 		let check4 = !selected.awarded;
-
-		// console.log(check1, check2, check3, check4);
 		
 
 		if (check1 && check2 && check3 && check4) {
@@ -78,7 +76,6 @@ class Scholarships extends Component {
 			// set a success message
 			this.setState({innerModalMessage: "Successfully applied!"})
 		} else {
-			// console.log("Unable to apply. Check that you're eligible")
 			this.setState({innerModalMessage: "Couldn't apply, make sure you're eligible."})
 		}
 

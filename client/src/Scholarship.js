@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './Scholarship.css';
-// import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-// import Login from './Login';
 
 
 class Scholarship extends Component {
