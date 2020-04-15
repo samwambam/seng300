@@ -25,7 +25,7 @@ class Popup extends Component {
         let scholarship = this.props.scholarship;
 
         // grab some stats about the scholarship
-        fetch(`/api/getCountAndAvgGpa/${scholarship.scholarship_id ? scholarship.scholarship_id : 123456}`)
+        fetch(`/api/getCountAndAvgGpa/${scholarship.scholarship_id}`)
             .then((res) => res = res.json())
             .then(data => {
                 console.log(data.response, "data");
@@ -79,15 +79,12 @@ class Popup extends Component {
                 <p>Minimum Required GPA: {scholarship.min_gpa}</p>
                 <p>Apply By: {new Date(scholarship.deadline).toUTCString()}</p>
                 <p>{scholarship.scholarship_description}</p>
-                <p> Number of applicants: {this.state.applicantNum} (Average GPA: {this.state.avgGPA})</p>
+                <p> Number of applicants: {this.state.applicantNum} (Average GPA: {this.state.avgGPA})</p>               
 
                 <div>
                     <button onClick={this.props.close}>Cancel</button>
 					<button className = "delete-btn" onClick={this.delete.bind(this)}>Delete</button>
                 </div>
-
-
-
 
                 <Modal isOpen={this.props.innerIsOpen} style={innerStyles}>
                     <p>{this.props.innerMessage}</p>
