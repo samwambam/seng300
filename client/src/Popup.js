@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Modal from "react-modal";
-import { response } from 'express';
 
 
 const innerStyles = {
@@ -34,14 +33,6 @@ class Popup extends Component {
         let date = new Date(dateString)
 		return date.toUTCString().slice(0,11)
     }
-
-    offered() {
-        fetch(`/api/offered/${this.props.studentID}/${this.props.scholarship.scholarship_id}`)
-        .then(res => res.json())
-        .then(response => {
-            console.log(response);
-        })
-    }
     
   
     unapply() {
@@ -64,6 +55,7 @@ class Popup extends Component {
                 console.log(res);
                 this.props.update();
                 // we should print a message here (set the state of SCHOLARSHIPS innerMessage)
+                this.props.close();
             })
     }
 
@@ -75,6 +67,7 @@ class Popup extends Component {
             .then((res) => {
                 console.log(res);
                 this.props.update();
+                this.props.close();
                 // we should print a message here (set the state of SCHOLARSHIPS innerMessage)
             })
     }
@@ -103,9 +96,7 @@ class Popup extends Component {
                         this.props.appliedFor && !this.props.offered &&
                             <button onClick={this.unapply} > Unapply </button>
                     }
-                    {
-                        this.offered()
-                    }
+
                     {
                         this.props.offered && !this.props.accepted &&
                         <div>

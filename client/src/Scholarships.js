@@ -248,6 +248,8 @@ class Scholarships extends Component {
 					studentID={this.props.student.student_id}
 					scholarship={this.state.selectedScholarship}
 					appliedFor={this.props.appliedList.filter((item) => { return item.scholarship_id === this.state.selectedScholarship.scholarship_id }).length }
+					offered={false}
+					accepted={false}
 
 					update={() => this.props.updateApplied()}
 					apply={this.apply}

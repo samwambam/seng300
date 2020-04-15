@@ -9,6 +9,32 @@ import Scholarships from './Scholarships';
 */
 class Applications extends Scholarships {
 	
+
+	response = {
+		selectedOffered: false,
+		selectedAccepted: false,
+	}
+
+	setResponse(obj) {
+		this.response = obj;
+	}
+
+	offered() {
+        fetch(`/api/offered/${this.props.studentID}/${this.state.selectedScholarship.scholarship_id}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.response){
+                    console.log(response);
+                    let o = response.response.length;
+                    let a = o ? response.response[0].accepted : 0;
+                    this.setResponse({
+                        selectedOffered: o,
+                        selectedAccepted: a,
+                    })
+                }
+            })
+	}
+	
 	/*
 	Goes through each scholarship that was applied for and sets up the information that will be displayed. The list is returned.
 	*/
@@ -45,6 +71,9 @@ class Applications extends Scholarships {
 		return list;
 	}
 	render() {		
+		this.offered();
+		console.log(this.response);
+		
 		
     	return (
 			<div>
@@ -68,6 +97,8 @@ class Applications extends Scholarships {
 
 					studentID={this.props.studentID}
 					appliedFor={true}
+					offered={this.response.selectedOffered}
+					accepted={this.response.selectedAccepted}
 					
 					update={() => this.props.updateApplied()}
 					apply={this.apply}
